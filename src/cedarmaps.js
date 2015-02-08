@@ -1,0 +1,24 @@
+'use strict';
+
+var map = require('./map'),
+	tileLayer = require('./tile_layer');
+
+L.cedarmaps = L.mapbox;
+
+// Overrides
+L.cedarmaps.VERSION = require('../package.json').version;
+L.cedarmaps.geocoder = require('./geocoder'),
+L.cedarmaps.map = map.map;
+L.cedarmaps.Map = map.Map;
+L.cedarmaps.tileLayer = tileLayer.tileLayer;
+L.cedarmaps.TileLayer = tileLayer.TileLayer;
+
+module.exports = L.cedarmaps;
+
+// Hardcode image path, because Leaflet's autodetection
+// fails, because mapbox.js is not named leaflet.js
+window.L.Icon.Default.imagePath =
+    // Detect bad-news protocols like file:// and hardcode
+    // to https if they're detected.
+    'dist/v1.0.0/images/images';
+    

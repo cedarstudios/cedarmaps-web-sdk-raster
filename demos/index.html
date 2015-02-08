@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>CedarMaps Web SDK Demos</title>
+    
+    <script src='../dist/v1.0.0/cedarmaps.js'></script>
+    <script src='../access-token.js'></script>
+    <link href='../dist/v1.0.0/cedarmaps.css' rel='stylesheet' />
+
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    .map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+    }
+    </style>
+</head>
+
+<body>
+    <div id='map' class='map'> </div>
+    <script>
+    
+    
+    try {
+        L.cedarmaps.accessToken = accessToken;
+    }
+    catch(err) {
+        throw new Error('You need to get an access token to be able to use cedarmaps SDK. ' + 
+        'Send us an email to <info@cedar.ir>');
+    }
+
+    /**
+     * Initilizing Map View
+     */
+
+    // Getting maps info from a tileJSON source
+    var tileJSONUrl = 'http://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token='+ L.cedarmaps.accessToken;
+
+    // initilizing map into div#map
+    var map = L.cedarmaps.map('map', tileJSONUrl, {
+        scrollWheelZoom: true
+    }).setView([35.757448286487595, 51.40876293182373], 15);
+
+
+    /**
+     * Adding a Leaflet marker with custom image
+     */
+    
+    // see: http://leafletjs.com/reference.html#marker
+    var myIcon = L.icon({
+        iconUrl: '../dist/v1.0.0/images/pin-taxi.png',
+        iconRetinaUrl: '../dist/v1.0.0/images/pin-taxi@2x.png',
+        iconSize: [34, 46],
+        iconAnchor: [17, 41],
+        popupAnchor: [-3, -46],
+        shadowUrl: '../dist/v1.0.0/images/pin-shadow.png',
+        shadowRetinaUrl: '../dist/v1.0.0/images/pin-shadow@2x.png',
+        shadowSize: [26, 6],
+        shadowAnchor: [13,3]
+    });
+
+    var marker = new L.marker([35.757448286487595, 51.40876293182373], {icon: myIcon}).addTo(map);
+
+    var popupOptions = {
+        offset: new L.Point(0, -33),
+        closeButton: false,
+        autoPan: false
+    };
+    marker.bindPopup('Hello World!', popupOptions).openPopup();
+
+
+    
+    </script>
+</body>
+
+</html>
