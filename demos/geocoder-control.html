@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>Reverse Geocoding Testing Environment</title>
+
+    <script src='../dist/v1.0.0/cedarmaps.js'></script>
+    <script src='../access-token.js'></script>
+    <link href='../dist/v1.0.0/cedarmaps.css' rel='stylesheet' />
+
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    .map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+    }
+    #results {
+        width: 300px;
+        height: 500px;
+        position: absolute;
+        top: 50px;
+        right: 50px;
+        background-color: rgba(255, 255, 255, .95);
+        border-radius: 5px;
+        padding: 10px;
+        font-family: "Times New Roman";
+        font-size: 13px;
+    }
+    #loading {
+        visibility: hidden;
+    }
+    #response {
+        margin-top: 20px;
+        direction: rtl;
+        font: 11px/1.8em Tahoma;
+        background-color: #f1f1f1;
+        padding: 10px;
+    }
+    pre {
+        white-space: pre-wrap;
+        /* css-3 */
+        
+        white-space: -moz-pre-wrap;
+        /* Mozilla, since 1999 */
+        
+        white-space: -pre-wrap;
+        /* Opera 4-6 */
+        
+        white-space: -o-pre-wrap;
+        /* Opera 7 */
+        
+        word-wrap: break-word;
+        /* Internet Explorer 5.5+ */
+    }
+    </style>
+</head>
+
+<body>
+    <div id='map' class='map'> </div>
+
+    <script>
+    window.L.Icon.Default.imagePath = '../dist/v1.0.0/images/images';
+
+    try {
+        L.cedarmaps.accessToken = accessToken;
+    } catch (err) {
+        throw new Error('You need to get an access token to be able to use cedarmaps SDK. ' +
+            'Send us an email to <info@cedar.ir>');
+    }
+
+    var tileJSONUrl = 'http://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token=' + L.cedarmaps.accessToken,
+        marker;
+
+    // Initializing our map
+    var map = L.cedarmaps.map('map', tileJSONUrl, {
+            scrollWheelZoom: true,
+            maxZoom: 17
+        }).addControl(L.cedarmaps.geocoderControl('cedarmaps.streets', {
+            keepOpen: true,
+            autocomplete: true
+        })).setView([35.757552763570196, 51.41000747680664], 15);
+    </script>
+</body>
+
+</html>

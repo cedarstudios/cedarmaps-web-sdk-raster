@@ -1,7 +1,8 @@
 'use strict';
 
 var map = require('./map'),
-	tileLayer = require('./tile_layer');
+	tileLayer = require('./tile_layer'),
+	geocoderControl = require('./geocoder_control');
 
 L.cedarmaps = L.mapbox;
 
@@ -12,6 +13,8 @@ L.cedarmaps.map = map.map;
 L.cedarmaps.Map = map.Map;
 L.cedarmaps.tileLayer = tileLayer.tileLayer;
 L.cedarmaps.TileLayer = tileLayer.TileLayer;
+L.cedarmaps.geocoderControl = geocoderControl.geocoderControl;
+L.cedarmaps.GeocoderControl = geocoderControl.GeocoderControl;
 
 module.exports = L.cedarmaps;
 
