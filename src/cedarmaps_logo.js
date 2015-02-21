@@ -3,7 +3,7 @@
 var CedarmapsLogoControl = L.Control.extend({
 
     options: {
-        position: 'bottomright',
+        position: 'bottomleft',
     },
 
     initialize: function(options) {
