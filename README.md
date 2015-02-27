@@ -33,11 +33,11 @@ Requires [node.js](http://nodejs.org/) installed on your system.
 Grunt makes use of [Browserify](http://browserify.org/) under the hood to build the project while resolving dependencies.
 
 ``` sh
-git clone http://gitlab.kikojas.com/cedar.studios/cedarmaps-sdk-web.git
-cd cedarmaps-sdk-web
+git clone http://gitlab.cedar.ir/cedar.studios/cedarmaps-sdk-web-public.git
+cd cedarmaps-sdk-web-public
 npm install
 grunt build
 ```
 
-This project uses [browserify](https://github.com/substack/node-browserify) to combine dependencies and installs a local copy when you run `npm install`.
-`grunt build` will build the project in `dist/`.
+built files are put in `dist/` folder.
+Note that every time you pull new changes from repository, you should run `grunt build`.
