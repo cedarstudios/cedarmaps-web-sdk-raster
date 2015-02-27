@@ -35,6 +35,7 @@ Grunt makes use of [Browserify](http://browserify.org/) under the hood to build 
 ``` sh
 git clone http://gitlab.cedar.ir/cedar.studios/cedarmaps-sdk-web-public.git
 cd cedarmaps-sdk-web-public
+git submodule update --init
 npm install
 grunt build
 ```
