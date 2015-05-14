@@ -7,8 +7,8 @@ This is CedarMaps Javascript API. It's simply a wrapper for [Mapbox Javascript A
 Recommended usage is via the CedarMaps CDN:
 
 ```html
-<script src='http://api.cedarmaps.com/cedarmaps.js/v1.0.0/cedarmaps.js'></script>
-<link href='http://api.cedarmaps.com/cedarmaps.js/v1.0.0/cedarmaps.css' rel='stylesheet' />
+<script src='http://api.cedarmaps.com/cedarmaps.js/v1.0.1/cedarmaps.js'></script>
+<link href='http://api.cedarmaps.com/cedarmaps.js/v1.0.1/cedarmaps.css' rel='stylesheet' />
 ```
 
 The `cedarmaps.js` file includes the Leaflet library. Alternatively, you can use `cedarmaps.standalone.js`, which does not include Leaflet (you will have to provide it yourself).
@@ -19,6 +19,15 @@ cedarmaps APIs only work with a valid "Acces Token". You must set your access to
 L.cedarmaps.accessToken = 'your_hash';
 ```
 Check out demos at `demos/` folder for better grasping the idea.
+
+**Note:** If you've purchased our dedicated plan you should set your baseURL in the following manner in `<head>` tag *before* including cedarmaps' files:
+
+```html
+<script>
+	apiBaseUrlHttp = 'http://...';
+	apiBaseUrlHttps = 'https://...';
+</script>
+```
 
 You can also see the [API documentation](http://mapbox.com/mapbox.js/api/) and [Mapbox's Examples](http://mapbox.com/mapbox.js/example/v1.0.0/) for further help.
 

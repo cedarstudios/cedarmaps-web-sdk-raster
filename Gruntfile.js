@@ -102,7 +102,5 @@
             'copy:apiDocument'
             ]);
 
-    grunt.registerTask('default', function() {
-        grunt.log.writeln('No task specified. Did nothing. run "grunt build" for example.');
-    });
+    grunt.registerTask('default', 'build');
 };

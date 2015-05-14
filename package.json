@@ -2,7 +2,7 @@
   "author": "CedarStudios",
   "name": "cedarmaps.js",
   "description": "CedarMaps javascript API built on top of mapbox.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "http://www.cedarmaps.com/",
   "repository": {
     "type": "git",
