@@ -24,8 +24,8 @@ Check out demos at `demos/` folder for better grasping the idea.
 
 ```html
 <script>
-	apiBaseUrlHttp = 'http://...';
-	apiBaseUrlHttps = 'https://...';
+	apiBaseUrlHttp = 'http://your-own-api-url.com';
+	apiBaseUrlHttps = 'https://your-own-api-url.com';
 </script>
 ```
 
@@ -49,5 +49,31 @@ npm install
 grunt build
 ```
 
-built files are put in `dist/` folder.
+Built files are copied into `dist/` folder according to current SDK `version`. (See `package.json`)
 Note that every time you pull new changes from repository, you should run `grunt build`.
+
+# Updating
+
+## Updating mapbox.js submodule
+The mapbox.js SDK is updated from time to time and obviously cedarmaps.js also needs to be synced. The submodule is residing in `/mapbox.js` folder and points to a specific mapbox.js tag (not the HEAD, of course).
+
+In order to upgrade the submodule to a specific `<version>`, do the following:
+
+```
+cd mapbox.js/
+git pull
+git tag -l
+git checkout <version>
+cd ..
+git add mapbox.js/
+git commit -m "Updated mapbox submodule to <version>."
+```
+
+## Updating Cedarmaps.js
+In case of any updates in module itself the following files must be updated:
+
+*   `version` in `./package.json`
+*   `version` in `<script>` and `<link>` tags in demo files (`./demo`)
+*   `version` in sample API usage in `README.md`
+*   "Doc files" by running `grunt doc` command
+*   building new dist files by running `grunt build` command
