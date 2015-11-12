@@ -1,20 +1,28 @@
 'use strict';
 
-var util = require('../mapbox.js/src/util'),
-    urlhelper = require('./url'),
+var isArray = require('isarray'),
+util = require('../mapbox.js/src/util'),
+    format_url = require('./format_url'),
     //feedback = require('./feedback'),
     request = require('./request');
 
 // Low-level geocoding interface - wraps specific API calls and their
 // return values.
 module.exports = function(url, options) {
-
+    if (!options) options = {};
     var geocoder = {};
 
     util.strict(url, 'string');
 
     if (url.indexOf('/') === -1) {
-        url = urlhelper('/geocode/' + url + '/{query}.json', options && options.accessToken);
+        url = format_url('/geocode/' + url + '/{query}.json', options.accessToken, 5);
+    }
+
+    function roundTo(latLng, precision) {
+        var mult = Math.pow(10, precision);
+        latLng.lat = Math.round(latLng.lat * mult) / mult;
+        latLng.lng = Math.round(latLng.lng * mult) / mult;
+        return latLng;
     }
 
     geocoder.getURL = function() {
@@ -22,24 +30,58 @@ module.exports = function(url, options) {
     };
 
     geocoder.queryURL = function(_) {
-        var query;
+        var isObject = !(isArray(_) || typeof _ === 'string'),
+            query = isObject ? _.query : _;
 
-        if (typeof _ !== 'string') {
+        if (isArray(query)) {
             var parts = [];
-            for (var i = 0; i < _.length; i++) {
-                parts[i] = encodeURIComponent(_[i]);
+            for (var i = 0; i < query.length; i++) {
+                parts[i] = encodeURIComponent(query[i]);
             }
             query = parts.join(';');
         } else {
-            query = encodeURIComponent(_);
+            query = encodeURIComponent(query);
         }
 
-        //feedback.record({geocoding: query});
-        return L.Util.template(geocoder.getURL(), {query: query});
+        //feedback.record({ geocoding: query });
+
+        var url = L.Util.template(geocoder.getURL(), {query: query});
+
+        
+        /*
+         * Handling cedarmaps' API options for geocoding
+         */
+        if (isObject && _.limit) {
+            url += '&limit=' + _.limit;
+        }
+
+        if (isObject && _.distance) {
+            url += '&distance=' + _.distance;
+        }
+
+        if (isObject && _.ne && _.sw) {
+            url += '&ne=' + _.ne + '&sw=' + _.sw;
+        }
+
+        if (isObject && _.type) {
+            if (isArray(_.type)) {
+                url += '&type=' + _.type.join(',');
+            } else {
+                url += '&type=' + _.type;
+            }
+        }
+
+        if (isObject && _.proximity) {
+            var proximity = roundTo(L.latLng(_.proximity), 3);
+            url += '&proximity=' + proximity.lng + ',' + proximity.lat;
+        }
+
+        return url;
     };
 
     geocoder.query = function(_, callback) {
         util.strict(callback, 'function');
+
         request(geocoder.queryURL(_), function(err, json) {
             if (json && (json.length || json.results)) {
                 callback(null, json);

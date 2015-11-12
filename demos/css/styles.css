@@ -1,0 +1,11 @@
+.leaflet-control-mapbox-geocoder.active .leaflet-control-mapbox-geocoder-wrap {
+    width: 250px;
+}
+
+.leaflet-control-mapbox-geocoder .leaflet-control-mapbox-geocoder-form input {
+    width: 250px;
+}
+
+.leaflet-control-mapbox-geocoder-results {
+    width: 250px;
+}

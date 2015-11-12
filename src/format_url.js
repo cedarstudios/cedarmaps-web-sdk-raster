@@ -7,18 +7,17 @@ module.exports = function(path, accessToken) {
     accessToken = accessToken || L.cedarmaps.accessToken;
 
     if (!accessToken && config.REQUIRE_ACCESS_TOKEN) {
-        // TODO: Change the urls for getting access token
         throw new Error('An API access token is required to use cedarmaps.js. ' +
             'See https://www.mapbox.com/mapbox.js/api/v' + version + '/api-access-tokens/');
     }
 
-    var url = ('https:' === document.location.protocol || config.FORCE_HTTPS) ? config.HTTPS_URL : config.HTTP_URL;
+    var url = (document.location.protocol === 'https:' || config.FORCE_HTTPS) ? config.HTTPS_URL : config.HTTP_URL;
+    url = url.replace(/\/v4$/, '');
     url += path;
     url += url.indexOf('?') !== -1 ? '&access_token=' : '?access_token=';
 
     if (config.REQUIRE_ACCESS_TOKEN) {
         if (accessToken[0] === 's') {
-             // TODO: Change the urls for getting access token
             throw new Error('Use a public access token (pk.*) with Mapbox.js, not a secret access token (sk.*). ' +
                 'See https://www.mapbox.com/mapbox.js/api/v' + version + '/api-access-tokens/');
         }
