@@ -28,7 +28,7 @@ The `cedarmaps.js` file includes the Leaflet library. Alternatively, you can use
 
 cedarmaps APIs only work with a valid "Acces Token". You must set your access token to `L.cedarmaps.accessToken` variable like this:
 
-```js
+```javascript
 L.cedarmaps.accessToken = 'your_hash';
 ```
 Check out demos at `demos/` folder for better grasping the idea.
@@ -63,7 +63,7 @@ A low-level interface to geocoding, useful for more complex uses and reverse-geo
 _Returns_ a `L.cedarmaps.geocoder` object.
 
 example:
-```
+```javascript
 var geocoder = L.cedarmaps.geocoder('cedarmaps.streets');
 ```
 
@@ -74,18 +74,19 @@ Queries the geocoder with a query string, and returns its result, if any.
 | Options | Value | Description |
 | ---- | ---- | ---- |
 | queryString (_required_) | string | a query, expressed as a string, like 'Arkansas' |
-| options | object | an object containing the query and options parameters like `{ query: 'ونک', limit: 5 }`. <br><br>Other available parameteres: <br><br> <ul><li>`limit` *integer* - Max is 30</li><li>`distance` *float* - Unit is km, 0.1 means 100 meters</li><li>`location` *lat,lon* - For searching near a location. should be accompanied with distance param</li><li>`type` *enum* - Possible values: `locality`, `roundabout`, `street`, `freeway`, `expressway`, `boulevard` <br>(You can mix types by separating them with comma)</li><li>`ne` *lat,lon* - Specifies north east of the bounding box - should be accompanied with `sw` param</li><li>`sw` lat,lon - Specifies south west of the bounding box - should be accompanied with `ne` param</li></ul> |
+| options | object | an object containing the query and options parameters like `{ query: 'ونک', limit: 5 }`. <br /><br />Other available parameteres: <br /><br /> <ul><li>`limit` *integer* - Max is 30</li><li>`distance` *float* - Unit is km, 0.1 means 100 meters</li><li>`location` *lat,lon* - For searching near a location. should be accompanied with distance param</li><li>`type` *enum* - Possible values: `locality`, `roundabout`, `street`, `freeway`, `expressway`, `boulevard` <br />(You can mix types by separating them with comma)</li><li>`ne` *lat,lon* - Specifies north east of the bounding box - should be accompanied with `sw` param</li><li>`sw` lat,lon - Specifies south west of the bounding box - should be accompanied with `ne` param</li></ul> |
 | callback (_required_) | function | a callback |
 
 The callback is called with arguments
 
 1. An error, if any
 2. The result. This is an object with the following members:
-
-        {
-            status: // OK
-            results: // raw results
-        }
+```javascript
+{
+    status: // OK
+    results: // raw results
+}
+```
 
 _Example_: [Live example of geocoder.query centering a map.](http://www.cedarmaps.com/websdk/demos/geocoder-control.html)
 
@@ -93,21 +94,21 @@ _Returns_: the geocoder object. The return value of this function is not useful 
 
 #### Geocoding Examples:
 using a single query parameter:
-```
+```javascript
 geocoder.query('ونک', function(){});
 ```
 using query string along with an option (Limiting the results):
-```
+```javascript
 geocoder.query({query:'ونک', limit: 5}, function(){});
 ```
 limiting results based on one or more feature types:
-```
+```javascript
 geocoder.query({query:'ونک', type: 'locality'}, function(){});
 geocoder.query({query:'ونک', type: 'locality,roundabout'}, function(){});
 geocoder.query({query:'ونک', type: 'street', limit:2}, function(){});
 ```
 searching within in a specific bounding box:
-```
+```javascript
 geocoder.query({query:'لادن', ne: '35.76817388431271,51.41721725463867', sw: '35.75316460798604,51.39232635498047'}, function(){});
 ```
 
@@ -123,7 +124,7 @@ Queries the geocoder with a location, and returns its result, if any.
 _Returns_: the geocoder object. The return value of this function is not useful - you must use a callback to get results.
 
 #### Reverse Geocoding Examples
-```
+```javascript
 var geocoder = L.cedarmaps.geocoder('cedarmaps.streets');
 geocoder.reverseQuery({lat: 35.754592526442465, lng: 51.401896476745605}, function(){});
 ```
@@ -134,7 +135,7 @@ geocoder.reverseQuery({lat: 35.754592526442465, lng: 51.401896476745605}, functi
 Requires [node.js](http://nodejs.org/) installed on your system.
 Grunt makes use of [Browserify](http://browserify.org/) under the hood to build the project while resolving dependencies.
 
-``` sh
+```sh
 git clone http://gitlab.cedar.ir/cedar.studios/cedarmaps-sdk-web-public.git
 cd cedarmaps-sdk-web-public
 git submodule update --init
@@ -152,7 +153,7 @@ The mapbox.js SDK is updated from time to time and obviously cedarmaps.js also n
 
 In order to upgrade the submodule to a specific `<version>`, do the following:
 
-```
+```sh
 cd mapbox.js/
 git pull
 git tag -l
