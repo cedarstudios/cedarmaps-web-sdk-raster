@@ -11,7 +11,7 @@ interactivity.
 | ---- | ---- | ---- |
 | element (_required_) | string | Must be the id of an element, or a DOM element reference. |
 | id _or_ url _or_ tilejson | __string__ if _id_ or _url_ __object__ if _tilejson_ | url can be <ul><li>A map `id` string `examples.map-foo`</li><li>A comma separated list of map `id` strings `examples.map-foo,examples.map-bar` [example](https://www.mapbox.com/mapbox.js/example/v1.0.0/compositing/)</li><li>A URL to TileJSON, like `{{site.tileApi}}/v3/mapbox.dark.json`</li><li>A [TileJSON](https://www.mapbox.com/developers/tilejson/) object, from your own Javascript code</li></ul> |
-| options | object | If provided, it is the same options as provided to L.Map with the following additions: <ul><li>`tileLayer` L.TileLayer options. Options passed to a `L.cedarmaps.tileLayer` based on the TileJSON. Set to `false` to disable the `L.cedarmaps.tileLayer`.</li><li>`featureLayer` `L.cedarmaps.featureLayer` options. Options passed to a `L.cedarmaps.featureLayer` based on the TileJSON. Set to `false` to disable the `L.cedarmaps.featureLayer`.</li><li>`gridLayer` `L.cedarmaps.gridLayer`. Options passed to a `L.cedarmaps.gridLayer` based on the TileJSON. Set to `false` to disable the `L.cedarmaps.gridLayer`.</li><li>`legendControl` `L.cedarmaps.legendControl` options. Options passed to a `L.cedarmaps.legendControl` based on the TileJSON. Set to `false` to disable the `L.cedarmaps.legendControl`.</li><li>`shareControl`: Options passed to a `L.cedarmaps.shareControl`. Set to `true` to enable the `L.cedarmaps.shareControl`.</li><li>`infoControl`: Options passed to a `L.cedarmaps.infoControl`. Set to `true` to enable the `L.cedarmaps.infoControl`.</li><li>`accessToken`: Mapbox API access token. Overrides `L.cedarmaps.accessToken` for this map.</li><li>`attributionControl`: value can be `{compact: true}` to force a compact attribution icon that shows the full attribution on click, or `{compact: false}` to force the full attribution control. The default is a responsive attribution that collapses when the map is less than 640 pixels wide.</li> |
+| options | object | If provided, it is the same options as provided to L.Map with the following additions: <ul><li>`tileLayer` L.TileLayer options. Options passed to a `L.cedarmaps.tileLayer` based on the TileJSON. Set to `false` to disable the `L.cedarmaps.tileLayer`.</li><li>`featureLayer` `L.cedarmaps.featureLayer` options. Options passed to a `L.cedarmaps.featureLayer` based on the TileJSON. Set to `false` to disable the `L.cedarmaps.featureLayer`.</li><li>`gridLayer` `L.cedarmaps.gridLayer`. Options passed to a `L.cedarmaps.gridLayer` based on the TileJSON. Set to `false` to disable the `L.cedarmaps.gridLayer`.</li><li>`legendControl` `L.cedarmaps.legendControl` options. Options passed to a `L.cedarmaps.legendControl` based on the TileJSON. Set to `false` to disable the `L.cedarmaps.legendControl`.</li><li>`shareControl`: Options passed to a `L.cedarmaps.shareControl`. Set to `true` to enable the `L.cedarmaps.shareControl`.</li><li>`accessToken`: Mapbox API access token. Overrides `L.cedarmaps.accessToken` for this map.</li><li>`attributionControl`: value can be `{compact: true}` to force a compact attribution icon that shows the full attribution on click, or `{compact: false}` to force the full attribution control. The default is a responsive attribution that collapses when the map is less than 640 pixels wide.</li> |
 
 _Example_:
 
@@ -307,11 +307,30 @@ Get the contents of this layer as GeoJSON data.
 
 _Returns_ the GeoJSON represented by this layer
 
+## L.cedarmaps.styleLayer(url, options)
+
+<span class='leaflet icon'>_Extends_: `L.tileLayer`</span>
+
+`L.cedarmaps.styleLayer` provides a way to integrate [styles](https://www.mapbox.com/help/define-style/) created with Mapbox Studio into your map.
+
+| Options | Value | Description |
+| ---- | ---- | ---- |
+| url | string | Must be a string like `mapbox://styles/mapbox/cin286r4x006safncofpcb71v`|
+| options | object | If provided, it is the same options as provided to `L.tileLayer`, as well as: <ul><li>`sanitizer`: A function that accepts a string containing tooltip data, and returns a sanitized result for HTML display. The default will remove dangerous script content, and is recommended.</li>|
+
+_Example_:
+
+    var styleLayer = L.cedarmaps.styleLayer(url)
+        .addTo(map);
+
+_Returns_ a `L.cedarmaps.styleLayer` object.
+
 # Geocoding
 
 ## L.cedarmaps.geocoder(id|url, options)
 
-A low-level interface to geocoding, useful for more complex uses and reverse-geocoding.
+A low-level interface to [the Mapbox Geocoding API](https://www.mapbox.com/api-documentation/#geocoding),
+useful for complex uses and reverse-geocoding.
 
 | Options | Value | Description |
 | ---- | ---- | ---- |
@@ -323,12 +342,24 @@ _Returns_ a `L.cedarmaps.geocoder` object.
 ### geocoder.query(queryString|options, callback)
 
 Queries the geocoder with a query string, and returns its result, if any.
+This performs [forward geocoding](https://www.mapbox.com/api-documentation/#search-for-places).
 
 | Options | Value | Description |
 | ---- | ---- | ---- |
 | queryString (_required_) | string | a query, expressed as a string, like 'Arkansas' |
 | options | object | an object containing the query and options parameters like `{ query: 'Austin', proximity: L.latlng(lat, lng) }`
 | callback (_required_) | function | a callback |
+
+Valid options are:
+
+* proximity: a `L.LatLng` object or `[latitude, longitude]` array that will
+  bias the search results toward a geographical point
+* country: a string or array of strings of ISO country codes likes `us`
+  or `ca` which will be included in the search. Ommitting this parameter
+  (the default) includes all countries.
+* autocomplete: whether to include results that only contain the prefix
+  of the search terms rather than the full terms. If you have precise input,
+  set this to `false`. Otherwise, by default it is `true`.
 
 The callback is called with arguments
 
@@ -349,6 +380,7 @@ _Returns_: the geocoder object. The return value of this function is not useful 
 ### geocoder.reverseQuery(location, callback)
 
 Queries the geocoder with a location, and returns its result, if any.
+This performs [reverse geocoding](https://www.mapbox.com/api-documentation/#retrieve-places-near-a-location).
 
 | Options | Value | Description |
 | ---- | ---- | ---- |
@@ -358,39 +390,6 @@ Queries the geocoder with a location, and returns its result, if any.
 _Returns_: the geocoder object. The return value of this function is not useful - you must use a callback to get results.
 
 # Controls
-
-## L.cedarmaps.infoControl(options)
-
-<span class='leaflet icon'>_Extends_: `L.Control`</span>
-
-A map control that shows a toggleable info container. If set, attribution is auto-detected from active layers and added to the info container.
-
-| Options | Value | Description |
-| ---- | ---- | ---- |
-| options _optional_ | object | An options object. Beyond the default options for map controls, this object has a one additional parameter: <ul><li>`sanitizer`: A function that accepts a string, and returns a sanitized result for HTML display. The default will remove dangerous script content, and is recommended.</li></ul> |
-
-_Example_:
-
-    var map = L.cedarmaps.map('map').setView([38, -77], 5);
-    map.addControl(L.cedarmaps.infoControl().addInfo('foo'));
-
-_Returns_: a `L.cedarmaps.infoControl` object.
-
-_Class_: `L.cedarmaps.InfoControl`
-
-### infoControl.addInfo(info)
-Adds an info string to infoControl.
-
-| Options | Value | Description |
-| ---- | ---- | ---- |
-| info _required_ | string | A string which may contain HTML. It will be sanitized by the infoControl's sanitizer option. |
-
-### infoControl.removeInfo(info)
-Removes an info string from infoControl.
-
-| Options | Value | Description |
-| ---- | ---- | ---- |
-| info _required_ | string | Info to remove. |
 
 ## L.cedarmaps.legendControl(options)
 
@@ -476,6 +475,9 @@ the [Mapbox Geocoding API](http://mapbox.com/developers/api/geocoding/).
 | id _or_ url (_required_) | string | Either a <ul><li>An [geocoder index ID](https://www.mapbox.com/developers/api/geocoding/), e.g. `mapbox.places`</li><li>A geocoder API URL, like `{{site.tileApi}}/geocoding/v5/mapbox.places/{query}.json`</li></ul> |
 | options | object | An options argument with the same options as the `L.Control` class, as well as: <ul><li>`keepOpen`: a boolean for whether the control will stay open always rather than being toggled. Default `false`. See <a href='https://www.mapbox.com/mapbox.js/example/v1.0.0/geocoder-keep-open/'>live example</a>.<li><li>`accessToken`: Mapbox API access token. Overrides `L.cedarmaps.accessToken` for this control.</li><li>`autocomplete`: automatically search and show results as you type. Default: `false`.</ul> |
 
+The `options` object can also include `queryOptions` which are passed to the
+`geocoder.query` method: see that method for full documentation of those options.
+
 _Example_:
 
     var map = L.map('map')
@@ -521,8 +523,9 @@ Bind a listener to an event emitted by the geocoder control. Supported additiona
 
 | Event  | Description |
 | ---- | ---- |
-| found | Success in finding a location. The event's `results` property contains the raw results. |
-| error | Failure to find a location. The event's `error` property contains the raw HTTP error. |
+| found | A successful search. The event's `results` property contains the raw results. |
+| notfound | A search request succeeded but didn't find any results. |
+| error | A network error. The event's `error` property contains the raw HTTP error. |
 | select | Fired when the user selects a location from a list of options returned from a geocoding request. The event's `feature` property contains the selected GeoJSON Feature. |
 | autoselect | Fired when the control automatically selects the first result of a query that returns only one result, and repositions the map accordingly. The event's `feature` property contains the selected GeoJSON feature. |
 
@@ -566,7 +569,7 @@ and `popupAnchor`.
 ## L.cedarmaps.marker.style(feature, latlng)
 
 An icon generator for use in conjunction with `pointToLayer` to generate
-markers from the [Mapbox Markers API](http://mapbox.com/developers/api/#markers)
+markers from the [Mapbox Markers API](https://www.mapbox.com/api-documentation/#retrieve-a-standalone-marker)
 and support the [simplestyle-spec](https://github.com/mapbox/simplestyle-spec) for
 features.
 
