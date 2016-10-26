@@ -20,8 +20,8 @@ This is CedarMaps Javascript API. It's simply a wrapper for [Mapbox Javascript A
 Recommended usage is via the CedarMaps CDN:
 
 ```html
-<script src='http://api.cedarmaps.com/cedarmaps.js/v1.2.0/cedarmaps.js'></script>
-<link href='http://api.cedarmaps.com/cedarmaps.js/v1.2.0/cedarmaps.css' rel='stylesheet' />
+<script src='http://api.cedarmaps.com/cedarmaps.js/v1.2.1/cedarmaps.js'></script>
+<link href='http://api.cedarmaps.com/cedarmaps.js/v1.2.1/cedarmaps.css' rel='stylesheet' />
 ```
 
 The `cedarmaps.js` file includes the Leaflet library. Alternatively, you can use `cedarmaps.standalone.js`, which does not include Leaflet (you will have to provide it yourself).
