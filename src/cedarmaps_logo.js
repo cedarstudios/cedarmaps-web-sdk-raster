@@ -12,7 +12,7 @@ var CedarmapsLogoControl = L.Control.extend({
 
     onAdd: function(map) {
         this._container = L.DomUtil.create('a', 'cedarmaps-logo');
-        this._container.href = "http://www.kikojas.com/about-maps";
+        this._container.href = "https://www.cedarmaps.com";
         this._container.target = "_blank";
 
         return this._container;
