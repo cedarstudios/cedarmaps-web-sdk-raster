@@ -2,13 +2,15 @@
 
 var map = require('./map'),
 	tileLayer = require('./tile_layer'),
-	geocoderControl = require('./geocoder_control');
+    geocoderControl = require('./geocoder_control');    
 
 L.cedarmaps = L.mapbox;
 
 // Overrides
 L.cedarmaps.VERSION = require('../package.json').version;
-L.cedarmaps.geocoder = require('./geocoder'),
+L.cedarmaps.geocoder = require('./geocoder');
+L.cedarmaps.staticMap = require('./static_map');
+L.cedarmaps.distance = require('./distance');
 L.cedarmaps.map = map.map;
 L.cedarmaps.Map = map.Map;
 L.cedarmaps.tileLayer = tileLayer.tileLayer;
@@ -24,4 +26,3 @@ window.L.Icon.Default.imagePath =
     // Detect bad-news protocols like file:// and hardcode
     // to https if they're detected.
     'dist/v1.0.0/images/images';
-    
