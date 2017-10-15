@@ -58,7 +58,6 @@ module.exports = function (options) {
         url += '&' + qs;
     }
 
-    console.log(url);
     var img = document.createElement('img');
     img.setAttribute('src', url);
     img.setAttribute('alt', options.alttext);
