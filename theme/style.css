@@ -53,3 +53,342 @@
     background-image: url(data:image/png;base64,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);
     cursor: pointer;
 }
+
+.kikojas-nearby-widget .clear {
+	display: block;
+    content: "";
+    clear: both;
+}
+
+.kikojas-nearby-widget .category-panel {
+	transition: opacity .25s ease-in-out;
+	background: #fff;
+	opacity: 1;
+	padding: 2px;
+	height: 40px;
+	border-radius: 5px;
+}
+
+.kikojas-nearby-widget .category-panel:hover {
+	opacity: 1;
+}
+
+.kikojas-nearby-widget .category-button {
+	cursor: pointer;
+}
+
+.kikojas-nearby-widget .category-button .category-name {
+	display: none;
+	position: absolute;
+	top: 10px;
+	z-index: 20;
+	padding: 5px;
+	border-radius: 5px;
+	background: rgba(0, 0, 0, 0.8);
+	color: white;
+}
+
+.kikojas-nearby-widget .category-button:hover .category-name {
+	display: inline-block;
+}
+
+.kikojas-nearby-widget .kikojas-map-marker {
+	width: 34px;
+	height: 44px;
+	display: block;
+	background: url('https://www.kikojas.com/img/markers.png') no-repeat;
+}
+
+.kikojas-nearby-widget .leaflet-marker-shadow {
+	background: none!important;
+}
+
+
+/**
+ * Map & Leaflet overrides
+ */
+.kikojas-nearby-widget .leaflet-popup-content-wrapper, .leaflet-popup-content-wrapper p {
+	font-family: IRANSans, sans-serif;
+	font-size: 12px;
+}
+.kikojas-nearby-widget .leaflet-popup-content-wrapper{	
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	padding: 0;
+	border: 2px solid #A4A4A4;	
+}
+
+.kikojas-nearby-widget .leaflet-popup-content {
+	margin: 0;
+	width: 400px;
+	height: 100px;
+	direction: rtl;
+	text-align: right;
+	padding: 1px;
+	overflow: hidden;
+}
+
+.kikojas-nearby-widget .leaflet-popup-poi .leaflet-popup-content {	
+	height: auto;
+	width: auto;
+}
+
+.kikojas-nearby-widget .leaflet-popup-poi .leaflet-popup-content .basic-info {
+	width: 100%;
+	float: auto;
+}
+
+.kikojas-nearby-widget .leaflet-popup-content .basic-info {
+	padding: 10px;
+	float: right;
+	width: 70%;
+}
+
+.kikojas-nearby-widget .leaflet-popup-content .details {
+	padding-right: 42px;
+}
+
+.kikojas-nearby-widget .leaflet-popup-content .category {
+	color: #9a9a9a;
+}
+
+.kikojas-nearby-widget .leaflet-popup-content .address {
+	font-weight: 300;
+	font-size: 11px;
+}
+
+.kikojas-nearby-widget .leaflet-popup-content .icon {
+	float: right;
+	width: 32px;
+	height: 50px;
+	margin-left: 10px;
+}
+
+.kikojas-nearby-widget .leaflet-popup-content .routing {
+	float: left;	
+	width: 30%;
+	height: 98px;
+	border-right: 1px solid #a6a6a6;
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+	background: #dbf9ff;
+	color: #000;
+	font-size: 11px;
+	padding: 5px;	
+	position: relative;
+	cursor: pointer;
+	text-align: center;
+}
+
+.kikojas-nearby-widget .leaflet-popup-content .routing .route {
+	border-radius: 4px;
+	background-color: #238fa6;
+	padding: 4px;
+	margin-top: 20px;
+	color: #fff;
+}
+
+.kikojas-nearby-widget .tooltip-wrapper {
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	overflow: hidden;
+	width: 100%;
+}
+
+.kikojas-nearby-widget .leaflet-popup-content-wrapper,
+.kikojas-nearby-widget .leaflet-popup-tip {
+	box-shadow: 0 4px 10px 0 #888888;
+}
+
+.kikojas-nearby-widget .leaflet-top,
+.kikojas-nearby-widget .leaflet-bottom {
+	z-index: 4 !important;
+}
+
+.kikojas-nearby-widget .map-feature-tooltip-wrapper {
+	padding: 15px;
+	text-align: center;
+}
+
+.kikojas-nearby-widget .new-place-tooltip-wrapper {
+	padding: 15px 10px;
+	text-align: center;
+}
+
+.kikojas-nearby-widget .leaflet-popup-tip-container {
+    margin: -2px auto 0;
+    width: 24px;
+    height: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.kikojas-nearby-widget .leaflet-popup-tip {
+    height: 8px;
+    background: url(https://www.kikojas.com/img/popup-tip.png) no-repeat top left;
+}
+
+.tgl-flip+.tgl-btn {
+    padding: 2px;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;    
+    -webkit-perspective: 100px;
+    perspective: 100px;
+}
+
+.tgl-flip+.tgl-btn:after,
+.tgl-flip+.tgl-btn:before {
+    display: inline-block;
+    -webkit-transition: all .4s ease;
+    transition: all .4s ease;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    line-height: 2em;
+    font-weight: bold;
+    color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 4px;    
+}
+
+.tgl-flip+.tgl-btn:after {
+    content: attr(data-tg-on);
+    background: #6ba53a;
+    -webkit-transform: rotateY(-180deg);
+    transform: rotateY(-180deg);
+}
+
+.tgl-flip+.tgl-btn:before {
+    background: #6ba53a;
+    content: attr(data-tg-off);
+}
+
+.tgl-flip+.tgl-btn:active:before {
+    -webkit-transform: rotateY(-20deg);
+    transform: rotateY(-20deg);
+}
+
+.tgl-flip:checked+.tgl-btn:before {
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+
+.tgl-flip:checked+.tgl-btn:after {
+    -webkit-transform: rotateY(0);
+    transform: rotateY(0);
+    left: 0;
+    background: #a4a3a4;
+}
+
+.tgl-flip:checked+.tgl-btn:active:after {
+    -webkit-transform: rotateY(20deg);
+    transform: rotateY(20deg);
+}
+
+ul.tg-list,
+ul.tg-list li {
+    list-style: none outside none;
+}
+
+.tg-list {    
+    /*display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;*/        
+    padding: 0;    
+    margin: 0;
+    text-align: center;
+}
+
+.tg-list-item {
+    display:inline-block;    
+    margin: 7px 5px;    
+    font-family: IRANSans, sans-serif;
+    font-size: 11px;
+}
+
+.tgl {
+    display: none;
+}
+
+.tgl,
+.tgl:after,
+.tgl:before,
+.tgl *,
+.tgl *:after,
+.tgl *:before,
+.tgl+.tgl-btn {
+    box-sizing: border-box;
+}
+
+.tgl::-moz-selection,
+.tgl:after::-moz-selection,
+.tgl:before::-moz-selection,
+.tgl *::-moz-selection,
+.tgl *:after::-moz-selection,
+.tgl *:before::-moz-selection,
+.tgl+.tgl-btn::-moz-selection {
+    background: none;
+}
+
+.tgl::selection,
+.tgl:after::selection,
+.tgl:before::selection,
+.tgl *::selection,
+.tgl *:after::selection,
+.tgl *:before::selection,
+.tgl+.tgl-btn::selection {
+    background: none;
+}
+
+.tgl+.tgl-btn {
+    outline: 0;
+    display: block;
+    width: 4em;
+    height: 2em;
+    position: relative;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.tgl+.tgl-btn:after,
+.tgl+.tgl-btn:before {
+    position: relative;
+    display: block;
+    content: "";
+    width: 50%;
+    height: 100%;
+}
+
+.tgl+.tgl-btn:after {
+    left: 0;
+}
+
+.tgl+.tgl-btn:before {
+    display: none;
+}
+
+.tgl:checked+.tgl-btn:after {
+    left: 50%;
+}
+
+@media (max-width: 400px) {
+	.kikojas-nearby-widget .leaflet-popup-content {		
+		width: 310px;
+		height: 150px;
+	}
+	.kikojas-nearby-widget .leaflet-popup-content .routing {
+		height: 149px;		
+	}
+}

@@ -10,6 +10,7 @@ L.cedarmaps = L.mapbox;
 L.cedarmaps.VERSION = require('../package.json').version;
 L.cedarmaps.geocoder = require('./geocoder');
 L.cedarmaps.staticMap = require('./static_map');
+L.cedarmaps.nearby = require('./nearby');
 L.cedarmaps.distance = require('./distance');
 L.cedarmaps.map = map.map;
 L.cedarmaps.Map = map.Map;

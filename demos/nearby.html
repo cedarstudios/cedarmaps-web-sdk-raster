@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>CedarMaps - Simple Map Load</title>
+
+    <script src='../dist/v1.3.0/cedarmaps.uncompressed.js'></script>
+    <script src='../access-token.js'></script>
+    <link href='../dist/v1.3.0/cedarmaps.css' rel='stylesheet' />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='map' class='map'> </div>
+    <script>
+        try {
+            L.cedarmaps.accessToken = accessToken;
+        } catch (err) {
+            throw new Error('You need to get an access token to be able to use cedarmaps SDK. ' +
+                'Send us an email to <info@cedar.ir>');
+        }
+        L.cedarmaps.nearby('map', [35.737334, 51.355215], {
+            accessToken: accessToken,            
+            categories: ['bus', 'park', 'shopping', 'hospital', 'school'],
+            searchDistance: 5,
+            popupContent: '<h2>html is allowed here</h2>',
+            defaultZoom: 20
+        });        
+    </script>
+</body>
+
+</html>

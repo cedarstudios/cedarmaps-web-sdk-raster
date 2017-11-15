@@ -2,9 +2,8 @@
 
 var config = require('./config');
 
-module.exports = function (options) {
+module.exports = function (container, options) {
 // {
-//     container: string,
 //     alttext: string,
 //     maptype: string,
 //     position: {
@@ -37,9 +36,9 @@ module.exports = function (options) {
     if (!options.dimensions) {
         throw 'Cedarmaps: No dimensions specified.';
     }
-    if (!options.container) {
+    if (!container) {
         throw 'Cedarmaps: No container selector specified.';
-    } else if (!document.querySelector(options.container)) {
+    } else if (!document.querySelector(container)) {
         throw 'Cedarmaps: Could not find element ' + options.container;
     }
     var position = options.position.lat ? (options.position.lat + ',' + options.position.lng + ',' + options.position.zoom) : options.position;
