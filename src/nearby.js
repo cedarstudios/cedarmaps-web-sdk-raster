@@ -136,8 +136,7 @@ module.exports = function (container, center, options) {
         
     var containerElement = document.getElementById(container);
     containerElement.className += ' kikojas-nearby-widget';
-    var map = L.cedarmaps.map(container, tileJSONUrl, {
-        scrollWheelZoom: true,
+    var map = L.cedarmaps.map(container, tileJSONUrl, {        
         maxBounds: bounds,
         minZoom: 12,
         maxZoom: 17,
