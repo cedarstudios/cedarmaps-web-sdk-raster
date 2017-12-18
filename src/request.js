@@ -1,7 +1,7 @@
 'use strict';
 
 var corslite = require('corslite'),
-    strict = require('../mapbox.js/src/util').strict,
+    strict = require('mapbox.js/src/util').strict,
     config = require('./config'),
     protocol = /^(https?:)?(?=\/\/(.|api)\.cedarmaps\.com\/)/;
 

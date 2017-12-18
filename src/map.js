@@ -1,6 +1,6 @@
 'use strict';
 
-var MMap = require('../mapbox.js/src/map'),
+var MMap = require('mapbox.js/src/map'),
     tileLayer = require('./tile_layer').tileLayer,
     cedarmapsLogoControl = require('./cedarmaps_logo').cedarmapsLogoControl;
 

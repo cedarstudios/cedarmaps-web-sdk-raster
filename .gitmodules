@@ -1,4 +1,0 @@
-[submodule "mapbox.js"]
-	path = mapbox.js
-	url = https://github.com/mapbox/mapbox.js.git
-	branch = mb-pages

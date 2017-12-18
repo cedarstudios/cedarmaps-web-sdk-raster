@@ -1,4 +1,4 @@
 'use strict';
 
-require('../mapbox.js/src/index');
+require('mapbox.js');
 require('./cedarmaps');

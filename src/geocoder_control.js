@@ -1,7 +1,7 @@
 'use strict';
 
 var geocoder = require('./geocoder'),
-    util = require('../mapbox.js/src/util');
+    util = require('mapbox.js/src/util');
 
 var GeocoderControl = L.Control.extend({
     includes: L.Mixin.Events,

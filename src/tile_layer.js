@@ -1,7 +1,7 @@
 'use strict';
 
-var util = require('../mapbox.js/src/util'),
-    MTileLayer = require('../mapbox.js/src/tile_layer');
+var util = require('mapbox.js/src/util'),
+    MTileLayer = require('mapbox.js/src/tile_layer');
     //urlHelper = require('./url');
 
 var TileLayer = MTileLayer.TileLayer.extend({

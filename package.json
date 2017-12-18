@@ -2,7 +2,7 @@
   "author": "CedarStudios",
   "name": "cedarmaps.js",
   "description": "CedarMaps javascript API built on top of mapbox.js",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "homepage": "http://www.cedarmaps.com/",
   "repository": {
     "type": "git",
@@ -11,8 +11,8 @@
   "main": "src/index.js",
   "dependencies": {
     "corslite": "0.0.6",
-    "isarray": "0.0.1",
-    "leaflet": "1.2.0",
+    "isarray": "0.0.1",    
+    "mapbox.js": "^3.1.1",
     "mustache": "0.7.3",
     "sanitize-caja": "0.1.3"
   },

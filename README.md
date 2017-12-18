@@ -20,8 +20,8 @@ This is CedarMaps Javascript API. It's simply a wrapper for [Mapbox Javascript A
 Recommended usage is via the CedarMaps CDN:
 
 ```html
-<script src='http://api.cedarmaps.com/cedarmaps.js/v1.2.1/cedarmaps.js'></script>
-<link href='http://api.cedarmaps.com/cedarmaps.js/v1.2.1/cedarmaps.css' rel='stylesheet' />
+<script src='http://api.cedarmaps.com/cedarmaps.js/v1.4.0/cedarmaps.js'></script>
+<link href='http://api.cedarmaps.com/cedarmaps.js/v1.4.0/cedarmaps.css' rel='stylesheet' />
 ```
 
 The `cedarmaps.js` file includes the Leaflet library. Alternatively, you can use `cedarmaps.standalone.js`, which does not include Leaflet (you will have to provide it yourself).
@@ -138,7 +138,6 @@ Grunt makes use of [Browserify](http://browserify.org/) under the hood to build 
 ```sh
 git clone http://gitlab.cedar.ir/cedar.studios/cedarmaps-sdk-web-public.git
 cd cedarmaps-sdk-web-public
-git submodule update --init
 npm install
 grunt build
 ```
@@ -147,21 +146,6 @@ Built files are copied into `dist/` folder according to current SDK `version`. (
 Note that every time you pull new changes from repository, you should run `grunt build`.
 
 # Updating SDK
-
-## Updating mapbox.js submodule
-The mapbox.js SDK is updated from time to time and obviously cedarmaps.js also needs to be synced. The submodule is residing in `/mapbox.js` folder and points to a specific mapbox.js tag (not the HEAD, of course).
-
-In order to upgrade the submodule to a specific `<version>`, do the following:
-
-```sh
-cd mapbox.js/
-git pull
-git tag -l
-git checkout <version>
-cd ..
-git add mapbox.js/
-git commit -m "Updated mapbox submodule to <version>."
-```
 
 ## Updating Cedarmaps.js
 In case of any updates in module itself the following files must be updated:

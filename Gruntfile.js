@@ -7,9 +7,9 @@
         // Paths
         distFolder: 'dist/v<%= pkg.version %>',
         leafletFolder: 'node_modules/leaflet/dist',
-        mapboxFolder: 'mapbox.js',
-        mapboxSourceFolder: 'mapbox.js/src',
-        mapboxThemeFolder: 'mapbox.js/theme',
+        mapboxFolder: 'node_modules/mapbox.js',
+        mapboxSourceFolder: 'node_modules/mapbox.js/src',
+        mapboxThemeFolder: 'node_modules/mapbox.js/theme',
         cedarmapsSourceFolder: 'src',
         cedarmapsThemeFolder: 'theme',
 
@@ -27,9 +27,8 @@
         copy: {
             images: {
                 files: [
-                    {expand: true, cwd: '<%= mapboxThemeFolder %>/images/', src: ['**', '!*.sh', '!*.svg'], dest: '<%= distFolder %>/images/'},
-                    {expand: true, cwd: '<%= cedarmapsThemeFolder %>/images/', src: '**', dest: '<%= distFolder %>/images/'},
-                    {expand: true, cwd: '<%= leafletFolder %>/images/', src:'**', dest: '<%= distFolder %>/images/images/'}
+                    {expand: true, cwd: '<%= mapboxThemeFolder %>/images/', src: ['**', '!*.sh'], dest: '<%= distFolder %>/images/'},
+                    {expand: true, cwd: '<%= cedarmapsThemeFolder %>/images/', src: '**', dest: '<%= distFolder %>/images/'}                    
                 ]
             },
             apiDocument: {
