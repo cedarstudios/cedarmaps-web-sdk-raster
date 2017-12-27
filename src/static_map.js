@@ -23,7 +23,7 @@ module.exports = function (container, options) {
 //             lng: 51.41,
 //         }
 //     ]
-// }
+// }    
     if (!options.maptype) {
         options.maptype = 'light';
     }
@@ -32,9 +32,17 @@ module.exports = function (container, options) {
     }
     if (!options.position) {
         options.position = 'auto';
+    } else {
+        if(typeof options.position !== 'object') {
+            throw 'Unknown value for position.'
+        }
     }
     if (!options.dimensions) {
         throw 'Cedarmaps: No dimensions specified.';
+    } else {
+        if(typeof options.dimensions !== 'object') {
+            throw 'Unknown value for position.'
+        }
     }
     if (!container) {
         throw 'Cedarmaps: No container selector specified.';
@@ -49,7 +57,7 @@ module.exports = function (container, options) {
     if (options.qs && options.qs.length > 0) {
         var qs = 'markers=';
         for (var i = 0, l = options.qs.length; i < l; i++) {
-            if (options.qs[i].marker_url) {
+            if (!options.qs[i].marker_url) {
                 options.qs[i].marker_url = 'marker-default';
             }
             qs += options.qs[i].marker_url + '|' + options.qs[i].lat + ',' + options.qs[i].lng;
