@@ -5,9 +5,9 @@
     <meta charset=utf-8 />
     <title>CedarMaps - Simple Map Load</title>
 
-    <script src='../dist/v1.4.1/cedarmaps.uncompressed.js'></script>
+    <script src='../dist/v1.4.2/cedarmaps.uncompressed.js'></script>
     <script src='../access-token.js'></script>
-    <link href='../dist/v1.4.1/cedarmaps.css' rel='stylesheet' />
+    <link href='../dist/v1.4.2/cedarmaps.css' rel='stylesheet' />
 
     <style>
         body {
@@ -33,13 +33,18 @@
             throw new Error('You need to get an access token to be able to use cedarmaps SDK. ' +
                 'Send us an email to <info@cedar.ir>');
         }
-        L.cedarmaps.nearby('map', [35.737334, 51.355215], {
-            accessToken: accessToken,            
+        L.cedarmaps.nearby('map', [35.737334, 51.355215], {            
             categories: ['bus', 'park', 'shopping', 'hospital', 'school'],
             searchDistance: 5,
             popupContent: '<h2>html is allowed here</h2>',
-            defaultZoom: 20
-        });        
+            defaultZoom: 20,            
+            callback: function(map, center_marker, pois) {
+                setTimeout(function() {
+                    center_marker.setLatLng({lat: 35.738934, lon: 51.356315})
+                    map.setView({lat: 35.738934, lon: 51.356315})
+                }, 10000)
+            }
+        });
     </script>
 </body>
 

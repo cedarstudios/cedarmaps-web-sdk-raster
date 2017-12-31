@@ -122,7 +122,7 @@
 .kikojas-nearby-widget .leaflet-popup-content {
 	margin: 0;
 	width: 400px;
-	height: 100px;
+	height: 120px;
 	direction: rtl;
 	text-align: right;
 	padding: 1px;
@@ -168,7 +168,7 @@
 .kikojas-nearby-widget .leaflet-popup-content .routing {
 	float: left;	
 	width: 30%;
-	height: 98px;
+	height: 118px;
 	border-right: 1px solid #a6a6a6;
 	border-top-left-radius: 8px;
 	border-bottom-left-radius: 8px;
@@ -185,7 +185,7 @@
 	border-radius: 4px;
 	background-color: #238fa6;
 	padding: 4px;
-	margin-top: 20px;
+	margin-top: 18px;
 	color: #fff;
 }
 
