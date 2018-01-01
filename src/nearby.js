@@ -13,8 +13,7 @@ module.exports = function (container, center, options) {
         seachDistance: int,
         popupContent: string,
         noPoiLink: boolean,
-        lockScroll: boolean,
-        callback: fn(map, center_marker)
+        lockScroll: boolean,        
     }
     */
     var stringHelpers = {
@@ -259,10 +258,7 @@ module.exports = function (container, center, options) {
         }).on('popupopen', function (e) {
             e.popup.update();
         });
-    }
-    if (options.callback) {
-        options.callback(map, centerMarker);
-    }
+    }    
     L.Control.CategoryToggle = L.Control.extend({
         onAdd: function (map) {
             var divControlContainer = L.DomUtil.create('div');
@@ -325,9 +321,10 @@ module.exports = function (container, center, options) {
     L.control.categoryToggle = function (opts) {
         return new L.Control.CategoryToggle(opts);
     }
-    L.control.categoryToggle({
+    var ctrl = L.control.categoryToggle({
         position: 'topright'
-    }).addTo(map);
+    })
+    ctrl.addTo(map)
     window.routing = function (el) {
         if (el && el.getAttribute('data-from') && el.getAttribute('data-to')) {
             corslite('https://api.cedarmaps.com/v1/direction/cedarmaps.driving/' + el.getAttribute('data-from') + ';' + el.getAttribute('data-to') + '?access_token=' + L.cedarmaps.accessToken, function (err, result) {
@@ -373,5 +370,19 @@ module.exports = function (container, center, options) {
                 }
             });
         }
+    }
+
+    return {
+        updateCategories: function(categories) {
+            options.categories = categories
+            getPois(centerMarker.getLatLng())
+            map.removeControl(ctrl)
+            ctrl = L.control.categoryToggle({
+                position: 'topright'
+            })
+            ctrl.addTo(map)
+        },
+        map: map,
+        centerMarker: centerMarker
     }
 }
