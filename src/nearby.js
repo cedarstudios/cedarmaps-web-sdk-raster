@@ -77,7 +77,7 @@ module.exports = function (container, center, options) {
                                         lat: poi.lat
                                     }, {
                                             icon: L.divIcon({
-                                                html: category == 'bus' ? '' : '<img style="width:27px; margin:2px;" src="https://www.kikojas.com/img/categories/red/32/' + availableCategories[category].slug + '.png"/>',
+                                                html: category == 'bus' ? '' : '<img style="width:27px; margin:2px;" src="https://www.kikojas.com/img/categories/red/64/' + availableCategories[category].slug + '.png"/>',
                                                 iconSize: [34, 44],
                                                 className: 'kikojas-map-marker',
                                                 iconAnchor: [31, 41],
@@ -381,6 +381,10 @@ module.exports = function (container, center, options) {
                 position: 'topright'
             })
             ctrl.addTo(map)
+        },
+        updateSearchDistance: function(distance) {
+            options.seachDistance = distance
+            getPois(centerMarker.getLatLng())
         },
         map: map,
         centerMarker: centerMarker

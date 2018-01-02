@@ -25,7 +25,7 @@
 </head>
 
 <body>
-    <div id='map' class='map'> </div>
+    <div id='map' class='map'></div>
     <script>
         try {
             L.cedarmaps.accessToken = accessToken;
@@ -35,13 +35,14 @@
         }
         var nb = L.cedarmaps.nearby('map', [35.737334, 51.355215], {            
             categories: ['bus', 'park', 'shopping', 'hospital', 'school'],
-            searchDistance: 5,
+            searchDistance: 1,
             popupContent: '<h2>html is allowed here</h2>',
             defaultZoom: 20
         });        
         setTimeout(function() {
-            nb.updateCategories(['bus', 'park'])
+            nb.updateCategories(['bus', 'park', 'shopping'])
             nb.centerMarker.setLatLng({lat: 35.738934, lon: 51.356315})
+            nb.updateSearchDistance(80)
             nb.map.setView({lat: 35.738934, lon: 51.356315})
         }, 5000)
     </script>
