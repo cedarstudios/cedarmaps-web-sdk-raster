@@ -60,7 +60,7 @@ module.exports = function (container, options) {
             if (!options.qs[i].marker_url) {
                 options.qs[i].marker_url = 'marker-default';
             }
-            qs += options.qs[i].marker_url + '|' + options.qs[i].lat + ',' + options.qs[i].lng;
+            qs += options.qs[i].marker_url + '|' + options.qs[i].lat + ',' + options.qs[i].lng + '|';
         }
         url += '&' + qs;
     }
