@@ -25,7 +25,7 @@
 </head>
 
 <body>
-    <div id='map' class='map'></div>
+    <div id="map"></div>
     <script>
         try {
             L.cedarmaps.accessToken = accessToken;
@@ -33,18 +33,28 @@
             throw new Error('You need to get an access token to be able to use cedarmaps SDK. ' +
                 'Send us an email to <info@cedar.ir>');
         }
-        var nb = L.cedarmaps.nearby('map', [35.737334, 51.355215], {            
-            categories: ['bus', 'park', 'shopping', 'hospital', 'school'],
-            searchDistance: 1,
-            popupContent: '<h2>html is allowed here</h2>',
-            defaultZoom: 20
-        });        
-        setTimeout(function() {
-            nb.updateCategories(['bus', 'park', 'shopping'])
-            nb.centerMarker.setLatLng({lat: 35.738934, lon: 51.356315})
-            nb.updateSearchDistance(80)
-            nb.map.setView({lat: 35.738934, lon: 51.356315})
-        }, 5000)
+        var sm = L.cedarmaps.staticMap({
+            alttext: 'A map with all the staticness',
+            maptype: 'light',            
+            dimensions: {
+                width: 800,
+                height: 600
+            },
+            scale: false,
+            qs: [{
+                marker_url: '',
+                lat: 35.79,
+                lng: 51.41,
+            },
+            {
+                marker_url: '',
+                lat: 35.83,
+                lng: 51.45,
+            }
+        ]
+        });
+        console.log(sm.getUrl())
+        sm.createImage('#map')
     </script>
 </body>
 
