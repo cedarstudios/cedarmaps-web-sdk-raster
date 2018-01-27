@@ -26,4 +26,7 @@ module.exports = L.cedarmaps;
 window.L.Icon.Default.imagePath =
     // Detect bad-news protocols like file:// and hardcode
     // to https if they're detected.
-    'dist/v1.0.0/images/images';
+    ((document.location.protocol === 'https:' ||
+    document.location.protocol === 'http:') ? '' : 'https:') +
+    '//api.cedarmaps.com/cedarmaps.js/' + 'v' +
+    require('../package.json').version + '/images/';
