@@ -38,9 +38,10 @@ var CMap = MMap.Map.extend({
 module.exports.Map = CMap;
 
 module.exports.map = function (element, _, options) {
-    if (options) {
-        options.legendControl = false
-        options.attributionControl = false
-    }
+    options = options || {}    
+    
+    options.legendControl = false
+    options.attributionControl = false    
+    
     return new CMap(element, _, options);
 };
