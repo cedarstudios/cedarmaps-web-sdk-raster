@@ -1,7 +1,7 @@
 'use strict';
 
 var isArray = require('isarray'),
-util = require('mapbox.js/src/util'),
+    util = require('mapbox.js/src/util'),
     format_url = require('./format_url'),
     //feedback = require('./feedback'),
     request = require('./request');

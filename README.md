@@ -5,11 +5,12 @@ This is CedarMaps Javascript API. It's simply a wrapper for [Mapbox Javascript A
 # Table of Contents
 - [Basic Usage](#usage)
 - [API](#api)
-	- [Forward/Reverse Geocoding](#forwardreverse-geocoding)
 	- [Geocoding](#lcedarmapsgeocoderid-options)
 	- [Geocoding Sample Codes](#geocoding-examples)
 	- [Reverse Geocoding](#geocoderreversequerylocation-callback)
 	- [Reverse Geocoding Sample Code](#reverse-geocoding-examples)
+	- [Administrative Boundaries Lister](#administrativeboundariesquerytype-query-callback)
+	- [Administrative Boundaries Lister Sample Code](#administrative-boundaries-examples)
 - [Building SDK](#building-sdk)
 - [Updating SDK](#updating-sdk)
 	- [Updating mapbox.js submodule](#updating-mapboxjs-submodule)
@@ -119,16 +120,33 @@ Queries the geocoder with a location, and returns its result, if any.
 | Options | Value | Description |
 | ---- | ---- | ---- |
 | location (_required_) | object | A query, expressed as an object:<ul><li>`[lon, lat] // an array of lon, lat`</li><li>`{ lat: 0, lon: 0 } // a lon, lat object`</li><li>`{ lat: 0, lng: 0 } // a lng, lat object`</li></ul> The first argument can also be an array of objects in that form to geocode more than one item. |
-| callback (_required_) | function | The callback is called with arguments <ul><li>An error, if any</li><li>The result. This is an object of the raw result from Mapbox.</li></ul>
+| callback (_required_) | function | The callback is called with arguments - An error, if any - The result. This is an object of the raw result from Mapbox. |
 
 _Returns_: the geocoder object. The return value of this function is not useful - you must use a callback to get results.
 
 #### Reverse Geocoding Examples
 ```javascript
 var geocoder = L.cedarmaps.geocoder('cedarmaps.streets');
-geocoder.reverseQuery({lat: 35.754592526442465, lng: 51.401896476745605}, function(){});
+geocoder.reverseQuery({lat: 35.754592526442465, lng: 51.401896476745605}, function callback(err, res){});
 ```
 
+### administrativeBoundaries.query(type, query, callback)
+Lists administrative boundaries in 3 different levels: Province, City, Locality (neighborhood).
+
+| Options | Value | Description |
+| ---- | ---- | ---- |
+| type (_required_) | string | Type of an administrative boundary. Possible values: `province`, `city`, `locality`. |
+| query (_optional_) | string | The query to limit the `type` above. For example: list all cities of "Tehran" province: `query('city', 'تهران', function(){})`. This option is not neccessary for type: `province`. |
+| callback (_required_) | function | The callback is called with arguments - An error, if any - The result. |
+
+_Returns_: the administrativeBoundaries object. The return value of this function is not useful - you must use a callback to get results.
+
+#### Administrative Boundaries Examples
+```javascript
+var administrativeLister = L.cedarmaps.administrativeBoundaries();
+    administrativeLister.query('province', '', function(){console.log('Got list of all provinces of Iran...');});
+    administrativeLister.query('city', 'تهران', function(){console.log('Got List of cities of Tehran Province...');});
+```
 
 # Building SDK
 
@@ -150,8 +168,8 @@ Note that every time you pull new changes from repository, you should run `grunt
 ## Updating Cedarmaps.js
 In case of any updates in module itself the following files must be updated:
 
-*   `version` in `./package.json`
-*   `version` in `<script>` and `<link>` tags in demo files (`./demo`)
-*   `version` in sample API usage in `README.md`
-*   "Doc files" by running `grunt doc` command
-*   building new dist files by running `grunt build` command
+* `version` in `./package.json`
+* `version` in `<script>` and `<link>` tags in demo files (`./demo`)
+* `version` in sample API usage in `README.md`
+* "Doc files" by running `grunt doc` command
+* building new dist files by running `grunt build` command
