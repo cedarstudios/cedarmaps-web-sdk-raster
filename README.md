@@ -21,8 +21,8 @@ This is CedarMaps Javascript API. It's simply a wrapper for [Mapbox Javascript A
 Recommended usage is via the CedarMaps CDN:
 
 ```html
-<script src='http://api.cedarmaps.com/cedarmaps.js/v1.6.0/cedarmaps.js'></script>
-<link href='http://api.cedarmaps.com/cedarmaps.js/v1.6.0/cedarmaps.css' rel='stylesheet' />
+<script src='http://api.cedarmaps.com/cedarmaps.js/v1.7.0/cedarmaps.js'></script>
+<link href='http://api.cedarmaps.com/cedarmaps.js/v1.7.0/cedarmaps.css' rel='stylesheet' />
 ```
 
 The `cedarmaps.js` file includes the Leaflet library. Alternatively, you can use `cedarmaps.standalone.js`, which does not include Leaflet (you will have to provide it yourself).
@@ -96,21 +96,21 @@ _Returns_: the geocoder object. The return value of this function is not useful 
 #### Geocoding Examples:
 using a single query parameter:
 ```javascript
-geocoder.query('ونک', function(){});
+geocoder.query('ونک', function(err, res){});
 ```
 using query string along with an option (Limiting the results):
 ```javascript
-geocoder.query({query:'ونک', limit: 5}, function(){});
+geocoder.query({query:'ونک', limit: 5}, function(err, res){});
 ```
 limiting results based on one or more feature types:
 ```javascript
-geocoder.query({query:'ونک', type: 'locality'}, function(){});
-geocoder.query({query:'ونک', type: 'locality,roundabout'}, function(){});
-geocoder.query({query:'ونک', type: 'street', limit:2}, function(){});
+geocoder.query({query:'ونک', type: 'locality'}, function(err, res){});
+geocoder.query({query:'ونک', type: 'locality,roundabout'}, function(err, res){});
+geocoder.query({query:'ونک', type: 'street', limit:2}, function(err, res){});
 ```
 searching within in a specific bounding box:
 ```javascript
-geocoder.query({query:'لادن', ne: '35.76817388431271,51.41721725463867', sw: '35.75316460798604,51.39232635498047'}, function(){});
+geocoder.query({query:'لادن', ne: '35.76817388431271,51.41721725463867', sw: '35.75316460798604,51.39232635498047'}, function(err, res){});
 ```
 
 ### geocoder.reverseQuery(location, callback)

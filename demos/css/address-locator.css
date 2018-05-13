@@ -1,0 +1,127 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.clearfix {
+  *zoom: 1;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+#form {
+    width: 300px;
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    background-color: rgba(255, 255, 255, .95);
+    border-radius: 5px;
+    padding: 10px;
+    font-family: "Times New Roman";
+    font-size: 13px;
+    border-radius: 8px;
+    border:2px solid #f1f1f1;
+    padding: 30px;
+}
+label {
+    float: right;
+}
+select, input {
+    display: block;
+    width: 73%;
+    margin-right: 50px;
+    padding: 4px;
+}
+#loading {
+    background: #dbf9ff;
+    padding: 10px;
+    text-align: center;
+    visibility: hidden;
+}
+
+#response {
+    margin-top: 20px;
+    direction: rtl;
+    font: 11px/1.8em Tahoma;
+    background-color: #f1f1f1;
+    padding: 10px;
+}
+
+pre {
+    white-space: pre-wrap;
+    /* css-3 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+    /* Internet Explorer 5.5+ */
+}
+
+.text-right {
+    text-align: right;
+    direction: rtl;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.form-component {
+    margin-bottom: 15px;
+}
+
+.form-component label {
+    float: right;
+    width: 50px;
+}
+.autocomplete-suggestion {
+    padding: 10px;
+}
+.autocomplete-suggestion .address {
+    float: right;
+    width: 80%;
+}
+.autocomplete-suggestion .address span {
+    display: block;
+    color: #999;
+}
+.autocomplete-suggestion .street-type {
+    width: 20%;
+    float: left;
+    text-align: left;
+    padding-top: 5px;
+}
+.autocomplete-suggestion .street-type span {
+    display: block;
+    text-align: left;
+    font-size: 11px;
+}
+
+.leaflet-bar a,
+.mapbox-icon,
+.map-tooltip.closable .close,
+.leaflet-control-layers-toggle,
+.leaflet-popup-close-button,
+.mapbox-button-icon:before {
+  padding-top: 4px;
+  padding-left: 7px;
+}
