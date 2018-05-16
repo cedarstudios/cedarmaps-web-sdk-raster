@@ -42,7 +42,7 @@ body {
 label {
     float: right;
 }
-select, input {
+select, input[type="text"] {
     display: block;
     width: 73%;
     margin-right: 50px;

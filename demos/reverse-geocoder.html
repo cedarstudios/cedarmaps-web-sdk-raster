@@ -7,57 +7,22 @@
 	
 	<script src='../dist/v1.7.0/cedarmaps.js'></script>
 	<script src='../access-token.js'></script>
-	<link href='../dist/v1.7.0/cedarmaps.css' rel='stylesheet' />
+	<script src='./js/L.Control.Locate.min.js'></script>
 
-	<style>
-	body {
-		margin: 0;
-		padding: 0;
-	}
-	.map {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		width: 100%;
-	}
-	#results {
-		width: 300px;
-		height: 500px;
-		position: absolute;
-		top: 50px;
-		right: 50px;
-		background-color: rgba(255,255,255,.95);
-		border-radius: 5px;
-		padding: 10px;
-		font-family: "Times New Roman";
-		font-size: 13px;
-	}
-	#loading {
-		visibility: hidden;
-	}
-	#response {
-		margin-top: 20px;
-		direction: rtl;
-		font: 11px/1.8em Tahoma;
-		background-color: #f1f1f1;
-		padding: 10px;
-	}
-	pre {
-		white-space: pre-wrap;       /* css-3 */
-		white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-		white-space: -pre-wrap;      /* Opera 4-6 */
-		white-space: -o-pre-wrap;    /* Opera 7 */
-		word-wrap: break-word;       /* Internet Explorer 5.5+ */
-	}
-	</style>
+	<link href='../dist/v1.7.0/cedarmaps.css' rel='stylesheet' />
+	<link href='./css/address-locator.css' rel='stylesheet' />
+	<link href='./css/L.Control.Locate.min.css' rel='stylesheet' />
+	<link href='./css/reverse-geocoder.css' rel='stylesheet' />
+
 </head>
 
 <body>
 	<div id='map' class='map'> </div>
 	<div id="results">
-		<h2>Click somewhere on map!</h2><div id="loading"><img src="../dist/v1.7.0/images/loading-14-white.gif" width="14" height="14"> Loading...</div>
+		<h2 style="text-align: center;">Click somewhere on the map!</h2><div id="loading"><img src="../dist/v1.7.0/images/loading-14-blue.gif" width="14" height="14"> Loading...</div>
 		<div id="latlng"></div>
-		<div id="response"></div>
+		<div id="parsed-response"></div>
+		<div id="raw-response"></div>
 	</div>
 	<script>
 		try {
@@ -69,7 +34,8 @@
 		}
 
 		var tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token='+ L.cedarmaps.accessToken,
-			marker;
+			marker,
+			syntaxHighlight;
 		
 		// Initializing our map
 		var map = L.cedarmaps.map('map', tileJSONUrl, {
@@ -79,7 +45,8 @@
 		// Setting up our DOM elements.
 		var resultsContainer = document.getElementById('results'),
 			latLngContainer = document.getElementById('latlng'),
-			responseContainer = document.getElementById('response'),
+			parsedResponseContainer = document.getElementById('parsed-response'),
+			rawResponseContainer = document.getElementById('raw-response'),
 			loadingIndicator = document.getElementById('loading');
 
 		// We need to introduce our index to geocoder module. "cedarmaps.streets" in this case.
@@ -94,14 +61,43 @@
 
 			geocoder.reverseQuery(e.latlng, function callback(err, res){
 				loading.style.visibility = 'hidden';
+				parsedResponseContainer.style.display = 'block';
+				rawResponseContainer.style.display = 'block';
 
-				var resultHTML = '<p>شهر: ' + res.result.city + '<br>' + 
-								'محله: ' + res.result.locality + '<br>' + 
-								'خیابان: ' + res.result.address + '</p>';
+				var parsedResponse = '<ul>'+
+									'<li><strong>استان:</strong> ' + res.result.province + '</li>' + 
+									'<li><strong>شهر:</strong> ' + res.result.city + '</li>' + 
+									'<li><strong>محله:</strong> ' + res.result.locality + '</li>' + 
+									'<li><strong>خیابان:</strong> ' + res.result.address + '</li>' +
+									'<li><strong>در منطقه طرح ترافیک:</strong> ' + (res.result.traffic_zone.in_central ? 'بله' : 'خیر' ) + '</li>' +
+									'<li><strong>در منطقه زوج و فرد:</strong> ' + (res.result.traffic_zone.in_evenodd ? 'بله' : 'خیر' ) + '</li>' +
+								'</ul>';
+				var rawResponse = '<pre class="language-javascript">'+ syntaxHighlight(JSON.stringify(res, undefined, 2)) + '</pre>'
 								
-				responseContainer.innerHTML = resultHTML + '<pre>'+ JSON.stringify(res) + '</pre>';
+				parsedResponseContainer.innerHTML = parsedResponse;
+				rawResponseContainer.innerHTML = rawResponse;
+
 			});
 		});
+
+		syntaxHighlight = function(json) {
+		    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+		        var cls = 'number';
+		        if (/^"/.test(match)) {
+		            if (/:$/.test(match)) {
+		                cls = 'key';
+		            } else {
+		                cls = 'string';
+		            }
+		        } else if (/true|false/.test(match)) {
+		            cls = 'boolean';
+		        } else if (/null/.test(match)) {
+		            cls = 'null';
+		        }
+		        return '<span class="' + cls + '">' + match + '</span>';
+		    });
+		}
 	</script>
 </body>
 

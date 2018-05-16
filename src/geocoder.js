@@ -71,11 +71,6 @@ module.exports = function(url, options) {
             }
         }
 
-        if (isObject && _.proximity) {
-            var proximity = roundTo(L.latLng(_.proximity), 3);
-            url += '&proximity=' + proximity.lng + ',' + proximity.lat;
-        }
-
         return url;
     };
 

@@ -45,7 +45,10 @@
         </div>
         <div class="form-component">
             <label for="streets">معبر</label>
-            <input type="text" id="streets" name="streets" placeholder="شروع به تایپ کنید...">
+            <input type="text" id="streets" name="streets" placeholder="شروع به تایپ کنید..." disabled="disabled">
+        </div>
+        <div class="form-component">
+            <input type="checkbox" id="toggle-checkbox" onchange="toggleLayer();">نمایش محدوده جستجو روی نقشه
         </div>
     </div>
 
@@ -57,22 +60,25 @@
             'Send us an email to <info@cedar.ir>');
     }
 
-    // Setting up our DOM elements.
+    // Setting up our DOM elements and global scope variables.
     var form           = document.getElementById('form'),
         provincesList  = document.getElementById('provinces'),
         citiesList     = document.getElementById('cities'),
         localitiesList = document.getElementById('localities'),
         streetsInput   = document.getElementById('streets'),
+        toggleCheckbox = document.getElementById('toggle-checkbox'),
         loading        = document.getElementById('loading'),
-        globalSearchBoundingBox = {},
-        marker;
+        globalSearchBoundingBox = {sw: [24.827, 44.011], ne:[39.724, 63.325]}, // Bounding box of Iran
+        marker,
+        rectagle;
 
     var tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token=' + L.cedarmaps.accessToken;
 
     // Initializing our map using some options
     var map = L.cedarmaps.map('map', tileJSONUrl, {
         scrollWheelZoom: true,
-        minZoom: 6
+        maxZoom: 17,
+        minZoom: 6,
     }).setView([35.757552763570196, 51.41000747680664], 7);
 
     // Adding locate control to map
@@ -124,11 +130,28 @@
         localitiesList.disabled = true;
         streetsInput.disabled = true;
 
-        var value = selectedOption.value;
-        if (!value) return;
+        var value = selectedOption.value,
+            sw, ne;
+
+        if (!value) {
+            citiesList.value = "";
+            localitiesList.value = "";
+            citiesList.disabled = true;
+            localitiesList.disabled = true;
+            sw = [24.827, 44.011], // Bounding box of Iran
+            ne = [39.724, 63.325],
+            globalSearchBoundingBox = {sw: sw, ne:ne};
+            drawBoundary();
+            map.flyToBounds([sw,ne]);
+
+            return;
+        }
 
         var sw = provincesList.options[provincesList.selectedIndex].getAttribute('data-sw').split(','),
             ne = provincesList.options[provincesList.selectedIndex].getAttribute('data-ne').split(',');
+
+        globalSearchBoundingBox = {sw: sw, ne: ne};
+        drawBoundary();
 
         map.flyToBounds([sw,ne]);
 
@@ -144,14 +167,29 @@
         localitiesList.disabled = false;
         streetsInput.disabled = false;
 
-        var value = selectedOption.value;
-        if (!value) return;
+        var value = selectedOption.value,
+            sw, ne;
 
-        var sw = citiesList.options[citiesList.selectedIndex].getAttribute('data-sw').split(','),
-            ne = citiesList.options[citiesList.selectedIndex].getAttribute('data-ne').split(',');
+        if (!value) {
+            localitiesList.value = "";
+            localitiesList.disabled = true;
+            streetsInput.disabled = true;
+            streetsInput.value = "";
+            sw = provincesList.options[provincesList.selectedIndex].getAttribute('data-sw').split(','),
+            ne = provincesList.options[provincesList.selectedIndex].getAttribute('data-ne').split(',');
+            globalSearchBoundingBox = {sw: sw, ne: ne};
+            drawBoundary();
+            map.flyToBounds([sw,ne]);
+
+            return;
+        }
+
+        sw = citiesList.options[citiesList.selectedIndex].getAttribute('data-sw').split(','),
+        ne = citiesList.options[citiesList.selectedIndex].getAttribute('data-ne').split(',');
 
         map.flyToBounds([sw,ne]);
         globalSearchBoundingBox = {sw: sw, ne: ne};
+        drawBoundary();
 
         loading.style.visibility = 'visible';
         locator.query('locality', value, function(err, json){
@@ -166,15 +204,23 @@
     var selectLocality = function(selectedOption) {
         streetsInput.disabled = false;
         var value = selectedOption.value;
-        if (!value) return;
+
+        if (!value) {
+            sw = citiesList.options[citiesList.selectedIndex].getAttribute('data-sw').split(','),
+            ne = citiesList.options[citiesList.selectedIndex].getAttribute('data-ne').split(',');
+            globalSearchBoundingBox = {sw: sw, ne: ne};
+            drawBoundary();
+            map.flyToBounds([sw,ne]);
+
+            return;
+        }
 
         var sw = localitiesList.options[localitiesList.selectedIndex].getAttribute('data-sw').split(','),
             ne = localitiesList.options[localitiesList.selectedIndex].getAttribute('data-ne').split(',');
 
         map.flyToBounds([sw,ne]);
         globalSearchBoundingBox = {sw: sw, ne: ne};
-
-
+        drawBoundary();
     };
 
     var buildOptionsList = function(list) {
@@ -208,6 +254,23 @@
 
         // Flying to the center point in zoom 15
         map.flyTo(latLng, 16);
+    };
+    var toggleLayer = function(){
+        if (toggleCheckbox.checked) {
+            drawBoundary();
+        } else {
+            if (rectagle) map.removeLayer(rectagle);
+        }
+    };
+
+    var drawBoundary = function(){
+        if (toggleCheckbox.checked) {
+            // If any, removing the previously added rectagle of the map
+            if (rectagle) map.removeLayer(rectagle);
+            // create an orange rectangle
+            var bounds = [globalSearchBoundingBox.sw, globalSearchBoundingBox.ne];
+            rectagle = L.rectangle(bounds, {color: "#12132a", weight: 0}).addTo(map);
+        }
     };
 
     var autoFillForm = function(address) {
