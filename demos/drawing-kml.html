@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>CedarMaps - Simple Map Load</title>
+
+    <script src='../dist/v1.7.0/cedarmaps.uncompressed.js'></script>
+    <script src='../access-token.js'></script>
+    <script src='./js/leaflet-omnivore.min.js'></script>
+
+    <link href='../dist/v1.7.0/cedarmaps.css' rel='stylesheet' />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='map' class='map'> </div>
+    <script>
+        try {
+            L.cedarmaps.accessToken = accessToken;
+        } catch (err) {
+            throw new Error('You need to get an access token to be able to use cedarmaps SDK. ' +
+                'Send us an email to <info@cedar.ir>');
+        }
+
+        /**
+         * Initilizing Map View
+         */
+
+        // Getting maps info from a tileJSON source
+        var tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token=' + L.cedarmaps.accessToken;
+
+        // initilizing map into div#map
+        var map = L.cedarmaps.map('map', tileJSONUrl, {
+            scrollWheelZoom: true
+        }).setView([35.757448286487595, 51.40876293182373], 15);
+
+
+
+        /**
+         * Drawing our KML data
+         */
+        
+        // We draw a sample route to map using a test kml file.
+        // We use leaflet-omnivore plugin for parsing this format: https://github.com/mapbox/leaflet-omnivore
+        var customLayer = L.geoJson(null, {
+            // http://leafletjs.com/reference.html#geojson-style
+            style: function(feature) {
+                return { color: '#f00' };
+            }
+        });
+
+        var runLayer = omnivore.kml('./data/test-route.kml', null, customLayer)
+            .on('ready', function() {
+                map.fitBounds(runLayer.getBounds());
+            })
+            .addTo(map);
+    </script>
+</body>
+
+</html>
