@@ -5,11 +5,11 @@
     <meta charset=utf-8 />
     <title>CedarMaps - Simple Map Load</title>
 
-    <script src='../dist/v1.7.0/cedarmaps.uncompressed.js'></script>
+    <script src='../dist/v1.8.0/cedarmaps.uncompressed.js'></script>
     <script src='../access-token.js'></script>
     <script src='./js/leaflet-omnivore.min.js'></script>
 
-    <link href='../dist/v1.7.0/cedarmaps.css' rel='stylesheet' />
+    <link href='../dist/v1.8.0/cedarmaps.css' rel='stylesheet' />
 
     <style>
         body {
@@ -57,6 +57,7 @@
         // We draw a sample route to map using a test kml file.
         // We use leaflet-omnivore plugin for parsing this format: https://github.com/mapbox/leaflet-omnivore
         var customLayer = L.geoJson(null, {
+            
             // http://leafletjs.com/reference.html#geojson-style
             style: function(feature) {
                 return { color: '#f00' };

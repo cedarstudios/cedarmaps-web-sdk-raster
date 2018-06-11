@@ -7,6 +7,8 @@
 
     <script src='../dist/v1.8.0/cedarmaps.uncompressed.js'></script>
     <script src='../access-token.js'></script>
+    <script src='./js/leaflet-omnivore.min.js'></script>
+
     <link href='../dist/v1.8.0/cedarmaps.css' rel='stylesheet' />
 
     <style>
@@ -46,34 +48,27 @@
             scrollWheelZoom: true
         }).setView([35.757448286487595, 51.40876293182373], 15);
 
-
         /**
-         * Adding a Leaflet marker with custom image
+         * Initilizing Direction
          */
+        var direction = L.cedarmaps.direction();
 
-        // see: http://leafletjs.com/reference.html#marker
-        var myIcon = L.icon({
-            iconUrl: '../dist/v1.8.0/images/pin-taxi.png',
-            iconRetinaUrl: '../dist/v1.8.0/images/pin-taxi@2x.png',
-            iconSize: [34, 46],
-            iconAnchor: [17, 41],
-            popupAnchor: [-3, -46],
-            shadowUrl: '../dist/v1.8.0/images/pin-shadow.png',
-            shadowRetinaUrl: '../dist/v1.8.0/images/pin-shadow@2x.png',
-            shadowSize: [26, 6],
-            shadowAnchor: [13, 3]
+        // you should provide start/end/middle points in the following format: lat,ln;lat,lng;lat,lng 
+        direction.route('cedarmaps.driving', '35.764335,51.365622;35.763316,51.365322', function(err, json) {
+                var geometry = json.result.routes[0].geometry;
+
+                var route = L.geoJSON(geometry, {
+                    // for more path options see: https://leafletjs.com/reference-1.3.0.html#path-option
+                    style: function(feature) {
+                        return {
+                            color: '#f00',
+                            weight: 5
+                        }
+                    }
+                }).addTo(map);
+                map.fitBounds(route.getBounds());
         });
 
-        var marker = new L.marker([35.757448286487595, 51.40876293182373], {
-            icon: myIcon
-        }).addTo(map);
-
-        var popupOptions = {
-            offset: new L.Point(2, 14),
-            closeButton: false,
-            autoPan: false
-        };
-        marker.bindPopup('Hello World!', popupOptions).openPopup();
     </script>
 </body>
 

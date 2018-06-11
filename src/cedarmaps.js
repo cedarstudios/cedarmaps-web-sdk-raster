@@ -13,6 +13,7 @@ L.cedarmaps.staticMap = require('./static_map');
 L.cedarmaps.nearby = require('./nearby');
 L.cedarmaps.distance = require('./distance');
 L.cedarmaps.administrativeBoundaries = require('./administrative_boundaries');
+L.cedarmaps.direction = require('./direction');
 L.cedarmaps.map = map.map;
 L.cedarmaps.Map = map.Map;
 L.cedarmaps.tileLayer = tileLayer.tileLayer;

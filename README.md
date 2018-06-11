@@ -18,8 +18,8 @@ CedarMaps JS is a javascript library for building interactive maps. It's simply 
 Recommended usage is via the CedarMaps CDN. Just include CSS and JavaScript files in `<head>` section of your HTML file.
 
 ```html
-<script src='http://api.cedarmaps.com/cedarmaps.js/v1.7.0/cedarmaps.js'></script>
-<link href='http://api.cedarmaps.com/cedarmaps.js/v1.7.0/cedarmaps.css' rel='stylesheet' />
+<script src='http://api.cedarmaps.com/cedarmaps.js/v1.8.0/cedarmaps.js'></script>
+<link href='http://api.cedarmaps.com/cedarmaps.js/v1.8.0/cedarmaps.css' rel='stylesheet' />
 ```
 
 and put the following code in the `<body>` of your HTML file:
