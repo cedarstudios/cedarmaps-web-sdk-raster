@@ -53,12 +53,13 @@
          */
         var direction = L.cedarmaps.direction();
 
-        // you should provide start/end/middle points in the following format: lat,ln;lat,lng;lat,lng 
-        direction.route('cedarmaps.driving', '35.764335,51.365622;35.763316,51.365322', function(err, json) {
-                var geometry = json.result.routes[0].geometry;
+        // Points should be separated by a semicolon. e.g.: lat,lng;lat,lng;lat,lng....
+        // You can provide up to 100 stops (including start, middle and end points) for a direction request. Here we provided 3.
+        direction.route('cedarmaps.driving', '35.764335,51.365622;35.7604311,51.3939486;35.7474946,51.2429727', function(err, json) {
+                var RouteGeometry = json.result.routes[0].geometry;
 
-                var route = L.geoJSON(geometry, {
-                    // for more path options see: https://leafletjs.com/reference-1.3.0.html#path-option
+                var RouteLayer = L.geoJSON(RouteGeometry, {
+                    // for more styling options check out: https://leafletjs.com/reference-1.3.0.html#path-option
                     style: function(feature) {
                         return {
                             color: '#f00',
@@ -66,7 +67,8 @@
                         }
                     }
                 }).addTo(map);
-                map.fitBounds(route.getBounds());
+
+                map.fitBounds(RouteLayer.getBounds());
         });
 
     </script>

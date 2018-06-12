@@ -6,11 +6,13 @@ CedarMaps JS is a javascript library for building interactive maps. It's simply 
 - [Basic Usage](#basic-usage)
 - [API](#api)
 	- [Forward Geocoding](#forward-geocoding)
-	- [Forward Geocoding Sample Codes](#forward-geocoding-sample-codes)
+	- [Forward Geocoding Sample Codes](#forward-geocoding-sample-code)
 	- [Reverse Geocoding](#reverse-geocoding)
-	- [Reverse Geocoding Sample Code](#reverse-geocoding-sample-codes)
+	- [Reverse Geocoding Sample Code](#reverse-geocoding-sample-code)
+	- [Direction](#direction)
+	- [Direction Sample Code](#direction-sample-code)
 	- [Administrative Boundaries Lister](#administrative-boundaries-lister)
-	- [Administrative Boundaries Lister Sample Codes](#administrative-boundaries-lister-sample-codes)
+	- [Administrative Boundaries Lister Sample Code](#administrative-boundaries-lister-sample-code)
 - [Updating SDK](#updating-sdk)
 
 # Basic Usage
@@ -119,7 +121,7 @@ The results object's signature:
 }
 ```
 
-### Forward Geocoding Sample Codes
+### Forward Geocoding Sample Code
 _Example_: Check out a [Live example of geocoder.query](https://demo.cedarmaps.com/websdk/demos/geocoder-control.html).
 
 Using a single query parameter:
@@ -153,13 +155,47 @@ Queries the reverse geocoder with a location `object`/`array`, and returns the a
 
 _Returns_: the geocoder object. The return value of this function is not useful - you must use a callback to get results.
 
-### Reverse Geocoding Sample Codes
+### Reverse Geocoding Sample Code
 ```javascript
 var geocoder = L.cedarmaps.geocoder('cedarmaps.streets');
 geocoder.reverseQuery({lat: 35.754592526442465, lng: 51.401896476745605}, function callback(err, res){});
 ```
 
 _Example_: Check out a [Live example of reverseQuery](https://demo.cedarmaps.com/websdk/demos/reverse-geocoder.html).
+
+### Direction
+Calculates a route between a start and end point (and optionally some middle points) up to 100 points in GeoJSON format:
+
+| Options | Value | Description |
+| ---- | ---- | ---- |
+| Profile (_required_) | String | Default and the only current available value: `cedarmaps.driving`. |
+| LatLngs (_required_) | String | A pair of `lat` and `lng` points indicating start, middle and end, in format: `lat,lng;lat,lng;[lat,lng...]` (Up to 100 points) |
+| callback (_required_) | function | A callback with passed params: `(error, result)`. |
+
+_Returns_: the `direction` object. The return value of this function is not useful - you must use a callback to get the results.
+
+### Direction Sample Code
+```javascript
+direction.route('cedarmaps.driving', '35.764335,51.365622;35.7604311,51.3939486;35.7474946,51.2429727', function(err, json) {
+		var RouteGeometry = json.result.routes[0].geometry;
+
+		var RouteLayer = L.geoJSON(RouteGeometry, {
+			// for more styling options check out:
+			// https://leafletjs.com/reference-1.3.0.html#path-option
+			style: function(feature) {
+				return {
+					color: '#f00',
+					weight: 5
+				}
+			}
+		}).addTo(map);
+
+		map.fitBounds(RouteLayer.getBounds());
+	});
+});
+```
+_Example_: Check out a [Live example of Direction](https://demo.cedarmaps.com/websdk/demos/direction.html).
+
 
 ### Administrative Boundaries Lister
 ### `administrativeBoundaries.query(type, query, callback)`
@@ -173,7 +209,7 @@ Lists administrative boundaries in 3 different levels: `province`, `city`, `loca
 
 _Returns_: the `L.cedarmaps.administrativeBoundaries` object.
 
-### Administrative Boundaries Lister Sample Codes
+### Administrative Boundaries Lister Sample Code
 ```javascript
 var administrativeLister = L.cedarmaps.administrativeBoundaries();
 	// Get list of all provinces of Iran.
