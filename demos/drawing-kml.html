@@ -11,6 +11,15 @@
 
     <link href='../dist/v1.8.0/cedarmaps.css' rel='stylesheet' />
 
+
+    <!-- In this demo we've intentioanlly used the standalone version of SDK along with leaflet source.
+        To have the packed and minified version please see other demo files in this folder -->
+    <script src='./js/leaflet-src.js'></script>
+    <script src='./js/leaflet.contextmenu.js'></script>
+    <script src='../dist/v1.8.0/cedarmaps.standalone.uncompressed.js'></script>
+    <script src='../access-token.js'></script>
+    <link href='../dist/v1.8.0/cedarmaps.css' rel='stylesheet' />
+    <link href='./css/leaflet-contextmenu.css' rel='stylesheet' />
     <style>
         body {
             margin: 0;
@@ -44,11 +53,25 @@
         var tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token=' + L.cedarmaps.accessToken;
 
         // initilizing map into div#map
+        // and also activating a context menu for our maps
         var map = L.cedarmaps.map('map', tileJSONUrl, {
-            scrollWheelZoom: true
-        }).setView([35.757448286487595, 51.40876293182373], 15);
-
-
+            scrollWheelZoom: true,
+            zoomControl: false,
+            minZoom: 7,
+            maxZoom: 17,
+            maxBounds: [[25.064, 44.039],[39.771, 63.322]],  // Iran's bounding box
+            contextmenu: true,
+            contextmenuWidth: 230,
+            locateControl: true,
+            contextmenuItems: [
+                {
+                    text: 'موقعیت نقشه',
+                    callback: function(latlngObj, layerPoint, containerPoint) {
+                        alert('You have clicked on: '+ latlngObj.latlng);
+                    }.bind(this)
+                }
+            ]
+        }).setView([35.757448286487595, 51.40876293182373], 7);
 
         /**
          * Drawing our KML data

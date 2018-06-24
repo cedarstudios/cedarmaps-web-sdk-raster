@@ -2,7 +2,7 @@
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        jsBanner: "/* Copyright 2015, Cedar Studios <www.cedar.ir> | v<%= pkg.version %> */",
+        jsBanner: "/* Copyright 2018, Cedar Studios <www.cedar.ir> | v<%= pkg.version %> */",
 
         // Paths
         distFolder: 'dist/v<%= pkg.version %>',
@@ -20,7 +20,7 @@
                     '<%= mapboxThemeFolder %>/style.css',
                     '<%= cedarmapsThemeFolder %>/style.css'
                 ],
-                dest: '<%= distFolder %>/cedarmaps.css'
+                dest: '<%= distFolder %>/cedarmaps.uncompressed.css'
             }
         },
 
@@ -47,7 +47,7 @@
         browserify: {
             mapboxStandalone: {
                 files: {
-                    '<%= distFolder %>/mapbox.standalone.uncompressed.js': ['<%= mapboxSourceFolder %>/index.js']
+                    '<%= distFolder %>/mapbox.standalone.uncompressed.js': ['<%= mapboxSourceFolder %>/mapbox.js']
                 }
             },
             cedarmaps: {
@@ -65,7 +65,7 @@
                     banner: '<%= jsBanner %>'
                 },
                 files: {
-                    '<%= distFolder %>/cedarmaps.standalone.uncompressed.js': ['<%= cedarmapsSourceFolder %>/cedarmaps.js']
+                    '<%= distFolder %>/cedarmaps.standalone.uncompressed.js': ['<%= mapboxSourceFolder %>/mapbox.js', '<%= cedarmapsSourceFolder %>/cedarmaps.js']
                 }
             }
         },
@@ -78,6 +78,18 @@
                     '<%= distFolder %>/cedarmaps.js': ['<%= browserify.cedarmaps.dest %>']
                 }
             }
+        },
+
+        cssmin: {
+          options: {
+            mergeIntoShorthands: false,
+            roundingPrecision: -1
+          },
+          target: {
+            files: {
+              '<%= distFolder %>/cedarmaps.css': ['<%= distFolder %>/cedarmaps.uncompressed.css']
+            }
+          }
         }
     });
 
@@ -86,6 +98,7 @@
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     // Registering Tasks
     grunt.registerTask('build', [
@@ -93,6 +106,7 @@
             'browserify:cedarmaps',
             'browserify:cedarmapsStandalone',
             'concat:css',
+            'cssmin',
             'copy:images',
             'uglify:cedarmaps'
             ]);

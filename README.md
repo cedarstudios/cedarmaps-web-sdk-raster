@@ -20,8 +20,8 @@ CedarMaps JS is a javascript library for building interactive maps. It's simply 
 Recommended usage is via the CedarMaps CDN. Just include CSS and JavaScript files in `<head>` section of your HTML file.
 
 ```html
-<script src='http://api.cedarmaps.com/cedarmaps.js/v1.8.0/cedarmaps.js'></script>
-<link href='http://api.cedarmaps.com/cedarmaps.js/v1.8.0/cedarmaps.css' rel='stylesheet' />
+<script src='https://api.cedarmaps.com/cedarmaps.js/v1.8.0/cedarmaps.js'></script>
+<link href='https://api.cedarmaps.com/cedarmaps.js/v1.8.0/cedarmaps.css' rel='stylesheet' />
 ```
 
 and put the following code in the `<body>` of your HTML file:
@@ -30,19 +30,19 @@ and put the following code in the `<body>` of your HTML file:
 <div id='map' style='width: 400px; height: 300px;'></div>
 
 <script type="text/javascript">
-	L.cedarmaps.accessToken = "YOUR_ACCESS_TOKEN";
+	L.cedarmaps.accessToken = "YOUR_ACCESS_TOKEN"; // See the note below on how to get an access token
 
 	// Getting maps info from a tileJSON source
-        var tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token=' + L.cedarmaps.accessToken;
+    var tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token=' + L.cedarmaps.accessToken;
 
-        // initilizing map into div#map
-        var map = L.cedarmaps.map('map', tileJSONUrl, {
-            scrollWheelZoom: true
-        }).setView([35.757448286487595, 51.40876293182373], 15);
+    // initilizing map into div#map
+    var map = L.cedarmaps.map('map', tileJSONUrl, {
+        scrollWheelZoom: true
+    }).setView([35.757448286487595, 51.40876293182373], 15);
 
 </script>
 ```
-**Note:** You can get an access token by filling out the demo account form in [Cedarmaps Website](https://www.cedarmaps.com).
+**Note:** You can get an access token by filling out the demo account form in [Cedarmaps Website](https://www.cedarmaps.com/#demo).
 
 If you prefer to have your local version of the libaray you can simply build it with the following commands:
 

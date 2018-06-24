@@ -1,0 +1,55 @@
+.leaflet-contextmenu {
+    display: none;
+	box-shadow: 0 1px 7px rgba(0,0,0,0.4);
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+    padding: 4px 0;
+    background-color: #181f29;
+    cursor: default;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+    font-family: "IRANSans", Arial, sans-serif;
+}
+
+.leaflet-contextmenu a.leaflet-contextmenu-item {
+    display: block;
+    color: #bebebe;
+    font-size: 12px;
+    line-height: 20px;
+    text-decoration: none;
+    padding: 3px 12px;
+    cursor: pointer;
+    outline: none;
+    direction: rtl;
+    text-align: right;
+}
+
+.leaflet-contextmenu a.leaflet-contextmenu-item-disabled {
+    direction: rtl;
+    text-align: right;
+    opacity: 0.5;
+}
+
+.leaflet-contextmenu a.leaflet-contextmenu-item.over {
+    background-color: #2c323a;
+    color: #fff;
+}
+
+.leaflet-contextmenu a.leaflet-contextmenu-item-disabled.over {
+    background-color: inherit;
+}
+
+.leaflet-contextmenu-icon {
+    margin: 0 0 0 8px;
+    width: 18px;
+    height: 18px;
+    border: 0;
+    vertical-align: bottom;
+
+}
+
+.leaflet-contextmenu-separator {
+    border-bottom: 1px solid #303942;
+    margin: 5px 0;
+}

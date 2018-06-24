@@ -3,11 +3,12 @@
 
 <head>
     <meta charset=utf-8 />
-    <title>CedarMaps - Simple Map Load</title>
+    <title>CedarMaps - Basic Map Load with a Marker</title>
 
     <script src='../dist/v1.8.0/cedarmaps.uncompressed.js'></script>
-    <script src='../access-token.js'></script>
     <link href='../dist/v1.8.0/cedarmaps.css' rel='stylesheet' />
+
+    <script src='../access-token.js'></script>
 
     <style>
         body {
@@ -43,10 +44,15 @@
 
         // initilizing map into div#map
         var map = L.cedarmaps.map('map', tileJSONUrl, {
-            scrollWheelZoom: true
-        }).setView([35.757448286487595, 51.40876293182373], 15);
+            scrollWheelZoom: true,
+            zoomControl: false,
+            minZoom: 7,
+            maxZoom: 17,
+            maxBounds: [[25.064, 44.039],[39.771, 63.322]],  // Iran's bounding box
+        }).setView([35.757448286487595, 51.40876293182373], 7);
 
-
+        var zoomControl = new L.Control.Zoom({position:'topleft'});
+        zoomControl.addTo(map);
         /**
          * Adding a Leaflet marker with custom image
          */
