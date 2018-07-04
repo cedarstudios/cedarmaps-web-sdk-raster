@@ -18,7 +18,8 @@ var CMap = MMap.Map.extend({
         MMap.Map.prototype.initialize.call(this, element, _,
             L.extend({}, MMap.Map.prototype.options, options));
 
-        if (this.options.tileLayer) {
+
+        if (this.options.tileLayer && Object.keys(this.options.tileLayer).length !== 0) {
             this.tileLayer = tileLayer(undefined,
                 withAccessToken(this.options.tileLayer, this.options.accessToken));
             this.addLayer(this.tileLayer);

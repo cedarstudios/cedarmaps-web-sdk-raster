@@ -34,6 +34,11 @@
     color: #ccc;
     display: inline-block;
 }
+
+.leaflet-bar .leaflet-disabled {
+  cursor:default;
+  opacity:0.25;
+  }
 /* CedarMaps Logo
 ------------------------------------------------------- */
 
