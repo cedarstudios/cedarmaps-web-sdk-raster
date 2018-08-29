@@ -1,6 +1,9 @@
 .mapbox-logo.leaflet-control {
     margin-bottom: 0
 }
+.leaflet-container {
+    direction: ltr !important;
+}
 /**
  * Geocoder Control
  */
