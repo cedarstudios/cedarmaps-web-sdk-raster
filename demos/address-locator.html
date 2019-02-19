@@ -5,13 +5,15 @@
     <meta charset=utf-8 />
 
     <title>CedarMaps - Address Locator Tool</title>
-
+    
+    <!-- Importing **local** version of cedarmaps -->
     <script src='../dist/v1.8.0/cedarmaps.js'></script>
     <script src='../access-token.js'></script>
     
     <!-- Third party libraries used in this demo -->
     <script src='./js/auto-complete.js'></script>
     <script src='./js/L.Control.Locate.min.js'></script>
+    <script src='./js/tiniAjax.js'></script>
 
     <link href='../dist/v1.8.0/cedarmaps.css' rel='stylesheet' />
     <link href='./css/address-locator.css' rel='stylesheet' />
@@ -309,15 +311,31 @@
     var autoCompelete = new autoComplete({
         selector: 'input[name="streets"]',
         minChars: 2,
+        cache: 0,  // set to 1 if you need caching and making less requests
         source: function(term, response){
-            // Let's use Cedarmaps' geocoder as the data source for our autocomplete module.
-            geocoder.query({query: term, ne: globalSearchBoundingBox.ne, sw: globalSearchBoundingBox.sw}, function(err, res){
-                // As of autocompelete's signature, the results should be wrapped in `response` function.
-                if (typeof res != 'undefined') response(res.results);
+            // Since we wont have full control over ajax responses and caching problems may occure if we directly
+            // use geocoder.query, we build the request URL instead and then we use it our custom auto complete module.
+            // It's a workaround for not getting cached results in our list.
+            var queryURL = geocoder.queryURL({query: term, ne: globalSearchBoundingBox.ne, sw: globalSearchBoundingBox.sw});
+
+            // In this demo we use a tiny 3rd party library for AJAX requests as we don't use jQuery or other bulky libraries.
+            // So feel free to replace it with your preferred one. jQuery syntax for example would be like: $.ajax()
+            Tini.ajax({
+                url: queryURL,
+                type:'GET',
+                success:function(res){
+                    var json = JSON.parse(res);
+                    if (window.console) console.log(json);
+                    if (typeof json != 'undefined') {
+                        if (json.results) response(json.results);
+                        //no results
+                        else {}
+                    } 
+                }
             });
         },
         renderItem: function (item, search){
-            var img, label;
+            var img, label, addressParts = [];
             
             switch (item.type) {
                 case 'street':
@@ -359,13 +377,21 @@
             }
 
             if(!item.address || item.address == '') {
-                item.address = item.components.province + '، ' + item.components.city
+                if (item.components.province) addressParts.push(item.components.province);
+                if (item.components.city) addressParts.push(item.components.city);
+
+                item.address = addressParts.join('، ');
             } else {
-                item.address = item.components.province + '، '  + item.address;
+                if (item.components.province) addressParts.push(item.components.province);
+                if (item.address) addressParts.push(item.address);
+                
+                item.address = addressParts.join('، ');
             }
 
+            var altName = item.alt_name ? ' ('+item.alt_name+')': '';
+
             return '<div class="autocomplete-suggestion" data-name="'+item.name+'" data-center="'+item.location.center+'">\
-                        <div class="address">'+item.name+'<span>'+item.address+'</span></div>\
+                        <div class="address">'+item.name+altName+'<span>'+item.address+'</span></div>\
                         <div class="street-type">\
                             <img src="img/'+img+'" alt="" width="20" height="20">\
                             <span>'+label+'</span>\
