@@ -1,5 +1,5 @@
 # Cedarmaps Web SDK (Raster Tiles)
-![CedarMaps address locator tool](http://assets.cedarmaps.com/files/cedarmaps-web-sdk-raster.gif "CedarMaps address locator tool")
+![CedarMaps address locator tool](https://github.com/cedarstudios/cedarstudios.github.io/raw/master/cedarmaps-web-sdk-raster.gif)
 
 CedarMaps Web SDK (JS) is a javascript library for building interactive maps. It's built on top of [Mapbox Javascript API](https://github.com/mapbox/mapbox.js/), (The current version is `v3.1.1`). It uses [Leaflet.js](https://leafletjs.com/) for map interactinons so you can use all of this library's methods for your purpose.
 
