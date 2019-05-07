@@ -1,70 +1,82 @@
-# Cedarmaps Web SDK
+# Cedarmaps Web SDK (Raster Tiles)
+![CedarMaps address locator tool](http://assets.cedarmaps.com/files/cedarmaps-web-sdk-raster.gif "CedarMaps address locator tool")
 
-CedarMaps JS is a javascript library for building interactive maps. It's simply a wrapper for [Mapbox Javascript API](https://github.com/mapbox/mapbox.js/), (The current version is `v3.1.1`) which is itself built as a [Leaflet](http://leafletjs.com/) plugin. You can [read about its launch](http://mapbox.com/blog/mapbox-js-with-leaflet/).
+CedarMaps Web SDK (JS) is a javascript library for building interactive maps. It's built on top of [Mapbox Javascript API](https://github.com/mapbox/mapbox.js/), (The current version is `v3.1.1`). It uses [Leaflet.js](https://leafletjs.com/) for map interactinons so you can use all of this library's methods for your purpose.
 
-# Table of Contents
-- [Basic Usage](#basic-usage)
+**Note:** This repo is for "raster tiles". If you prefer to use our "vector tiles" please visit: https://github.com/cedarstudios/cedarmaps-web-sdk-vector
+
+# Table of contents
+- [Cedarmaps Web SDK (Raster Tiles)](#cedarmaps-web-sdk-raster-tiles)
+- [Table of contents](#table-of-contents)
+- [Basic usage via CDN](#basic-usage-via-cdn)
+- [Checking out demo files](#checking-out-demo-files)
+- [Building SDK locally](#building-sdk-locally)
+- [Pulling new changes from repo](#pulling-new-changes-from-repo)
 - [API](#api)
-	- [Forward Geocoding](#forward-geocoding)
-	- [Forward Geocoding Sample Codes](#forward-geocoding-sample-code)
-	- [Reverse Geocoding](#reverse-geocoding)
-	- [Reverse Geocoding Sample Code](#reverse-geocoding-sample-code)
-	- [Direction](#direction)
-	- [Direction Sample Code](#direction-sample-code)
-	- [Administrative Boundaries Lister](#administrative-boundaries-lister)
-	- [Administrative Boundaries Lister Sample Code](#administrative-boundaries-lister-sample-code)
-- [Updating SDK](#updating-sdk)
+  * [Forward & Reverse Geocoding](#forward--reverse-geocoding)
+    + [Initializing Forward/Reverse Geocoder](#initializing-forwardreverse-geocoder)
+    + [Forward Geocoder](#forward-geocoder)
+    + [Forward Geocoder Sample Code](#forward-geocoder-sample-code)
+    + [Reverse Geocoding](#reverse-geocoding)
+    + [Reverse Geocoding Sample Code](#reverse-geocoding-sample-code)
+  * [Direction](#direction)
+    + [Direction Sample Code](#direction-sample-code)
+  * [Administrative Boundaries Lister](#administrative-boundaries-lister)
+    + [Administrative Boundaries Lister Sample Code](#administrative-boundaries-lister-sample-code)
+- [Upgrading SDK](#upgrading-sdk)
+- [Issues](#issues)
 
-# Basic Usage
-
-Recommended usage is via the CedarMaps CDN. Just include CSS and JavaScript files in `<head>` section of your HTML file.
-
+# Basic usage via CDN
+1. Get an access token from [Cedar Maps website](https://www.cedarmaps.com/) (Menu link: "درخواست اکانت رایگان"). It may take a couple of hours until your request is processed and your credentials are emailed to you.
+2. Include these CSS and JavaScript files in `<head>` section of your HTML file.
 ```html
 <script src='https://api.cedarmaps.com/cedarmaps.js/v1.8.0/cedarmaps.js'></script>
 <link href='https://api.cedarmaps.com/cedarmaps.js/v1.8.0/cedarmaps.css' rel='stylesheet' />
 ```
-
-and put the following code in the `<body>` of your HTML file:
-
+3. Put the following code in the <body> of your HTML file:
 ```html
-<div id='map' style='width: 400px; height: 300px;'></div>
+<!-- Make a div with id "map" and set its dimensions -->
+<div id="map" style="width: 400px; height: 300px;"></div>
 
 <script type="text/javascript">
-	L.cedarmaps.accessToken = "YOUR_ACCESS_TOKEN"; // See the note below on how to get an access token
+	// In order to use Cedar Maps you **MUST** have an access token
+	L.cedarmaps.accessToken = "YOUR_ACCESS_TOKEN";
 
-	// Getting maps info from a tileJSON source
+	// Setting up our layer
     var tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token=' + L.cedarmaps.accessToken;
 
-    // initilizing map into div#map
+    // Initilizing map into div#map
     var map = L.cedarmaps.map('map', tileJSONUrl, {
         scrollWheelZoom: true
     }).setView([35.757448286487595, 51.40876293182373], 15);
 
 </script>
 ```
-**Note:** You can get an access token by filling out the demo account form in [Cedarmaps Website](https://www.cedarmaps.com/#demo).
+# Checking out demo files
+In order to check out demo files in `/demos` folder you need to build the SDK locally or change the script and css paths to our CDN ones mentioned above. 
 
-If you prefer to have your local version of the libaray you can simply build it with the following commands:
-
-**Note:** [node.js](http://nodejs.org/) must be installed on your machine.
-
-```sh
-git clone http://gitlab.cedar.ir/cedar.studios/cedarmaps-sdk-web-public.git
-cd cedarmaps-sdk-web-public
-npm install
-grunt build
+# Building SDK locally
+1. Clone this repo:
+```
+git clone https://github.com/cedarstudios/cedarmaps-web-sdk-raster
+```
+3. In the root folder of your cloned repo make a new file called `access-token.js` and put your access token in it:
+```
+var accessToken = 'YOUR_ACCESS_TOKEN';
+```
+4. Install the required backages: (You have to have [Node.js](https://nodejs.org) and [npm](https://www.npmjs.com/) installed on your machine.)
+```
+ npm install
 ```
 
-After the built process, the files are copied into `dist/` folder according to current SDK `version`. (See `package.json`).
+5. Build the SDK. It stores the files in `/dist/[sdk-version]` folder. (See `package.json`).
 
-**Note:** Every time you pull new changes from repository, you should run `grunt build` again.
-```sh
-git pull
+```
 grunt build
 ```
+6. Go to `/demos` folder and pick one for the start.
 
 The `cedarmaps.js` file includes the Leaflet library. Alternatively, you can use `cedarmaps.standalone.js`, which does not include Leaflet (you will have to provide it yourself).
-
 
 **Note:** If you've purchased our dedicated plan you should set your baseURL in the following manner in `<head>` tag *before* including cedarmaps' files:
 
@@ -75,18 +87,23 @@ The `cedarmaps.js` file includes the Leaflet library. Alternatively, you can use
 </script>
 ```
 
-You can also see the [API documentation](http://mapbox.com/mapbox.js/api/) and [Mapbox's Examples](http://mapbox.com/mapbox.js/example/v1.0.0/) for further help.
+# Pulling new changes from repo
+Every time you pull new changes from repository, you should run `grunt build` again.
+```sh
+git pull
+grunt build
+```
 
 # API
+Cedarmaps' API is almost the same as mapbox. [Check it out](http://mapbox.com/mapbox.js/api/). However, Cedarmaps introduces some new API methods that are described below:
 
-Cedarmaps' API is almost the same as mapbox's API. [Check it out](http://mapbox.com/mapbox.js/api/). However, Cedarmaps introduces some new API methods that are described below:
-
-## Forward Geocoding
+## Forward & Reverse Geocoding
 For both forward and reverse geocofing functionality you should use `L.cedarmaps.geocoder` object.
 
-### `L.cedarmaps.geocoder(id [, options])`
+### Initializing Forward/Reverse Geocoder
+Signature: `L.cedarmaps.geocoder(id [, options])`
 
-A low-level interface to geocoding, useful for more complex uses and reverse-geocoding.
+Before using forward/reverse Geocoder object, you must initialize it using the desired profile (id).
 
 | Options | Value | Description |
 | ---- | ---- | ---- |
@@ -100,7 +117,8 @@ Example:
 var geocoder = L.cedarmaps.geocoder('cedarmaps.streets');
 ```
 
-### `geocoder.query(queryString|options, callback)`
+### Forward Geocoder
+Signature: `geocoder.query(queryString|options, callback)`
 
 Queries the geocoder with a query string, and returns the results, if any.
 
@@ -121,30 +139,29 @@ The results object's signature:
 }
 ```
 
-### Forward Geocoding Sample Code
+### Forward Geocoder Sample Code
 _Example_: Check out a [Live example of geocoder.query](https://demo.cedarmaps.com/websdk/demos/geocoder-control.html).
 
 Using a single query parameter:
 ```javascript
-geocoder.query('ونک', function(err, res){});
+geocoder.query('ونک', function(err, res){ });
 ```
 Using query string along with an option (Limiting the number of results):
 ```javascript
-geocoder.query({query:'ونک', limit: 5}, function(err, res){});
+geocoder.query({query:'ونک', limit: 5}, function(err, res){ });
 ```
 Filtering results based on one or more feature types:
 ```javascript
-geocoder.query({query:'ونک', type: 'locality'}, function(err, res){});
-geocoder.query({query:'ونک', type: 'locality,roundabout'}, function(err, res){});
-geocoder.query({query:'ونک', type: 'street', limit:2}, function(err, res){});
+geocoder.query({query:'ونک', type: 'locality'}, function(err, res){ });
+geocoder.query({query:'ونک', type: 'locality,roundabout'}, function(err, res){ });
+geocoder.query({query:'ونک', type: 'street', limit:2}, function(err, res){ });
 ```
 Searching within in a specific bounding box:
 ```javascript
-geocoder.query({query:'لادن', ne: '35.76817388431271,51.41721725463867', sw: '35.75316460798604,51.39232635498047'}, function(err, res){});
+geocoder.query({query:'لادن', ne: '35.76817388431271,51.41721725463867', sw: '35.75316460798604,51.39232635498047'}, function(err, res){ });
 ```
 ### Reverse Geocoding
-
-### `geocoder.reverseQuery(location, callback)`
+Signature: `geocoder.reverseQuery(location, callback)`
 
 Queries the reverse geocoder with a location `object`/`array`, and returns the address.
 
@@ -163,7 +180,7 @@ geocoder.reverseQuery({lat: 35.754592526442465, lng: 51.401896476745605}, functi
 
 _Example_: Check out a [Live example of reverseQuery](https://demo.cedarmaps.com/websdk/demos/reverse-geocoder.html).
 
-### Direction
+## Direction
 Calculates a route between a start and end point (and optionally some middle points) up to 100 points in GeoJSON format:
 
 | Options | Value | Description |
@@ -197,8 +214,9 @@ direction.route('cedarmaps.driving', '35.764335,51.365622;35.7604311,51.3939486;
 _Example_: Check out a [Live example of Direction](https://demo.cedarmaps.com/websdk/demos/direction.html).
 
 
-### Administrative Boundaries Lister
-### `administrativeBoundaries.query(type, query, callback)`
+## Administrative Boundaries Lister
+Signature: `administrativeBoundaries.query(type, query, callback)`
+
 Lists administrative boundaries in 3 different levels: `province`, `city`, `locality` (aka. neighborhood).
 
 | Options | Value | Description |
@@ -220,7 +238,7 @@ var administrativeLister = L.cedarmaps.administrativeBoundaries();
 
 _Example_: Check out a [Live example of address locator](https://demo.cedarmaps.com/websdk/demos/address-locator.html).
 
-# Updating SDK
+# Upgrading SDK
 In case of any updates in module itself the following files must be updated:
 
 * `version` in `./package.json`
@@ -228,3 +246,6 @@ In case of any updates in module itself the following files must be updated:
 * `version` in sample API usage in `README.md`
 * "Doc files" by running `grunt doc` command
 * building new dist files by running `grunt build` command
+
+# Issues
+If you have any questions while implementing Cedar Maps Web SDK, please feel free to open a [new issue](https://github.com/cedarstudios/cedarmaps-web-sdk-raster/issues).
