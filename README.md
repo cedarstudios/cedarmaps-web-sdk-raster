@@ -6,8 +6,6 @@ CedarMaps Web SDK (JS) is a javascript library for building interactive maps. It
 **Note:** This repo is for "raster tiles". If you prefer to use our "vector tiles" please visit: https://github.com/cedarstudios/cedarmaps-web-sdk-vector
 
 # Table of contents
-- [Cedarmaps Web SDK (Raster Tiles)](#cedarmaps-web-sdk-raster-tiles)
-- [Table of contents](#table-of-contents)
 - [Basic usage via CDN](#basic-usage-via-cdn)
 - [Checking out demo files](#checking-out-demo-files)
 - [Building SDK locally](#building-sdk-locally)
