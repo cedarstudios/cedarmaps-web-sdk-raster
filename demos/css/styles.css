@@ -1,11 +1,66 @@
+html,
+body {
+    font-family: IRANSans;
+}
+
+.rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+p {
+    text-align: right;
+    direction: rtl;
+    color: #cccccc;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.text-ltr {
+    direction: ltr;
+    text-align: left;
+}
+
 .leaflet-control-mapbox-geocoder.active .leaflet-control-mapbox-geocoder-wrap {
-    width: 250px;
+    width: 300px;
 }
 
 .leaflet-control-mapbox-geocoder .leaflet-control-mapbox-geocoder-form input {
-    width: 250px;
+    width: 300px;
 }
 
 .leaflet-control-mapbox-geocoder-results {
-    width: 250px;
+    width: 300px;
+}
+
+.map {
+    position: absolute;
+    top: 60px;
+    bottom: 0;
+    width: 100%;
+}
+.navbar {
+    color: #fff;
+    background: #131425;
+    height: 60px;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.navbar.navbar-transparent {
+    background: transparent !important;
+    padding-top: 25px;
+}
+
+.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
 }

@@ -2,91 +2,95 @@
 <html>
 
 <head>
-    <meta charset=utf-8 />
-    <title>CedarMaps - Sample Geocoder Control</title>
+	<meta charset=utf-8 />
+	<title>CedarMaps - Sample Geocoder Control - جتسجو در معابر</title>
 
-    <script src='../dist/v1.8.0/cedarmaps.js'></script>
-    <script src='../access-token.js'></script>
-    <link href='../dist/v1.8.0/cedarmaps.css' rel='stylesheet' />
+	<script src='../dist/v1.8.0/cedarmaps.js'></script>
+	<script src='../access-token.js'></script>
+	<link href='../dist/v1.8.0/cedarmaps.css' rel='stylesheet' />
 
-    
-    <link href='css/styles.css' rel='stylesheet' />
+	
+	<link href='./css/custom-bootstrap.css' rel='stylesheet' />
+	<link href='./css/styles.css' rel='stylesheet' />
+	<link href='./css/fonts.css' rel='stylesheet' />
+	<link href='./css/icons.css' rel='stylesheet' />
 
-    <style>
-    body {
-        margin: 0;
-        padding: 0;
-    }
-    .map {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-    }
-    #results {
-        width: 300px;
-        height: 500px;
-        position: absolute;
-        top: 50px;
-        right: 50px;
-        background-color: rgba(255, 255, 255, .95);
-        border-radius: 5px;
-        padding: 10px;
-        font-family: "Times New Roman";
-        font-size: 13px;
-    }
-    #loading {
-        visibility: hidden;
-    }
-    #response {
-        margin-top: 20px;
-        direction: rtl;
-        font: 11px/1.8em Tahoma;
-        background-color: #f1f1f1;
-        padding: 10px;
-    }
-    pre {
-        white-space: pre-wrap;
-        /* css-3 */
-        
-        white-space: -moz-pre-wrap;
-        /* Mozilla, since 1999 */
-        
-        white-space: -pre-wrap;
-        /* Opera 4-6 */
-        
-        white-space: -o-pre-wrap;
-        /* Opera 7 */
-        
-        word-wrap: break-word;
-        /* Internet Explorer 5.5+ */
-    }
-    </style>
+	<style>
+		.map {
+			position: absolute;
+			top: 60px;
+			bottom: 0;
+			width: 100%;
+		}
+		/* You can customize leaflet geocoder control like this */
+		.leaflet-control-mapbox-geocoder-results,
+		.leaflet-control-mapbox-geocoder-form input {
+			font-family: IRANSans;
+			direction: rtl;
+		}
+
+	</style>
 </head>
 
 <body>
-    <div id='map' class='map'> </div>
+	<nav class="navbar navbar-expand-lg fixed-top" color-on-scroll="20">
+		<div class="container rtl">
+			<div class="navbar-brand">
+				<a href="#" rel="tooltip" title="نقشه‌ای حرفه‌ای برای سرویس‌های مکان محور پارسی"><img src="img/logo.svg" height="25" alt="">
+				</a>
+			</div>
+			<div class="collapse navbar-collapse justify-content-end">
+				<a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/geocoder-control.html" target="_blank" rel="tooltip" title="نمونه کدهای ما را در Github ببینید"><i class="icon-github icon-24"></i> مشاهده Source Code این مثال در Github > </a>
+			</div>
+		</div>
+	</nav>
 
-    <script>
-    try {
-        L.cedarmaps.accessToken = accessToken;
-    } catch (err) {
-        throw new Error('You need to get an access token to be able to use cedarmaps SDK. ' +
-            'Send us an email to <info@cedar.ir>');
-    }
+	<!-- This is the only HTML tag needed for map intialization -->
+	<div id='map' class='map'> </div>
 
-    var tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token=' + L.cedarmaps.accessToken,
-        marker;
+	<script>
+		try {
+			// Check out line 9 where we have imported a file which has an `accessToken` variable available on it as has
+			// been assigned our personal access token.
+			// Sample: var accessToken = '<your access token>';
+			// Get one from https://www.cedarmaps.com
+			L.cedarmaps.accessToken = accessToken;
+		} catch (err) {
+			throw new Error('You need to get an access token to be able to use cedarmaps SDK. ' +
+				'Send us an email to <info@cedar.ir>');
+		}
 
-    // Initializing our map
-    var map = L.cedarmaps.map('map', tileJSONUrl, {
-            scrollWheelZoom: true,
-            maxZoom: 17
-        }).addControl(L.cedarmaps.geocoderControl('cedarmaps.streets', {
-            keepOpen: true,
-            autocomplete: true
-        })).setView([35.757552763570196, 51.41000747680664], 15);
-    </script>
+		var tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token=' + L.cedarmaps.accessToken,
+			marker;
+
+		// Initializing our map
+		var map = L.cedarmaps.map('map', tileJSONUrl, {
+				scrollWheelZoom: true,
+				maxZoom: 17
+			}).setView([35.757552763570196, 51.41000747680664], 15);
+
+		// Making a geocoder control
+		var geocoderControl = L.cedarmaps.geocoderControl('cedarmaps.streets', {
+				keepOpen: true,
+				autocomplete: true
+		});
+
+		// Then we add it to the map.
+		// Of course this geocoder control is a very basic implementation for a searchbox with limited options.
+		// If you need more control over how your results are formatted, you may use a desired autocompelete module
+		// (e.g. https://twitter.github.io/typeahead.js) and just request CedarMaps with its URL endpoints
+		// introduced in `tileJSONUrl`
+		map.addControl(geocoderControl);
+
+		geocoderControl.on('select', function(item) {
+			if (marker) map.removeLayer(marker);
+			var itemLocation = item.feature.location.center.split(',');
+
+			// Cedarmaps SDK is based on Leaflet.js. A leaflet marker is initialized like this.
+			// Learn more: https://leafletjs.com/reference-1.5.0.html#marker
+			marker = new L.marker(itemLocation).addTo(map);
+		});
+	</script>
 </body>
 
 </html>
