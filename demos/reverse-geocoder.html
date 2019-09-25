@@ -10,19 +10,36 @@
 	<script src='./js/L.Control.Locate.min.js'></script>
 
 	<link href='../dist/v1.8.0/cedarmaps.css' rel='stylesheet' />
-	<link href='./css/address-locator.css' rel='stylesheet' />
+	<link href='./css/custom-bootstrap.css' rel='stylesheet' />
 	<link href='./css/L.Control.Locate.min.css' rel='stylesheet' />
 	<link href='./css/reverse-geocoder.css' rel='stylesheet' />
-
+	<link href='./css/fonts.css' rel='stylesheet' />
+	<link href='./css/icons.css' rel='stylesheet' />
 </head>
 
 <body>
-	<div id='map' class='map'> </div>
+	<nav class="navbar navbar-expand-lg fixed-top" color-on-scroll="20">
+        <div class="container rtl">
+            <div class="navbar-brand">
+                <a href="#" rel="tooltip" title="نقشه‌ای حرفه‌ای برای سرویس‌های مکان محور پارسی"><img src="img/logo.svg" height="25" alt="">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse justify-content-end">
+                <a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/reverse-geocoder.html" target="_blank" rel="tooltip" title="نمونه کدهای ما را در Github ببینید"><i class="icon-github icon-24"></i> مشاهده Source Code این مثال در Github > </a>
+            </div>
+        </div>
+    </nav>
+	
+	<div id='map' class='map'></div>
+
 	<div id="results">
-		<h2 style="text-align: center;">Click somewhere on the map!</h2><div id="loading"><img src="../dist/v1.8.0/images/loading-14-blue.gif" width="14" height="14"> Loading...</div>
-		<div id="latlng"></div>
-		<div id="parsed-response"></div>
-		<div id="raw-response"></div>
+		<div id="loading"></div>
+		<h5 class="mt-3 text-center" ">برای گرفتن آدرس<br> روی نقشه کلیک کنید.</h5>
+		<div id="latlng" class="rounded"></div>
+		<div class="p-4">
+			<div id="parsed-response" class="rounded"></div>
+			<div id="raw-response"></div>
+		</div>
 	</div>
 	<script>
 		try {
@@ -34,8 +51,7 @@
 		}
 
 		var tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token='+ L.cedarmaps.accessToken,
-			marker,
-			syntaxHighlight;
+			marker;
 		
 		// Initializing our map
 		var map = L.cedarmaps.map('map', tileJSONUrl, {
@@ -49,29 +65,56 @@
 			rawResponseContainer = document.getElementById('raw-response'),
 			loadingIndicator = document.getElementById('loading');
 
-		// We need to introduce our index to geocoder module. "cedarmaps.streets" in this case.
+		// Initializing the Geocoder object which has the necessary methods for reverse geocoding
+		// We also need to introduce our search index to geocoder module, `cedarmaps.streets` in this case.
+		// This means the reverse geocoder engine should search in our `cedarmaps.streets` index.
 		var geocoder = L.cedarmaps.geocoder('cedarmaps.streets');
 
 		map.on('click', function(e){
+			// If we have already clicked on map, a marker is placed on it and we should remove it before we add one again on user click.
 			if (marker) map.removeLayer(marker);
+
+			// Cedarmaps SDK is based on Leaflet.js. A leaflet marker is initialized like this. The event object (`e`) which is passed in by onClick event contains the latLng object.
+			// Learn more: https://leafletjs.com/reference-1.5.0.html#marker
 			marker = new L.marker(e.latlng).addTo(map);
 
 			loading.style.visibility = 'visible';
-			latLngContainer.innerHTML =  'LatLng: ' + e.latlng.lat + ', ' + e.latlng.lng;
+			latLngContainer.style.visibility = 'visible';
+			latLngContainer.innerHTML =  'Lat: ' + parseFloat(e.latlng.lat).toPrecision(10) + '<br /> Lng: ' + parseFloat(e.latlng.lng).toPrecision(10);
 
+			// This is the main part of this demo which uses the `reverseQuery` method. For more info on other available options please refer to docs.
+			// https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/README.md
 			geocoder.reverseQuery(e.latlng, function callback(err, res){
 				loading.style.visibility = 'hidden';
 				parsedResponseContainer.style.display = 'block';
 				rawResponseContainer.style.display = 'block';
 
-				var parsedResponse = '<ul>'+
-									'<li><strong>استان:</strong> ' + res.result.province + '</li>' + 
-									'<li><strong>شهر:</strong> ' + res.result.city + '</li>' + 
-									'<li><strong>محله:</strong> ' + res.result.locality + '</li>' + 
-									'<li><strong>خیابان:</strong> ' + res.result.address + '</li>' +
-									'<li><strong>در منطقه طرح ترافیک:</strong> ' + (res.result.traffic_zone.in_central ? 'بله' : 'خیر' ) + '</li>' +
-									'<li><strong>در منطقه زوج و فرد:</strong> ' + (res.result.traffic_zone.in_evenodd ? 'بله' : 'خیر' ) + '</li>' +
-								'</ul>';
+				var parsedResponse = '<table class="address-parts rtl">'+
+					'<tr>'+
+						'<td width="50%" class="key">استان:</td>'+
+						'<td width="50%">' + res.result.province + '</td>'+
+					'</tr>'+
+					'<tr>'+
+						'<td class="key">شهر:</td>'+
+						'<td>' + res.result.city + '</td>'+
+					'</tr>'+
+					'<tr>'+
+						'<td class="key">محله:</td>'+
+						'<td>' + res.result.locality + '</td>'+
+					'</tr>'+
+					'<tr>'+
+						'<td class="key">خیابان:</td>'+
+						'<td>' + res.result.address + '</td>'+
+					'</tr>'+
+					'<tr>'+
+						'<td class="key">در منطقه طرح آلودگی هوا:</td>'+
+						'<td>' + (res.result.traffic_zone.in_central ? 'بله' : 'خیر' ) + '</td>'+
+					'</tr>'+
+					'<tr>'+
+						'<td class="key">در منطقه زوج و فرد:</td>'+
+						'<td>' + (res.result.traffic_zone.in_evenodd ? 'بله' : 'خیر' ) + '</td>'+
+					'</tr>'+
+				'</table>';
 				var rawResponse = '<pre class="language-javascript">'+ syntaxHighlight(JSON.stringify(res, undefined, 2)) + '</pre>'
 								
 				parsedResponseContainer.innerHTML = parsedResponse;
@@ -80,7 +123,8 @@
 			});
 		});
 
-		syntaxHighlight = function(json) {
+		// This function is just used for JSON syntax highlighting specifically for this demo and has nothing to do with CedarMaps SDK
+		function syntaxHighlight(json) {
 		    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 		    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
 		        var cls = 'number';

@@ -1,12 +1,53 @@
+html,
 body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial,"Helvetica Neue",Helvetica,sans-serif
+     font-family: IRANSans;
+}
+.rtl {
+    direction: rtl;
+    text-align: right;
+}
+p {
+    text-align: right;
+    direction: rtl;
+    color: #cccccc;
+}
+a:hover {
+  text-decoration: none;
+}
+.text-ltr {
+    direction: ltr;
+    text-align: left;
+}
+.navbar {
+    color: #fff;
+    background: #131425;
+    height: 60px;
+}
+.navbar a {
+  color: #fff;
+}
+.navbar.navbar-transparent {
+  background: transparent !important;
+  padding-top: 25px;
+}
+.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+}
+#header {
+    position: absolute;
+    top: 0;
+    height: 60px;
+    width: 100%; 
+    background-color: #070a19;   
 }
 
 .map {
     position: absolute;
-    top: 0;
+    top: 60px;
     bottom: 0;
     width: 100%;
 }
@@ -14,16 +55,48 @@ body {
 #results {
     width: 400px;
     position: absolute;
-    top: 20px;
-    left: 50px;
+    top: 80px;
+    right: 50px;
     background-color: rgba(255, 255, 255, .95);
-    border-radius: 5px;
-    padding: 10px;
+    border-radius: 8px;
     font-size: 13px;
 }
-
-#loading {
+#latlng {
     visibility: hidden;
+    width: 50%;
+    font-family: 'Courier New';
+    color: #fff;
+    background-color: #333;
+    margin: 0 auto;
+    padding: 8px;
+    text-align: center;
+}
+.address-parts {
+    font-family: IranSANS;
+    direction: rtl;
+    direction: rtl;
+    width: 100%;
+    color: #a6e22e;
+}
+.address-parts .key {
+    text-align: left;
+}
+
+@keyframes progress{
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -200px 0px;
+  }
+} 
+#loading {
+    visibility: hidden; 
+    color: white;
+    background: repeating-linear-gradient(45deg, #a6e22e, #a6e22e 10px, #e6db74 10px, #e6db74 20px );
+    height: 5px;
+    border-radius: 5px 5px 0 0;
+    animation:progress 2s linear infinite;
 }
 
 #parsed-response {
@@ -31,7 +104,7 @@ body {
     direction: rtl;
     font: 12px/1.8em;
     font-family: Tahoma;
-    background-color: #f1f1f1;
+    background-color: #333;
     padding: 10px;
     display: none;
 }
