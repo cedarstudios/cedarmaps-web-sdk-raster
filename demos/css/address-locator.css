@@ -55,27 +55,6 @@ select, input[type="text"] {
     visibility: hidden;
 }
 
-#response {
-    margin-top: 20px;
-    direction: rtl;
-    font: 11px/1.8em Tahoma;
-    background-color: #f1f1f1;
-    padding: 10px;
-}
-
-pre {
-    white-space: pre-wrap;
-    /* css-3 */
-    white-space: -moz-pre-wrap;
-    /* Mozilla, since 1999 */
-    white-space: -pre-wrap;
-    /* Opera 4-6 */
-    white-space: -o-pre-wrap;
-    /* Opera 7 */
-    word-wrap: break-word;
-    /* Internet Explorer 5.5+ */
-}
-
 .text-right {
     text-align: right;
     direction: rtl;
@@ -114,14 +93,4 @@ pre {
     display: block;
     text-align: left;
     font-size: 11px;
-}
-
-.leaflet-bar a,
-.mapbox-icon,
-.map-tooltip.closable .close,
-.leaflet-control-layers-toggle,
-.leaflet-popup-close-button,
-.mapbox-button-icon:before {
-  padding-top: 4px;
-  padding-left: 7px;
 }

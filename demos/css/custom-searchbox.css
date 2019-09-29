@@ -1,0 +1,65 @@
+#map {
+	position: absolute;
+	top: 60px;
+	bottom: 0;
+	width: 100%;
+}
+#search {
+	position: absolute;
+	top: 80px;
+	right: 60px;
+	width: 400px;
+	padding: 10px;
+	border-radius: 10px;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	-webkit-box-shadow: 0px 9px 19px -15px rgba(0,0,0,0.72);
+	-moz-box-shadow: 0px 9px 19px -15px rgba(0,0,0,0.72);
+	box-shadow: 0px 9px 19px -15px rgba(0,0,0,0.72);
+	direction: rtl;
+	text-align: right;
+}
+#searchbox {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 10px;
+	border-radius: 10px;
+	border: 1px solid #ccc;
+}
+#searchbox:focus {
+	outline: none;
+}
+
+.autocomplete-suggestions {
+	border-radius: 8px;
+}
+.form-component {
+    margin-bottom: 15px;
+}
+
+.form-component label {
+    float: right;
+    width: 50px;
+}
+.autocomplete-suggestion {
+    padding: 10px;
+}
+.autocomplete-suggestion .address {
+    float: right;
+    width: 80%;
+}
+.autocomplete-suggestion .address span {
+    display: block;
+    color: #999;
+}
+.autocomplete-suggestion .street-type {
+    width: 20%;
+    float: left;
+    text-align: left;
+    padding-top: 5px;
+}
+.autocomplete-suggestion .street-type span {
+    display: block;
+    text-align: left;
+    font-size: 11px;
+}

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset=utf-8 />
+	<title>CedarMaps - Sample Custom Searchbox - جتسجو در معابر با باکس جستحوی دلخواه</title>
+
+	<!-- Importing **local** version of cedarmaps -->
+	<!-- You may also use our CDN if you don't intent to build the SDK. -->
+	<!-- See: https://github.com/cedarstudios/cedarmaps-web-sdk-raster#basic-usage-via-cdn -->
+	<script src='../dist/v1.8.0/cedarmaps.js'></script>
+	<script src='../access-token.js'></script>
+	<link href='../dist/v1.8.0/cedarmaps.css' rel='stylesheet' />
+
+	<!-- Third party libraries used in this demo -->
+	<!-- JS -->
+	<script src='./js/auto-complete.js'></script>
+	<script src='./js/L.Control.Locate.min.js'></script>
+	<script src='./js/nanoajax.min.js'></script>
+	<!-- CSS -->
+	<link href='./css/auto-complete.css' rel='stylesheet' />
+	<link href='./css/L.Control.Locate.min.css' rel='stylesheet' />
+
+	<link href='./css/custom-bootstrap.css' rel='stylesheet' />
+	<link href='./css/fonts.css' rel='stylesheet' />
+	<link href='./css/icons.css' rel='stylesheet' />
+	<link href='./css/styles.css' rel='stylesheet' />
+	<link href='./css/custom-searchbox.css' rel='stylesheet' />
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg fixed-top" color-on-scroll="20">
+		<div class="container rtl">
+			<div class="navbar-brand">
+				<a href="#" rel="tooltip" title="نقشه‌ای حرفه‌ای برای سرویس‌های مکان محور پارسی"><img src="img/logo.svg" height="25" alt="">
+				</a>
+			</div>
+			<div class="collapse navbar-collapse justify-content-end">
+				<a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/geocoder-control.html" target="_blank" rel="tooltip" title="نمونه کدهای ما را در Github ببینید"><i class="icon-github icon-24"></i> مشاهده Source Code این مثال در Github &gt; </a>
+			</div>
+		</div>
+	</nav>
+
+	<!-- This is the only HTML tag needed for map intialization -->
+	<div id='map' class='map'> </div>
+	<div id="search">
+		<input type="text" id="searchbox" placeholder="شروع به تایپ کنید...">
+		<input type="checkbox" id="proximity" checked="checked" onchange="toggleProximity();"> <small>در نظر گرفتن موقعیت فعلی شما در نتایج جستجو (Proximity)</small>
+	</div>
+	<script>
+		try {
+			// Check out line 9 where we have imported a file which has an `accessToken` variable available on it as has
+			// been assigned our personal access token.
+			// Sample: var accessToken = '<your access token>';
+			// Get one from https://www.cedarmaps.com
+			L.cedarmaps.accessToken = accessToken;
+		} catch (err) {
+			throw new Error('You need to get an access token to be able to use cedarmaps SDK. ' +
+				'Send us an email to <support@cedarmaps.com>');
+		}
+
+		var proximityCheckbox = document.getElementById('proximity'),
+			tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token=' + L.cedarmaps.accessToken,
+			marker,
+			proximity;
+
+		function toggleProximity() {
+			if (!proximityCheckbox.checked) {
+				proximity = null;
+			}
+			else {
+				map.locate({setView: true, maxZoom: 16});
+			}
+		}
+
+		// Initializing our map
+		var map = L.cedarmaps.map('map', tileJSONUrl, {
+				scrollWheelZoom: true,
+				maxZoom: 17
+			}).setView([35.757552763570196, 51.41000747680664], 15);
+
+		// Adding locate control to map. For more options see: https://github.com/domoritz/leaflet-locatecontrol
+		L.control.locate({flyTo: true, icon: 'icon-locate'}).addTo(map);
+		var geocoder = L.cedarmaps.geocoder('cedarmaps.streets');
+
+		// Just a random third party autocomplete module. Nothing special about this. You can have your own autocomplete module
+		// https://goodies.pixabay.com/javascript/auto-complete/demo.html
+		var xhr;
+		var autoCompelete = new autoComplete({
+			selector: '#searchbox',
+			minChars: 2,
+			cache: false,
+			source: function(term, response){
+				try { xhr.abort(); } catch(e) {}
+				// Since we wont have full control over ajax responses and caching problems may occure if we directly
+				// use geocoder.query, we build the request URL instead and then we use it our custom auto complete module.
+				// It's a workaround for not getting cached results in our list.
+				var queryURL = geocoder.queryURL({query: term});
+				var proximityQuery = proximity ? ('&proximity=' + proximity.lat + ',' + proximity.lng) : '';
+
+				// In this demo we use a tiny 3rd party library for AJAX requests as we don't use jQuery or other bulky libraries.
+				// So feel free to replace it with your preferred one. jQuery syntax for example would be like: $.ajax()
+				// Our library: https://github.com/yanatan16/nanoajax
+				xhr = nanoajax.ajax({
+						url: queryURL + proximityQuery
+					},
+					function (code, res) {
+						var json = JSON.parse(res);
+						//if (window.console) console.log(json);
+						if (typeof json != 'undefined') {
+							if (json.results) response(json.results);
+							else response(['NO_RESULTS'])
+						} 
+					}
+				);
+			},
+			renderItem: function (item, search){
+				var img, label, addressParts = [];
+				if (item === 'NO_RESULTS') {
+					return '<div class="autocomplete-suggestion">\
+							<div>موردی یافت نشد.</div>\
+						</div>';
+				}
+				
+				switch (item.type) {
+					case 'street':
+						img = 'icon_street@2x.png'
+						label = 'خیابان'
+						break;
+					case 'boulevard':
+						img = 'icon_boulevard@2x.png'
+						label = 'بلوار'
+						break;
+					case 'roundabout':
+						img = 'icon_roundabout@2x.png'
+						label = 'میدان'
+						break;
+					case 'locality':
+						img = 'icon_locality@2x.png'
+						label = 'محله'
+						break;
+					case 'freeway':
+						img = 'icon_freeway@2x.png'
+						label = 'آزادراه'
+						break;
+					case 'expressway':
+						img = 'icon_freeway@2x.png'
+						label = 'اتوبان'
+						break;
+					case 'motorway':
+						label = 'اتوبان'
+						img = 'icon_motorway@2x.png'
+						break;
+					case 'place':
+						label = 'مکان'
+						img = 'icon_place@2x.png'
+						break;
+					case 'city':
+						label = 'شهر'
+						img = 'icon_place@2x.png'
+						break;
+				}
+
+				if(!item.address || item.address == '') {
+					if (item.components.province) addressParts.push(item.components.province);
+					if (item.components.city) addressParts.push(item.components.city);
+
+					item.address = addressParts.join('، ');
+				} else {
+					if (item.components.province) addressParts.push(item.components.province);
+					if (item.address) addressParts.push(item.address);
+					
+					item.address = addressParts.join('، ');
+				}
+
+				var altName = item.alt_name ? ' ('+item.alt_name+')': '';
+
+				return '<div class="autocomplete-suggestion" data-name="'+item.name+'" data-center="'+item.location.center+'">\
+							<div class="address">'+item.name+altName+'<span>'+item.address+'</span></div>\
+							<div class="street-type">\
+								<img src="img/'+img+'" alt="" width="20" height="20">\
+								<span>'+label+'</span>\
+							</div>\
+						</div>';
+			},
+			onSelect: function(e, term, item){
+				if (marker) map.removeLayer(marker);
+				var latLng = item.getAttribute('data-center').split(',')
+				document.getElementById('searchbox').value = item.getAttribute('data-name');
+				// Cedarmaps SDK is based on Leaflet.js. A leaflet marker is initialized like this.
+				// Learn more: https://leafletjs.com/reference-1.5.0.html#marker
+				marker = new L.marker(latLng).addTo(map);
+				map.flyTo(latLng, 16);
+			}
+		});
+
+		// Defining what to do after finding user's location and then binding the events
+		var onLocationFound = function(location) {
+			proximity = location.latlng;
+		};
+
+		var locationerror = function() {
+			console.log('You either blocked browser from accessing your location OR there\'s something really wrong!');
+		};
+
+		map.on('locationfound', onLocationFound);
+		map.on('locationerror ', locationerror);
+		map.locate({setView: true, maxZoom: 16});
+	</script>
+</body>
+
+</html>
