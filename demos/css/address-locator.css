@@ -26,18 +26,13 @@ body {
 }
 
 #form {
-    width: 300px;
+    width: 350px;
     position: absolute;
-    top: 50px;
+    top: 90px;
     right: 50px;
     background-color: rgba(255, 255, 255, .95);
-    border-radius: 5px;
-    padding: 10px;
-    font-family: "Times New Roman";
     font-size: 13px;
     border-radius: 8px;
-    border:2px solid #f1f1f1;
-    padding: 30px;
 }
 label {
     float: right;
@@ -48,20 +43,21 @@ select, input[type="text"] {
     margin-right: 50px;
     padding: 4px;
 }
+@keyframes progress{
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -200px 0px;
+  }
+} 
 #loading {
-    background: #dbf9ff;
-    padding: 10px;
-    text-align: center;
-    visibility: hidden;
-}
-
-.text-right {
-    text-align: right;
-    direction: rtl;
-}
-
-.text-center {
-    text-align: center;
+    visibility: hidden; 
+    color: white;
+    background: repeating-linear-gradient(45deg, #a6e22e, #a6e22e 10px, #e6db74 10px, #e6db74 20px );
+    height: 5px;
+    border-radius: 5px 5px 0 0;
+    animation:progress 2s linear infinite;
 }
 
 .form-component {

@@ -3,31 +3,38 @@
 
 <head>
     <meta charset=utf-8 />
-    <title>CedarMaps - Simple Map Load</title>
+    <title>CedarMaps - Direction request sample - مسیریابی با سیدار مپ</title>
 
-    <script src='../dist/v1.8.0/cedarmaps.uncompressed.js'></script>
+    <!-- Importing **local** version of cedarmaps -->
+    <!-- Check out how to build SDK: https://github.com/cedarstudios/cedarmaps-web-sdk-raster#building-sdk-locally -->
+    <!-- You may also use our CDN if you don't intent to build the SDK. -->
+    <!-- See: https://github.com/cedarstudios/cedarmaps-web-sdk-raster#basic-usage-via-cdn -->
+    <script src='../dist/v1.8.0/cedarmaps.js'></script>
     <script src='../access-token.js'></script>
-    <script src='./js/leaflet-omnivore.min.js'></script>
-
     <link href='../dist/v1.8.0/cedarmaps.css' rel='stylesheet' />
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
+    <link href='./css/custom-bootstrap.css' rel='stylesheet' />
+    <link href='./css/fonts.css' rel='stylesheet' />
+    <link href='./css/icons.css' rel='stylesheet' />
+    <link href='./css/styles.css' rel='stylesheet' />
 
-        .map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+    <!-- Third party libraries used solely for this demo -->
+    <script src='./js/leaflet-omnivore.min.js'></script>
 </head>
 
 <body>
-    <div id='map' class='map'> </div>
+    <nav class="navbar navbar-expand-lg fixed-top" color-on-scroll="20">
+        <div class="container rtl">
+            <div class="navbar-brand">
+                <a href="#" rel="tooltip" title="نقشه‌ای حرفه‌ای برای سرویس‌های مکان محور پارسی"><img src="img/logo.svg" height="25" alt="">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse justify-content-end">
+                <a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/direction.html" target="_blank" rel="tooltip" title="نمونه کدهای ما را در Github ببینید"><i class="icon-github icon-24"></i> مشاهده Source Code این مثال در Github &gt; </a>
+            </div>
+        </div>
+    </nav>
+    <div id='map'> </div>
     <script>
         try {
             L.cedarmaps.accessToken = accessToken;
@@ -70,6 +77,17 @@
 
                 map.fitBounds(RouteLayer.getBounds());
         });
+
+        // Adding two markers for origin and destination
+        var originMarker = new L.marker([35.764335,51.365622]).addTo(map);
+        var destinationMarker = new L.marker([35.7474946,51.2429727]).addTo(map);
+        var popupOptions = {
+            offset: new L.Point(2, 14),
+            closeButton: false,
+            autoPan: false
+        };
+        originMarker.bindPopup('<h6>Start</h6>', popupOptions);
+        destinationMarker.bindPopup('<h6>End</h6>', popupOptions).openPopup();
 
     </script>
 </body>

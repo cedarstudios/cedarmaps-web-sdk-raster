@@ -6,13 +6,16 @@
 	<title>CedarMaps - Sample Custom Searchbox - جتسجو در معابر با باکس جستحوی دلخواه</title>
 
 	<!-- Importing **local** version of cedarmaps -->
+	<!-- Check out how to build SDK: https://github.com/cedarstudios/cedarmaps-web-sdk-raster#building-sdk-locally -->
+	
 	<!-- You may also use our CDN if you don't intent to build the SDK. -->
 	<!-- See: https://github.com/cedarstudios/cedarmaps-web-sdk-raster#basic-usage-via-cdn -->
 	<script src='../dist/v1.8.0/cedarmaps.js'></script>
 	<script src='../access-token.js'></script>
 	<link href='../dist/v1.8.0/cedarmaps.css' rel='stylesheet' />
+	<link href='./css/custom-searchbox.css' rel='stylesheet' />
 
-	<!-- Third party libraries used in this demo -->
+	<!-- Third party libraries used solely for this demo -->
 	<!-- JS -->
 	<script src='./js/auto-complete.js'></script>
 	<script src='./js/L.Control.Locate.min.js'></script>
@@ -20,12 +23,10 @@
 	<!-- CSS -->
 	<link href='./css/auto-complete.css' rel='stylesheet' />
 	<link href='./css/L.Control.Locate.min.css' rel='stylesheet' />
-
 	<link href='./css/custom-bootstrap.css' rel='stylesheet' />
 	<link href='./css/fonts.css' rel='stylesheet' />
 	<link href='./css/icons.css' rel='stylesheet' />
 	<link href='./css/styles.css' rel='stylesheet' />
-	<link href='./css/custom-searchbox.css' rel='stylesheet' />
 </head>
 
 <body>
@@ -36,7 +37,7 @@
 				</a>
 			</div>
 			<div class="collapse navbar-collapse justify-content-end">
-				<a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/geocoder-control.html" target="_blank" rel="tooltip" title="نمونه کدهای ما را در Github ببینید"><i class="icon-github icon-24"></i> مشاهده Source Code این مثال در Github &gt; </a>
+				<a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/custom-searchbox.html" target="_blank" rel="tooltip" title="نمونه کدهای ما را در Github ببینید"><i class="icon-github icon-24"></i> مشاهده Source Code این مثال در Github &gt; </a>
 			</div>
 		</div>
 	</nav>
@@ -45,7 +46,7 @@
 	<div id='map' class='map'> </div>
 	<div id="search">
 		<input type="text" id="searchbox" placeholder="شروع به تایپ کنید...">
-		<input type="checkbox" id="proximity" checked="checked" onchange="toggleProximity();"> <small>در نظر گرفتن موقعیت فعلی شما در نتایج جستجو (Proximity)</small>
+		<input type="checkbox" id="proximity" onchange="toggleProximity();"> <small>در نظر گرفتن موقعیت فعلی شما در نتایج جستجو (Proximity)</small>
 	</div>
 	<script>
 		try {
@@ -66,10 +67,10 @@
 
 		function toggleProximity() {
 			if (!proximityCheckbox.checked) {
-				proximity = null;
+				map.locate({setView: true, maxZoom: 16});
 			}
 			else {
-				map.locate({setView: true, maxZoom: 16});
+				proximity = null;
 			}
 		}
 
@@ -91,7 +92,7 @@
 			minChars: 2,
 			cache: false,
 			source: function(term, response){
-				try { xhr.abort(); } catch(e) {}
+				try { xhr.abort(); } catch(e) { return }
 				// Since we wont have full control over ajax responses and caching problems may occure if we directly
 				// use geocoder.query, we build the request URL instead and then we use it our custom auto complete module.
 				// It's a workaround for not getting cached results in our list.
@@ -194,17 +195,21 @@
 			}
 		});
 
-		// Defining what to do after finding user's location and then binding the events
+		// Defining what to do after finding user's location
 		var onLocationFound = function(location) {
+			proximityCheckbox.checked = true;
 			proximity = location.latlng;
 		};
 
 		var locationerror = function() {
-			console.log('You either blocked browser from accessing your location OR there\'s something really wrong!');
+			window.alert('You either blocked browser from accessing your location OR there\'s something really wrong!');
 		};
 
+		// Defining callbacks for handling map locate
 		map.on('locationfound', onLocationFound);
 		map.on('locationerror ', locationerror);
+
+		// On page load we try to get user's location. 
 		map.locate({setView: true, maxZoom: 16});
 	</script>
 </body>

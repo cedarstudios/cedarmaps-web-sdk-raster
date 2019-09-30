@@ -22,20 +22,7 @@ a:hover {
     direction: ltr;
     text-align: left;
 }
-
-.leaflet-control-mapbox-geocoder.active .leaflet-control-mapbox-geocoder-wrap {
-    width: 300px;
-}
-
-.leaflet-control-mapbox-geocoder .leaflet-control-mapbox-geocoder-form input {
-    width: 300px;
-}
-
-.leaflet-control-mapbox-geocoder-results {
-    width: 300px;
-}
-
-.map {
+#map {
     position: absolute;
     top: 60px;
     bottom: 0;

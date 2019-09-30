@@ -3,28 +3,35 @@
 
 <head>
     <meta charset=utf-8 />
-    <title>CedarMaps - Simple Map Load</title>
+    <title>CedarMaps - Generating static images - ساختن نقشه های استاتیک</title>
 
-    <script src='../dist/v1.8.0/cedarmaps.uncompressed.js'></script>
+    <!-- Importing **local** version of cedarmaps -->
+    <!-- Check out how to build SDK: https://github.com/cedarstudios/cedarmaps-web-sdk-raster#building-sdk-locally -->
+    <!-- You may also use our CDN if you don't intent to build the SDK. -->
+    <!-- See: https://github.com/cedarstudios/cedarmaps-web-sdk-raster#basic-usage-via-cdn -->
+    <script src='../dist/v1.8.0/cedarmaps.js'></script>
     <script src='../access-token.js'></script>
     <link href='../dist/v1.8.0/cedarmaps.css' rel='stylesheet' />
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        .map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+    <link href='./css/custom-bootstrap.css' rel='stylesheet' />
+    <link href='./css/fonts.css' rel='stylesheet' />
+    <link href='./css/icons.css' rel='stylesheet' />
+    <link href='./css/styles.css' rel='stylesheet' />
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg fixed-top" color-on-scroll="20">
+        <div class="container rtl">
+            <div class="navbar-brand">
+                <a href="#" rel="tooltip" title="نقشه‌ای حرفه‌ای برای سرویس‌های مکان محور پارسی"><img src="img/logo.svg" height="25" alt="">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse justify-content-end">
+                <a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/static-image.html" target="_blank" rel="tooltip" title="نمونه کدهای ما را در Github ببینید"><i class="icon-github icon-24"></i> مشاهده Source Code این مثال در Github &gt; </a>
+            </div>
+        </div>
+    </nav>
+
     <div id="map"></div>
     <script>
         try {
@@ -34,15 +41,15 @@
                 'Send us an email to <support@cedarmaps.com>');
         }
         var sm = L.cedarmaps.staticMap({
-            alttext: 'A map with all the staticness',
-            maptype: 'light',            
+            alttext: 'A map with all the staticness', // Image's Alt text
+            maptype: 'light', // The only profile available for now is `light`
             dimensions: {
-                width: 800,
+                width: 800, // Output image dimensions. Can not exceed 1280px for each side.
                 height: 600
             },
-            scale: false,
+            scale: false, // if you want to use it in retina displays (@2x)
             qs: [{
-                marker_url: '',
+                marker_url: 'marker-circle-orange',
                 lat: 35.79,
                 lng: 51.41,
             },
