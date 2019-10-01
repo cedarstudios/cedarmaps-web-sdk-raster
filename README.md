@@ -21,6 +21,7 @@ CedarMaps Web SDK (JS) is a javascript library for building interactive maps. It
     + [Direction Sample Code](#direction-sample-code)
   * [Administrative Boundaries Lister](#administrative-boundaries-lister)
     + [Administrative Boundaries Lister Sample Code](#administrative-boundaries-lister-sample-code)
+  * [Static Image Generator](#static-image-generator)
 - [Upgrading SDK](#upgrading-sdk)
 - [Issues](#issues)
 
@@ -106,7 +107,7 @@ Before using forward/reverse Geocoder object, you must initialize it using the d
 | Options | Value | Description |
 | ---- | ---- | ---- |
 | id (_required_) | String | Currently only `cedarmaps.streets` |
-| options (_optional_) | Object | If provided, it may include: <ul><li>`accessToken`: Mapbox API access token. Overrides `L.cedarmaps.accessToken` for this geocoder.</li></ul> |
+| options (_optional_) | Object | If provided, it may include: <ul><li>`accessToken`: CedarMaps API access token. Overrides `L.cedarmaps.accessToken` for this geocoder.</li></ul> |
 
 _Returns_ a `L.cedarmaps.geocoder` object.
 
@@ -122,9 +123,9 @@ Queries the geocoder with a query string, and returns the results, if any.
 
 | Options | Value | Description |
 | ---- | ---- | ---- |
-| queryString (_required_) | string | a query, expressed as a string, like 'Arkansas' |
-| options | object | An object containing the query and options parameters like `{ query: 'ونک', limit: 5 }`. Other available parameteres: <br /><br /> <ul><li>`limit` *integer* - Number of returned results. Default is `10`, Max is `30`</li><li>`distance` *float* - Unit is km, `0.1` means 100 meters</li><li>`location` *lat,lon* - For searching near a location. should be used only with distance param</li><li>`type` *enum* - Types of map features to filter the results. Possible values: `locality`, `roundabout`, `street`, `freeway`, `expressway`, `boulevard` <br />(You can mix types by separating them with commas)</li><li>`ne` *lat,lon* - Specifies north east of the bounding box - should be used with `sw` param</li><li>`sw` lat,lon - Specifies south west of the bounding box - should be used with `ne` param</li></ul> |
-| callback (_required_) | function | A callback with passed params: `(error, result)`. |
+| queryString (_required_) | String | a query, expressed as a string, like 'Arkansas' |
+| options | Object | An object containing the query and options parameters like `{ query: 'ونک', limit: 5 }`. Other available parameteres: <br /><br /> <ul><li>`limit` *integer* - Number of returned results. Default is `10`, Max is `30`.</li><li>`distance` *float* - Unit is km, `0.1` means 100 meters.</li><li>`location` *lat,lng* - For searching near a location. should be used only with `distance` param.</li><li>`type` *enum* - Types of map features to filter the results. Possible values: `locality`, `roundabout`, `street`, `freeway`, `expressway`, `boulevard` <br />(You can mix types by separating them with commas).</li><li>`ne` *lat,lng* - Specifies north east of the bounding box - should be used with `sw` param.</li><li>`sw` lat,lng - Specifies south west of the bounding box - should be used with `ne` param.</li></ul> |
+| callback (_required_) | Function | A callback with passed params: `(error, result)`. |
 
 _Returns_ a `L.cedarmaps.geocoder` object.
 
@@ -138,7 +139,7 @@ The results object's signature:
 ```
 
 ### Forward Geocoder Sample Code
-_Example_: Check out a [Live example of geocoder.query](https://demo.cedarmaps.com/websdk/demos/geocoder-control.html).
+_Example_: Check out a [Live example of geocoder.query](https://demo.cedarmaps.com/websdk/demos/geocoder-control.html). If you want more control over your searchbox rendering, please check out another example implementing a [custom seachbox](http://demo.cedarmaps.com/websdk/demos/custom-searchbox.html) with a third-party auto complete library.
 
 Using a single query parameter:
 ```javascript
@@ -165,10 +166,10 @@ Queries the reverse geocoder with a location `object`/`array`, and returns the a
 
 | Options | Value | Description |
 | ---- | ---- | ---- |
-| location (_required_) | object | A query, expressed as an object:<ul><li>`[lon, lat] // an array of lon, lat`</li><li>`{ lat: 0, lon: 0 } // a lon, lat object`</li><li>`{ lat: 0, lng: 0 } `</li></ul> **Note:** This parameter can also be an array of objects in that form to geocode more than one item in a single request. |
-| callback (_required_) | function | A callback with passed params: `(error, result)`. |
+| location (_required_) | Object | A query, expressed as an object:<ul><li>`[lon, lat] // an array of lon, lat`</li><li>`{ lat: 0, lon: 0 } // a lon, lat object`</li><li>`{ lat: 0, lng: 0 } `</li></ul> **Note:** This parameter can also be an array of objects in that form to geocode more than one item in a single request. |
+| callback (_required_) | Function | A callback with passed params: `(error, result)`. |
 
-_Returns_: the geocoder object. The return value of this function is not useful - you must use a callback to get results.
+_Returns_: the geocoder object. The return value of this function is not useful as it run asynchronous  - you must use a callback to get results.
 
 ### Reverse Geocoding Sample Code
 ```javascript
@@ -185,7 +186,7 @@ Calculates a route between a start and end point (and optionally some middle poi
 | ---- | ---- | ---- |
 | Profile (_required_) | String | Default and the only current available value: `cedarmaps.driving`. |
 | LatLngs (_required_) | String | A pair of `lat` and `lng` points indicating start, middle and end, in format: `lat,lng;lat,lng;[lat,lng...]` (Up to 100 points) |
-| callback (_required_) | function | A callback with passed params: `(error, result)`. |
+| callback (_required_) | Function | A callback with passed params: `(error, result)`. |
 
 _Returns_: the `direction` object. The return value of this function is not useful - you must use a callback to get the results.
 
@@ -213,15 +214,14 @@ _Example_: Check out a [Live example of Direction](https://demo.cedarmaps.com/we
 
 
 ## Administrative Boundaries Lister
+Lists administrative boundaries in 3 different levels: `province`, `city`, `locality` (aka. neighbourhood).
+
 Signature: `administrativeBoundaries.query(type, query, callback)`
-
-Lists administrative boundaries in 3 different levels: `province`, `city`, `locality` (aka. neighborhood).
-
 | Options | Value | Description |
 | ---- | ---- | ---- |
-| type (_required_) | string | Type of an administrative boundary. Possible values: `province`, `city`, `locality`. |
-| query (_optional_) | string | The query to limit the `type` above. For example: list all cities of "Tehran" province: `query('city', 'تهران', function(){})`. This option is not neccessary for type: `province` as it has no parents. |
-| callback (_required_) | function | A callback with passed params: `(error, result)`. |
+| type (_required_) | String | Type of an administrative boundary. Possible values: `province`, `city`, `locality`. |
+| query (_optional_) | String | The query to limit the `type` above. For example: list all cities of "Tehran" province: `query('city', 'تهران', function(error, result){})`. This option is not neccessary for type: `province` as it has no parents. |
+| callback (_required_) | Function | A callback with passed params: `(error, result)`. |
 
 _Returns_: the `L.cedarmaps.administrativeBoundaries` object.
 
@@ -235,6 +235,22 @@ var administrativeLister = L.cedarmaps.administrativeBoundaries();
 ```
 
 _Example_: Check out a [Live example of address locator](https://demo.cedarmaps.com/websdk/demos/address-locator.html).
+
+## Static Image Generator
+If you don't want to include a bunch of script tags into your HTML and just need an image showing a map with a marker representing a point on it, you may use this API. 
+
+Signature: `L.cedarmaps.staticMap({options})`
+
+| Options | Value | Description |
+|------------------------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| maptype (_required_) | String | The only available profile is `light` for now. |
+| position (_required_) | String | The center point and zoom level with which map should be generated, in format: `lat,lng,zoom` (e.g.: `35.791124154289,51.415790319443,13`). If your generated image has markers on it and they should be fit in your map, use value `auto`. |
+| dimension (_required_) | String | Dimension of the generated image in format: `widthxheight`. (e.g.: 800x600). Either values for width and height should not exceed 1280 pixels. |
+| scale (_optional_) | String | For retina displays with more pixels density use this option. It doubles the size for both maps and markers. |
+| markers (_optional_) | String | For adding optional markers on the map, in format: `marker-name|lat,lng`. (e.g.: marker-circle-orange|35.79,51.41|marker-default|35.83,51.45). Here, `marker-circle-orange` and `marker-default` are from CedarMaps preset markers. You may use your own custom marker by providing their url starting with `http`. Please note that if request for a static map with your custom marker URL, the first request caches the marker and the second actually responses with your static map. Available marker presents are: `marker-default`, `marker-circle-blue`, `marker-circle-green`, `marker-circle-orange`, `marker-circle-red`, `marker-square-blue`, `marker-square-green`, `marker-square-orange`, `marker-square-red`. If your marker has an anchor point, it must be positioned in the center of the image. For a sample checkout [This marker image](https://api.cedarmaps.com/v1/markers/marker-circle-green@2x.png) |
+|  |  |  |
+
+_Example_: Check out a [Live example of static image generator](https://demo.cedarmaps.com/websdk/demos/static-image.html).
 
 # Upgrading SDK
 In case of any updates in module itself the following files must be updated:
