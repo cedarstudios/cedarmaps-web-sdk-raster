@@ -236,6 +236,30 @@ var administrativeLister = L.cedarmaps.administrativeBoundaries();
 
 _Example_: Check out a [Live example of address locator](https://demo.cedarmaps.com/websdk/demos/address-locator.html).
 
+## Nearby POI Finder
+CedarMaps is integrated with its sister project [kikojas.com](https://www.kikojas.com) and has access to all of the curated POIs available in it. It gives you the ability to query public places near a certain point on map.
+The available categories are: 
+- Parks
+- Bus Stations
+- Shopping Malls
+- Hospitals
+- Schools
+
+**Note:** You may purchase the availability of other categories for your project. Please [contact us](mailto:support@cedarmaps.com) for more information.
+
+Signature: `L.cedarmaps.nearby(mapContainer, centerPoint, {options})`
+
+| Options | Value | Description |
+|-------------------------------|---------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| categories (_required_) | Array | List of categories you want to have in your map.  |
+| searchDistance (_optional_) | Float | Distance radius to search for POIs, in Kilometer. For 500 meters use `0.5`. |
+| popupContent (_required_) | Function | A callback with passed params: `(error, result)`. |
+| centerMarkerIcon (_optional_) | [leaflet marker](https://leafletjs.com/reference-1.5.0.html#marker) | You may use your custom [leaflet marker](https://leafletjs.com/reference-1.5.0.html#marker) for your central point. Example: `window.L.icon({"slug":"@default","iconUrl":"https://api.cedarmaps.com/v1/markers/marker-default.png","iconRetinaUrl":"https://api.cedarmaps.com/v1/markers/marker-default@2x.png","iconSize":[82,98]})` |
+| popupContent (_optional_) | String | Popup content for centralMarker. Can contain HTML code. |
+| defaultZoom (_optional_) | Integer | Your desired zoom level for map. |
+
+_Example_: Check out a [Live example of nearby widget](http://demo.cedarmaps.com/websdk/demos/nearby.html).
+
 ## Static Image Generator
 If you don't want to include a bunch of script tags into your HTML and just need an image showing a map with a marker representing a point on it, you may use this API. 
 
@@ -247,8 +271,7 @@ Signature: `L.cedarmaps.staticMap({options})`
 | position (_required_) | String | The center point and zoom level with which map should be generated, in format: `lat,lng,zoom` (e.g.: `35.791124154289,51.415790319443,13`). If your generated image has markers on it and they should be fit in your map, use value `auto`. |
 | dimension (_required_) | String | Dimension of the generated image in format: `widthxheight`. (e.g.: 800x600). Either values for width and height should not exceed 1280 pixels. |
 | scale (_optional_) | String | For retina displays with more pixels density use this option. It doubles the size for both maps and markers. |
-| markers (_optional_) | String | For adding optional markers on the map, in format: `marker-name\|lat,lng`. (e.g.: `marker-circle-orange\|35.79,51.41\|marker-default\|35.83,51.45`). Here, `marker-circle-orange` and `marker-default` are from CedarMaps preset marker names. You may use your own custom markers by providing their absolute url path starting with `http://`. <br> **Note:** that if request for a static map with your custom marker URL, the first request caches the marker and the second request actually responses with your static map. <br>Available marker presents are: <ul><li>`marker-default`</li><li> `marker-circle-blue`</li><li> `marker-circle-green`</li><li> `marker-circle-orange`</li><li> `marker-circle-red`</li><li> `marker-square-blue`</li><li> `marker-square-green`</li><li> `marker-square-orange`</li><li> `marker-square-red`</li></ul> If your marker has an anchor point, the anchor must be positioned in the center of the image. For a sample checkout [This marker image](https://api.cedarmaps.com/v1/markers/marker-circle-green@2x.png) |
-|  |  |  |
+| markers (_optional_) | String | For adding optional markers on the map, in format: `marker-name\|lat,lng`. (e.g.: `marker-circle-orange\|35.79,51.41\|marker-default\|35.83,51.45`). Here, `marker-circle-orange` and `marker-default` are from CedarMaps preset marker names. You may use your own custom markers by providing their absolute url path starting with `http://`. <br> **Note:** If you request for a static map with your custom marker URL, the first request caches the marker image and the second request actually responses with your static map. <br>Available marker presents are: <ul><li>`marker-default`</li><li> `marker-circle-blue`</li><li> `marker-circle-green`</li><li> `marker-circle-orange`</li><li> `marker-circle-red`</li><li> `marker-square-blue`</li><li> `marker-square-green`</li><li> `marker-square-orange`</li><li> `marker-square-red`</li></ul> If your marker has an anchor point, the anchor must be positioned in the center of the image. For a sample checkout this [marker image](https://api.cedarmaps.com/v1/markers/marker-circle-green@2x.png) from our preset markers. |
 
 _Example_: Check out a [Live example of static image generator](https://demo.cedarmaps.com/websdk/demos/static-image.html).
 
