@@ -21,6 +21,7 @@ CedarMaps Web SDK (JS) is a javascript library for building interactive maps. It
     + [Direction Sample Code](#direction-sample-code)
   * [Administrative Boundaries Lister](#administrative-boundaries-lister)
     + [Administrative Boundaries Lister Sample Code](#administrative-boundaries-lister-sample-code)
+  * [Nearby POI Finder](#nearby-poi-finder)
   * [Static Image Generator](#static-image-generator)
 - [Upgrading SDK](#upgrading-sdk)
 - [Issues](#issues)
