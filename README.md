@@ -218,6 +218,7 @@ _Example_: Check out a [Live example of Direction](https://demo.cedarmaps.com/we
 Lists administrative boundaries in 3 different levels: `province`, `city`, `locality` (aka. neighbourhood).
 
 Signature: `administrativeBoundaries.query(type, query, callback)`
+
 | Options | Value | Description |
 | ---- | ---- | ---- |
 | type (_required_) | String | Type of an administrative boundary. Possible values: `province`, `city`, `locality`. |
@@ -252,10 +253,10 @@ Signature: `L.cedarmaps.nearby(mapContainer, centerPoint, {options})`
 
 | Options | Value | Description |
 |-------------------------------|---------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| categories (_required_) | Array | List of categories you want to have in your map.  |
+| categories (_required_) | Array | List of categories you want to have in your map. Available options are `bus`, `park`, `shopping`, `hospital` and `school` |
 | searchDistance (_optional_) | Float | Distance radius to search for POIs, in Kilometer. For 500 meters use `0.5`. |
 | popupContent (_required_) | Function | A callback with passed params: `(error, result)`. |
-| centerMarkerIcon (_optional_) | [leaflet marker](https://leafletjs.com/reference-1.5.0.html#marker) | You may use your custom [leaflet marker](https://leafletjs.com/reference-1.5.0.html#marker) for your central point. Example: `window.L.icon({"slug":"@default","iconUrl":"https://api.cedarmaps.com/v1/markers/marker-default.png","iconRetinaUrl":"https://api.cedarmaps.com/v1/markers/marker-default@2x.png","iconSize":[82,98]})` |
+| centerMarkerIcon (_optional_) | [Leaflet Marker](https://leafletjs.com/reference-1.5.0.html#marker) | You may use your custom [leaflet marker](https://leafletjs.com/reference-1.5.0.html#marker) for your central point. Example: `window.L.icon({"slug":"@default","iconUrl":"https://api.cedarmaps.com/v1/markers/marker-default.png","iconRetinaUrl":"https://api.cedarmaps.com/v1/markers/marker-default@2x.png","iconSize":[82,98]})` |
 | popupContent (_optional_) | String | Popup content for centralMarker. Can contain HTML code. |
 | defaultZoom (_optional_) | Integer | Your desired zoom level for map. |
 
