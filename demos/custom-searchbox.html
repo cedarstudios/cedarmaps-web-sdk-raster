@@ -46,7 +46,7 @@
 	<div id='map' class='map'> </div>
 	<div id="search">
 		<input type="text" id="searchbox" placeholder="شروع به تایپ کنید...">
-		<input type="checkbox" id="proximity" onchange="toggleProximity();"> <small>در نظر گرفتن موقعیت فعلی شما در نتایج جستجو (Proximity)</small>
+		<input type="checkbox" id="proximity"> <small>در نظر گرفتن موقعیت فعلی شما در نتایج جستجو (Proximity)</small>
 		<div id="location">موقعیت فعلی شما: <span id="current-location" class="badge badge-success"></span></div>
 	</div>
 	<script>
@@ -68,14 +68,26 @@
 			marker,
 			proximity;
 
-		function toggleProximity() {
-			if (!proximityCheckbox.checked) {
-				map.locate({setView: true, maxZoom: 16});
-			}
-			else {
-				proximity = null;
-			}
-		}
+		// Defining what to do after finding user's location
+		function onLocationFound(location) {
+			if (marker) map.removeLayer(marker);
+			proximity = location.latlng;
+			marker = new L.marker(proximity).addTo(map);
+			map.flyTo(proximity, 16);
+
+			geocoder.reverseQuery(proximity, function callback(err, res){
+				locationContainer.style.display = 'block';
+				var addressParts = [res.result.city, res.result.locality, res.result.address]
+				currentLocationContainer.innerHTML = addressParts.join('، ');
+			});
+
+		};
+
+		function locationerror() {
+			window.alert('You either blocked browser from accessing your location OR there\'s something really wrong!');
+			locationContainer.style.display = 'block';
+			currentLocationContainer.innerHTML = "مشخص نیست یا دسترسی داده نشده است";
+		};
 
 		// Initializing our map
 		var map = L.cedarmaps.map('map', tileJSONUrl, {
@@ -100,7 +112,7 @@
 				// use geocoder.query, we build the request URL instead and then we use it our custom auto complete module.
 				// It's a workaround for not getting cached results in our list.
 				var queryURL = geocoder.queryURL({query: term});
-				var proximityQuery = proximity ? ('&proximity=' + proximity.lat + ',' + proximity.lng) : '';
+				var proximityQuery = (proximityCheckbox.checked && proximity) ? ('&proximity=' + proximity.lat + ',' + proximity.lng) : '';
 
 				// In this demo we use a tiny 3rd party library for AJAX requests as we don't use jQuery or other bulky libraries.
 				// So feel free to replace it with your preferred one. jQuery syntax for example would be like: $.ajax()
@@ -197,25 +209,6 @@
 				map.flyTo(latLng, 16);
 			}
 		});
-
-		// Defining what to do after finding user's location
-		var onLocationFound = function(location) {
-			proximityCheckbox.checked = true;
-			proximity = location.latlng;
-			marker = new L.marker(proximity).addTo(map);
-			map.flyTo(proximity, 16);
-
-			geocoder.reverseQuery(proximity, function callback(err, res){
-				locationContainer.style.display = 'block';
-				var addressParts = [res.result.city, res.result.locality, res.result.address]
-				currentLocationContainer.innerHTML = addressParts.join('، ');
-			});
-
-		};
-
-		var locationerror = function() {
-			window.alert('You either blocked browser from accessing your location OR there\'s something really wrong!');
-		};
 
 		// Defining callbacks for handling map locate
 		map.on('locationfound', onLocationFound);
