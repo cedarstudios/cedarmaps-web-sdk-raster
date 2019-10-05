@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="نمونه ابزارهای پیداده شده با سیدار مپ">
+    <title>CedarMaps - Demos</title>
+    <!-- Importing **local** version of cedarmaps -->
+    <!-- Check out how to build SDK: https://github.com/cedarstudios/cedarmaps-web-sdk-raster#building-sdk-locally -->
+    <!-- You may also use our CDN if you don't intent to build the SDK. -->
+    <!-- See: https://github.com/cedarstudios/cedarmaps-web-sdk-raster#basic-usage-via-cdn -->
+    <script src='../dist/v1.8.0/cedarmaps.js'></script>
+    <script src='../access-token.js'></script>
+    <link href='../dist/v1.8.0/cedarmaps.css' rel='stylesheet' />
+    <link href='./css/custom-bootstrap.css' rel='stylesheet' />
+    <link href='./css/fonts.css' rel='stylesheet' />
+    <link href='./css/icons.css' rel='stylesheet' />
+    <link href='./css/styles.css' rel='stylesheet' />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top" color-on-scroll="20">
+        <div class="container rtl">
+            <div class="navbar-brand">
+                <a href="#" rel="tooltip" title="نقشه‌ای حرفه‌ای برای سرویس‌های مکان محور پارسی"><img src="img/logo.svg" height="25" alt="">
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div class="landing py-5">
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h2 class="jumbotron-heading text-white">نمونه ابزارهای پیاده شده با سیدار مپ</h2>
+                <p class="text-muted">در زیر مثال‌های مختلفی از ابزارهای پیاده‌سازی شده با سیدارمپ وجود دارد. این مثال‌ها با هدف آموزش، طوری نوشته شده‌اند که کمترین وابستگی به کتابخانه‌های بیرونی (Third-party) را داشته باشند تا شما بتوانید به راحتی از آنها در پروژه‌های خود استفاده کنید.</p>
+                <!-- <p><a href="#" class="btn btn-primary my-2">مشاهده مستندات فارسی</a></p> -->
+            </div>
+        </section>
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="img/basic-map-marker.jpg" alt="" width="100%">
+                            <div class="card-body">
+                                <h6 class="text-center">قراردادن مارکر ساده روی نقشه</h6>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group ">
+                                    <a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/basic-map-marker.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده سورس کد</a>
+                                    <a href="./basic-map-marker.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده دمو</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="img/geocoder-control.jpg" alt="" width="100%">
+                            <div class="card-body">
+                                <h6 class="text-center">باکس جستجوی ساده</h6>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group ">
+                                    <a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/geocoder-control.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده سورس کد</a>
+                                    <a href="./geocoder-control.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده دمو</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="img/custom-searchbox.jpg" alt="" width="100%">
+                            <div class="card-body">
+                                <h6 class="text-center">باکس جستجوی پیشرفته</h6>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group ">
+                                    <a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/custom-searchbox.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده سورس کد</a>
+                                    <a href="./custom-searchbox.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده دمو</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="img/address-locator.jpg" alt="" width="100%">
+                            <div class="card-body">
+                                <h6 class="text-center">جستجوی آدرس سلسله مراتبی</h6>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group ">
+                                    <a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/address-locator.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده سورس کد</a>
+                                    <a href="./address-locator.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده دمو</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="img/direction.jpg" alt="" width="100%">
+                            <div class="card-body">
+                                <h6 class="text-center">مسیریابی</h6>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group ">
+                                    <a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/direction.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده سورس کد</a>
+                                    <a href="./direction.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده دمو</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="img/drawing-kml.jpg" alt="" width="100%">
+                            <div class="card-body">
+                                <h6 class="text-center">قرار دادن لایه KML روی نقشه</h6>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group ">
+                                    <a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/drawing-kml.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده سورس کد</a>
+                                    <a href="./drawing-kml.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده دمو</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="img/marker-clustering.jpg" alt="" width="100%">
+                            <div class="card-body">
+                                <h6 class="text-center">دسته بندی مارکرها (Clustering)</h6>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group ">
+                                    <a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/marker-clustering.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده سورس کد</a>
+                                    <a href="./marker-clustering.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده دمو</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="img/nearby.jpg" alt="" width="100%">
+                            <div class="card-body">
+                                <h6 class="text-center">مکان یابی کی کجاس</h6>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group ">
+                                    <a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/nearby.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده سورس کد</a>
+                                    <a href="./nearby.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده دمو</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="img/reverse-geocoder.jpg" alt="" width="100%">
+                            <div class="card-body">
+                                <h6 class="text-center">تبدیل نقطه به آدرس (Reverse Geocoding)</h6>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group ">
+                                    <a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/reverse-geocoder.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده سورس کد</a>
+                                    <a href="./reverse-geocoder.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده دمو</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="img/static-image.jpg" alt="" width="100%">
+                            <div class="card-body">
+                                <h6 class="text-center">نقشه‌های استاتیک</h6>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group ">
+                                    <a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/static-image.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده سورس کد</a>
+                                    <a href="./static-image.html" target="_blank" class="btn btn-sm btn-outline-secondary">مشاهده دمو</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</html>
