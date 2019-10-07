@@ -47,10 +47,19 @@ module.exports = function(url, options) {
 
         var url = L.Util.template(geocoder.getURL(), {query: query});
 
+
         
         /*
          * Handling cedarmaps' API options for geocoding
          */
+        if (isObject && _.verbosity) {
+            url += '&verbosity=' + _.verbosity;
+        }
+
+        if (isObject && _.prefix) {
+            url += '&prefix=' + _.prefix;
+        }
+
         if (isObject && _.limit) {
             url += '&limit=' + _.limit;
         }
@@ -110,7 +119,12 @@ module.exports = function(url, options) {
             }
             q = pts.join(';');
         } else {
-            q = normalize(_);
+            if (_.query) {
+                _.query = normalize(_.query);
+                q = _;
+            } else {
+                q = normalize(_);
+            }
         }
 
         request(geocoder.queryURL(q), function(err, json) {

@@ -1,12 +1,12 @@
 {
   "author": "CedarStudios",
   "name": "cedarmaps.js",
-  "description": "CedarMaps javascript API built on top of mapbox.js",
-  "version": "1.8.0",
+  "description": "CedarMaps javascript SDK (Raster Tiles)",
+  "version": "1.8.1",
   "homepage": "http://www.cedarmaps.com/",
   "repository": {
     "type": "git",
-    "url": "http://gitlab.kikojas.com/cedar.studios/cedarmaps-sdk-web.git"
+    "url": "https://github.com/cedarstudios/cedarmaps-web-sdk-raster"
   },
   "main": "src/index.js",
   "dependencies": {

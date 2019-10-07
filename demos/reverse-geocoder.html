@@ -40,6 +40,22 @@
 		<h5 class="mt-3 text-center" ">برای گرفتن آدرس<br> روی نقشه کلیک کنید.</h5>
 		<div id="latlng" class="rounded"></div>
 		<div class="p-4">
+			<div class="options">
+				<h5>پارامترها</h5>
+				<div class="form-check">
+				  <input class="form-check-input" type="checkbox" value="" id="prefix-mode">
+				  <label class="form-check-label" for="prefix-mode">
+				    کلمات خلاصه (مثال: «م» به جای «میدان»)
+				  </label>
+				</div>
+				<div class="form-check">
+				  <input class="form-check-input" type="checkbox" value="" id="verbosity">
+				  <label class="form-check-label" for="prefix-mode">
+				    آدرس طولانی (استفاده از کلمات «نرسیده به»، «تقاطع» و ...)
+				  </label>
+				</div>
+			</div>
+			<p id="formatted-address" class="p-2 text-center rounded mt-2"></p>
 			<div id="parsed-response" class="rounded"></div>
 			<div id="raw-response"></div>
 		</div>
@@ -69,9 +85,12 @@
 		// Making references to our DOM elements
 		var resultsContainer = document.getElementById('results'),
 			latLngContainer = document.getElementById('latlng'),
+			formattedAddressContainer = document.getElementById('formatted-address'),
 			parsedResponseContainer = document.getElementById('parsed-response'),
 			rawResponseContainer = document.getElementById('raw-response'),
-			loadingIndicator = document.getElementById('loading');
+			loadingIndicator = document.getElementById('loading'),
+			prefixModeCheckbox = document.getElementById('prefix-mode'),
+			verbosityCheckbox = document.getElementById('verbosity');
 
 		// Initializing the Geocoder object which has the necessary methods for reverse geocoding
 		// We also need to introduce our search index to geocoder module, `cedarmaps.streets` in this case.
@@ -90,10 +109,18 @@
 			latLngContainer.style.visibility = 'visible';
 			latLngContainer.innerHTML =  'Lat: ' + parseFloat(e.latlng.lat).toPrecision(10) + '<br /> Lng: ' + parseFloat(e.latlng.lng).toPrecision(10);
 
+
+			var q = {
+				query: e.latlng,
+				verbosity: verbosityCheckbox.checked,
+				prefix: prefixModeCheckbox.checked ? 'short': null
+			};
+
 			// This is the main part of this demo which uses the `reverseQuery` method. For more info on other available options please refer to docs.
 			// https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/README.md
-			geocoder.reverseQuery(e.latlng, function callback(err, res){
+			geocoder.reverseQuery(q, function callback(err, res){
 				loading.style.visibility = 'hidden';
+				formattedAddressContainer.style.display = 'block';
 				parsedResponseContainer.style.display = 'block';
 				rawResponseContainer.style.display = 'block';
 
@@ -131,6 +158,8 @@
 								
 				parsedResponseContainer.innerHTML = parsedResponse;
 				rawResponseContainer.innerHTML = rawResponse;
+				formattedAddressContainer.innerHTML = res.result.formatted_address;
+
 
 			});
 		});

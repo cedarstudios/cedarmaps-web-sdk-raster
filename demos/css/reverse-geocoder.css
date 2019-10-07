@@ -24,9 +24,15 @@
     padding: 8px;
     text-align: center;
 }
+#formatted-address {
+    color: #a6e22e;
+    display: none;
+    direction: rtl;
+    width: 100%;
+    background-color: #333;
+}
 .address-parts {
     font-family: IranSANS;
-    direction: rtl;
     direction: rtl;
     width: 100%;
     color: #a6e22e;
@@ -56,7 +62,6 @@
     margin: 20px 0;
     direction: rtl;
     font: 12px/1.8em;
-    font-family: Tahoma;
     background-color: #333;
     padding: 10px;
     display: none;
