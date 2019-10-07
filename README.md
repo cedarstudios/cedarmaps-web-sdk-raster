@@ -30,8 +30,8 @@ CedarMaps Web SDK (JS) is a javascript library for building interactive maps. It
 1. Get an access token from [Cedar Maps website](https://www.cedarmaps.com/) (Menu link: "درخواست اکانت رایگان"). It may take a couple of hours until your request is processed and your credentials are emailed to you.
 2. Include these CSS and JavaScript files in `<head>` section of your HTML file.
 ```html
-<script src='https://api.cedarmaps.com/cedarmaps.js/v1.8.0/cedarmaps.js'></script>
-<link href='https://api.cedarmaps.com/cedarmaps.js/v1.8.0/cedarmaps.css' rel='stylesheet' />
+<script src='https://api.cedarmaps.com/cedarmaps.js/v1.8.1/cedarmaps.js'></script>
+<link href='https://api.cedarmaps.com/cedarmaps.js/v1.8.1/cedarmaps.css' rel='stylesheet' />
 ```
 3. Put the following code in the <body> of your HTML file:
 ```html
