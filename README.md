@@ -170,7 +170,7 @@ Queries the reverse geocoder with a location and returns the address in desired 
 | location (_required_) | Mixed |<ul><li>`String`: Only a single `lat,lng` pair separated by comma. Example: `'35.763,51.40'`</li><li>`Object`: If you want to provide options for reverse geocoding: Example: `{query: {lat:35.763 ,lng:51.40 }, verbosity: true, prefix: 'short', separator: '، '}` <br> Options are: <ul><li>`format: "{province}{sep}{city}{sep}{locality}{sep}{district}{sep}{address}{sep}{place}"`</li><li>`Prefix: "short"`</li><li>`Separator: "، "`</li><li>`Verbosity: false`</li></ul> </li><li>`Array`: For geocoding more than one point in a single request. Example: `[{lat: 35.763, lng: 51.40},{...}]`</li></ul> A point can be formatted in one of the forms below:<ul><li>`[lon, lat] // an array of lon, lat`</li><li>`{ lat: 0, lon: 0 } // a lon, lat object`</li><li>`{ lat: 0, lng: 0 } `</li></ul> |
 | callback (_required_) | Function | A callback with passed params: `(error, result)`. |
 
-_Returns_: the geocoder object. The return value of this function is not useful as it run asynchronous  - you must use a callback to get the results.
+_Returns_: the geocoder object. The return value may not come handy since it runs asynchronously and you must use a callback to get the results.
 
 ### Reverse Geocoding Sample Code
 ```javascript
