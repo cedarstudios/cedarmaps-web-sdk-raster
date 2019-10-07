@@ -2,24 +2,22 @@
 <html>
 
 <head>
-	<meta charset=utf-8 />
-	<title>CedarMaps - Reverse Geocoding Sample - تبدیل نقطه به آدرس</title>
-	
-	<script src='../dist/v1.8.1/cedarmaps.js'></script>
-	<script src='../access-token.js'></script>
-	<script src='./js/L.Control.Locate.min.js'></script>
-
-	<link href='../dist/v1.8.1/cedarmaps.css' rel='stylesheet' />
-	<link href='./css/custom-bootstrap.css' rel='stylesheet' />
-	<link href='./css/styles.css' rel='stylesheet' />
-	<link href='./css/L.Control.Locate.min.css' rel='stylesheet' />
-	<link href='./css/reverse-geocoder.css' rel='stylesheet' />
-	<link href='./css/fonts.css' rel='stylesheet' />
-	<link href='./css/icons.css' rel='stylesheet' />
+    <meta charset=utf-8 />
+    <title>CedarMaps - Reverse Geocoding Sample - تبدیل نقطه به آدرس</title>
+    <script src='../dist/v1.8.1/cedarmaps.js'></script>
+    <script src='../access-token.js'></script>
+    <script src='./js/L.Control.Locate.min.js'></script>
+    <link href='../dist/v1.8.1/cedarmaps.css' rel='stylesheet' />
+    <link href='./css/custom-bootstrap.css' rel='stylesheet' />
+    <link href='./css/styles.css' rel='stylesheet' />
+    <link href='./css/L.Control.Locate.min.css' rel='stylesheet' />
+    <link href='./css/reverse-geocoder.css' rel='stylesheet' />
+    <link href='./css/fonts.css' rel='stylesheet' />
+    <link href='./css/icons.css' rel='stylesheet' />
 </head>
 
 <body>
-	<nav class="navbar navbar-expand-lg fixed-top" color-on-scroll="20">
+    <nav class="navbar navbar-expand-lg fixed-top" color-on-scroll="20">
         <div class="container rtl">
             <div class="navbar-brand">
                 <a href="https://www.cedarmaps.com" rel="tooltip" title="نقشه‌ای حرفه‌ای برای سرویس‌های مکان محور پارسی"><img src="img/logo.svg" height="25" alt="">
@@ -30,160 +28,162 @@
             </div>
         </div>
     </nav>
-	
-	<!-- This is the only HTML tag needed for map intialization -->
-	<div id='map' class='map'></div>
+    <!-- This is the only HTML tag needed for map intialization -->
+    <div id='map' class='map'></div>
+    <!-- For the purpose of this demo we need to have a div showing you the results, but this sure can be omitted in your real world cases -->
+    <div id="results">
+        <div id="loading"></div>
+        <h5 class="mt-3 text-center" ">برای گرفتن آدرس<br> روی نقشه کلیک کنید.</h5>
+		<div id="latlng" class="rounded">
+    </div>
+    <div class="p-4">
+        <div class="options">
+            <h5>پارامترها</h5>
+            <form>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="verbosity">
+                    <label class="form-check-label" for="verbosity">
+                        توصیف آدرس طولانی (استفاده از کلمات «نرسیده به»، «تقاطع»)
+                    </label>
+                </div>
+                <hr>
+                <div class="form-row align-items-center">
+                    <div class="col my-1 text-right rtl">
+                        <label class="mr-sm-2" for="prefix-mode">توصیف آدرس (تعیین نحوه نمایش نوع معبر: مثال: «م» به جای «میدان»)</label>
+                        <select class="custom-select mr-sm-2" id="prefix-mode">
+                            <option selected value="none">حالت معمولی</option>
+                            <option value="short">حالت خلاصه</option>
+                            <option value="long">حالت طولانی</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <p id="formatted-address" class="p-2 text-center rounded mt-2"></p>
+        <div id="parsed-response" class="rounded"></div>
+        <div id="raw-response"></div>
+    </div>
+    </div>
+    <script>
+    try {
+        // Check out line 9 where we have imported a file which has an `accessToken` variable available on it as has
+        // been assigned our personal access token.
+        // Sample: var accessToken = '<your access token>';
+        // Get one from https://www.cedarmaps.com
+        L.cedarmaps.accessToken = accessToken;
+    } catch (err) {
+        throw new Error('You need to get an access token to be able to use cedarmaps SDK. ' +
+            'Send us an email to <support@cedarmaps.com>');
+    }
 
-	<!-- For the purpose of this demo we need to have a div showing you the results, but this sure can be omitted in your real world cases -->
-	<div id="results">
-		<div id="loading"></div>
-		<h5 class="mt-3 text-center" ">برای گرفتن آدرس<br> روی نقشه کلیک کنید.</h5>
-		<div id="latlng" class="rounded"></div>
-		<div class="p-4">
-			<div class="options">
-				<h5>پارامترها</h5>
-				<div class="form-check">
-				  <input class="form-check-input" type="checkbox" value="" id="prefix-mode">
-				  <label class="form-check-label" for="prefix-mode">
-				    کلمات خلاصه (مثال: «م» به جای «میدان»)
-				  </label>
-				</div>
-				<div class="form-check">
-				  <input class="form-check-input" type="checkbox" value="" id="verbosity">
-				  <label class="form-check-label" for="prefix-mode">
-				    آدرس طولانی (استفاده از کلمات «نرسیده به»، «تقاطع» و ...)
-				  </label>
-				</div>
-			</div>
-			<p id="formatted-address" class="p-2 text-center rounded mt-2"></p>
-			<div id="parsed-response" class="rounded"></div>
-			<div id="raw-response"></div>
-		</div>
-	</div>
+    var tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token=' + L.cedarmaps.accessToken,
+        marker;
 
-	<script>
-		try {
-			// Check out line 9 where we have imported a file which has an `accessToken` variable available on it as has
-			// been assigned our personal access token.
-			// Sample: var accessToken = '<your access token>';
-			// Get one from https://www.cedarmaps.com
-			L.cedarmaps.accessToken = accessToken;
-		}
-		catch(err) {
-			throw new Error('You need to get an access token to be able to use cedarmaps SDK. ' + 
-			'Send us an email to <support@cedarmaps.com>');
-		}
+    // Initializing our map
+    var map = L.cedarmaps.map('map', tileJSONUrl, {
+        scrollWheelZoom: true
+    }).setView([35.757552763570196, 51.41000747680664], 15);
 
-		var tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token='+ L.cedarmaps.accessToken,
-			marker;
-		
-		// Initializing our map
-		var map = L.cedarmaps.map('map', tileJSONUrl, {
-			scrollWheelZoom: true
-		}).setView([35.757552763570196, 51.41000747680664], 15);
+    // Making references to our DOM elements
+    var resultsContainer = document.getElementById('results'),
+        latLngContainer = document.getElementById('latlng'),
+        formattedAddressContainer = document.getElementById('formatted-address'),
+        parsedResponseContainer = document.getElementById('parsed-response'),
+        rawResponseContainer = document.getElementById('raw-response'),
+        loadingIndicator = document.getElementById('loading'),
+        prefixModeOptions = document.getElementById('prefix-mode'),
+        verbosityCheckbox = document.getElementById('verbosity');
 
-		// Making references to our DOM elements
-		var resultsContainer = document.getElementById('results'),
-			latLngContainer = document.getElementById('latlng'),
-			formattedAddressContainer = document.getElementById('formatted-address'),
-			parsedResponseContainer = document.getElementById('parsed-response'),
-			rawResponseContainer = document.getElementById('raw-response'),
-			loadingIndicator = document.getElementById('loading'),
-			prefixModeCheckbox = document.getElementById('prefix-mode'),
-			verbosityCheckbox = document.getElementById('verbosity');
+    // Initializing the Geocoder object which has the necessary methods for reverse geocoding
+    // We also need to introduce our search index to geocoder module, `cedarmaps.streets` in this case.
+    // This means the reverse geocoder engine should search in our `cedarmaps.streets` index.
+    var geocoder = L.cedarmaps.geocoder('cedarmaps.streets');
 
-		// Initializing the Geocoder object which has the necessary methods for reverse geocoding
-		// We also need to introduce our search index to geocoder module, `cedarmaps.streets` in this case.
-		// This means the reverse geocoder engine should search in our `cedarmaps.streets` index.
-		var geocoder = L.cedarmaps.geocoder('cedarmaps.streets');
+    map.on('click', function(e) {
+        // If we have already clicked on map, a marker is placed on it and we should remove it before we add one again on user click.
+        if (marker) map.removeLayer(marker);
 
-		map.on('click', function(e){
-			// If we have already clicked on map, a marker is placed on it and we should remove it before we add one again on user click.
-			if (marker) map.removeLayer(marker);
+        // Cedarmaps SDK is based on Leaflet.js. A leaflet marker is initialized like this. The event object (`e`) which is passed in by onClick event contains the latLng object.
+        // Learn more: https://leafletjs.com/reference-1.5.0.html#marker
+        marker = new L.marker(e.latlng).addTo(map);
 
-			// Cedarmaps SDK is based on Leaflet.js. A leaflet marker is initialized like this. The event object (`e`) which is passed in by onClick event contains the latLng object.
-			// Learn more: https://leafletjs.com/reference-1.5.0.html#marker
-			marker = new L.marker(e.latlng).addTo(map);
-
-			loading.style.visibility = 'visible';
-			latLngContainer.style.visibility = 'visible';
-			latLngContainer.innerHTML =  'Lat: ' + parseFloat(e.latlng.lat).toPrecision(10) + '<br /> Lng: ' + parseFloat(e.latlng.lng).toPrecision(10);
-
-
-			var q = {
-				query: e.latlng,
-				verbosity: verbosityCheckbox.checked,
-				prefix: prefixModeCheckbox.checked ? 'short': null
-			};
-
-			// This is the main part of this demo which uses the `reverseQuery` method. For more info on other available options please refer to docs.
-			// https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/README.md
-			geocoder.reverseQuery(q, function callback(err, res){
-				loading.style.visibility = 'hidden';
-				formattedAddressContainer.style.display = 'block';
-				parsedResponseContainer.style.display = 'block';
-				rawResponseContainer.style.display = 'block';
-
-				var parsedResponse = '<table class="address-parts rtl">'+
-					'<tr>'+
-						'<td width="50%" class="key">استان:</td>'+
-						'<td width="50%">' + res.result.province + '</td>'+
-					'</tr>'+
-					'<tr>'+
-						'<td class="key">شهر:</td>'+
-						'<td>' + res.result.city + '</td>'+
-					'</tr>'+
-					'<tr>'+
-						'<td class="key">محله:</td>'+
-						'<td>' + res.result.locality + '</td>'+
-					'</tr>'+
-					'<tr>'+
-						'<td class="key">مکان:</td>'+
-						'<td>' + res.result.place + '</td>'+
-					'</tr>'+
-					'<tr>'+
-						'<td class="key">خیابان:</td>'+
-						'<td>' + res.result.address + '</td>'+
-					'</tr>'+
-					'<tr>'+
-						'<td class="key">در منطقه طرح آلودگی هوا:</td>'+
-						'<td>' + (res.result.traffic_zone.in_central ? 'بله' : 'خیر' ) + '</td>'+
-					'</tr>'+
-					'<tr>'+
-						'<td class="key">در منطقه زوج و فرد:</td>'+
-						'<td>' + (res.result.traffic_zone.in_evenodd ? 'بله' : 'خیر' ) + '</td>'+
-					'</tr>'+
-				'</table>';
-				var rawResponse = '<pre class="language-javascript">'+ syntaxHighlight(JSON.stringify(res, undefined, 2)) + '</pre>'
-								
-				parsedResponseContainer.innerHTML = parsedResponse;
-				rawResponseContainer.innerHTML = rawResponse;
-				formattedAddressContainer.innerHTML = res.result.formatted_address;
+        loading.style.visibility = 'visible';
+        latLngContainer.style.visibility = 'visible';
+        latLngContainer.innerHTML = 'Lat: ' + parseFloat(e.latlng.lat).toPrecision(10) + '<br /> Lng: ' + parseFloat(e.latlng.lng).toPrecision(10);
 
 
-			});
-		});
+        var q = {
+            query: e.latlng,
+            verbosity: verbosityCheckbox.checked,
+            prefix: prefixModeOptions.value || 'none'
+        };
 
-		// This function is just used for JSON syntax highlighting specifically for this demo and has nothing to do with CedarMaps SDK
-		function syntaxHighlight(json) {
-		    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-		    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-		        var cls = 'number';
-		        if (/^"/.test(match)) {
-		            if (/:$/.test(match)) {
-		                cls = 'key';
-		            } else {
-		                cls = 'string';
-		            }
-		        } else if (/true|false/.test(match)) {
-		            cls = 'boolean';
-		        } else if (/null/.test(match)) {
-		            cls = 'null';
-		        }
-		        return '<span class="' + cls + '">' + match + '</span>';
-		    });
-		}
-	</script>
+        // This is the main part of this demo which uses the `reverseQuery` method. For more info on other available options please refer to docs.
+        // https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/README.md
+        geocoder.reverseQuery(q, function callback(err, res) {
+            loading.style.visibility = 'hidden';
+            formattedAddressContainer.style.display = 'block';
+            parsedResponseContainer.style.display = 'block';
+            rawResponseContainer.style.display = 'block';
+
+            var parsedResponse = '<table class="address-parts rtl">' +
+                '<tr>' +
+                '<td width="50%" class="key">استان:</td>' +
+                '<td width="50%">' + res.result.province + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td class="key">شهر:</td>' +
+                '<td>' + res.result.city + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td class="key">محله:</td>' +
+                '<td>' + res.result.locality + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td class="key">مکان:</td>' +
+                '<td>' + res.result.place + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td class="key">خیابان:</td>' +
+                '<td>' + res.result.address + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td class="key">در منطقه طرح آلودگی هوا:</td>' +
+                '<td>' + (res.result.traffic_zone.in_central ? 'بله' : 'خیر') + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td class="key">در منطقه زوج و فرد:</td>' +
+                '<td>' + (res.result.traffic_zone.in_evenodd ? 'بله' : 'خیر') + '</td>' +
+                '</tr>' +
+                '</table>';
+            var rawResponse = '<pre class="language-javascript">' + syntaxHighlight(JSON.stringify(res, undefined, 2)) + '</pre>'
+
+            parsedResponseContainer.innerHTML = parsedResponse;
+            rawResponseContainer.innerHTML = rawResponse;
+            formattedAddressContainer.innerHTML = res.result.formatted_address;
+        });
+    });
+
+    // This function is just used for JSON syntax highlighting specifically for this demo and has nothing to do with CedarMaps SDK
+    function syntaxHighlight(json) {
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
+    </script>
 </body>
 
 </html>
