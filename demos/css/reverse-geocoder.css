@@ -92,6 +92,7 @@ pre {
     /* Opera 7 */
     word-wrap: break-word;
     /* Internet Explorer 5.5+ */
+    color: #fff;
 }
 
 .string { color: #a6e22e; }
