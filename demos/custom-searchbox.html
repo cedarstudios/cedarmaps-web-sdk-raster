@@ -121,12 +121,14 @@
 						url: queryURL + proximityQuery
 					},
 					function (code, res) {
-						var json = JSON.parse(res);
-						//if (window.console) console.log(json);
-						if (typeof json != 'undefined') {
-							if (json.results) response(json.results);
-							else response(['NO_RESULTS'])
-						} 
+						try {
+							var json = JSON.parse(res);
+							//if (window.console) console.log(json);
+							if (typeof json != 'undefined') {
+								if (json.results) response(json.results);
+								else response(['NO_RESULTS'])
+							} 
+						} catch (e) {}
 					}
 				);
 			},
@@ -168,6 +170,7 @@
 						img = 'icon_motorway@2x.png'
 						break;
 					case 'place':
+					case 'poi':
 						label = 'مکان'
 						img = 'icon_place@2x.png'
 						break;
