@@ -228,6 +228,8 @@
                 item.address = addressParts.join('، ');
             }
 
+            if (item.address.length > 60 ) item.address = item.address.substring(0, 60) + '...';
+
             var altName = item.alt_name ? ' (' + item.alt_name + ')' : '';
 
             return '<div class="autocomplete-suggestion" data-name="' + item.name + '" data-center="' + item.location.center + '">\
