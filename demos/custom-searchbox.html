@@ -2,224 +2,260 @@
 <html>
 
 <head>
-	<meta charset=utf-8 />
-	<title>CedarMaps - Sample Custom Searchbox - جتسجو در معابر با باکس جستحوی دلخواه</title>
-
-	<!-- Importing **local** version of cedarmaps -->
-	<!-- Check out how to build SDK: https://github.com/cedarstudios/cedarmaps-web-sdk-raster#building-sdk-locally -->
-	
-	<!-- You may also use our CDN if you don't intent to build the SDK. -->
-	<!-- See: https://github.com/cedarstudios/cedarmaps-web-sdk-raster#basic-usage-via-cdn -->
-	<script src='../dist/v1.8.1/cedarmaps.js'></script>
-	<script src='../access-token.js'></script>
-	<link href='../dist/v1.8.1/cedarmaps.css' rel='stylesheet' />
-	<link href='./css/custom-searchbox.css' rel='stylesheet' />
-
-	<!-- Third party libraries used solely for this demo -->
-	<!-- JS -->
-	<script src='./js/auto-complete.js'></script>
-	<script src='./js/L.Control.Locate.min.js'></script>
-	<script src='./js/nanoajax.min.js'></script>
-	<!-- CSS -->
-	<link href='./css/auto-complete.css' rel='stylesheet' />
-	<link href='./css/L.Control.Locate.min.css' rel='stylesheet' />
-	<link href='./css/custom-bootstrap.css' rel='stylesheet' />
-	<link href='./css/fonts.css' rel='stylesheet' />
-	<link href='./css/icons.css' rel='stylesheet' />
-	<link href='./css/styles.css' rel='stylesheet' />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>CedarMaps - Sample Custom Searchbox - جتسجو در معابر با باکس جستحوی دلخواه</title>
+    <!-- Importing **local** version of cedarmaps -->
+    <!-- Check out how to build SDK: https://github.com/cedarstudios/cedarmaps-web-sdk-raster#building-sdk-locally -->
+    <!-- You may also use our CDN if you don't intent to build the SDK. -->
+    <!-- See: https://github.com/cedarstudios/cedarmaps-web-sdk-raster#basic-usage-via-cdn -->
+    <script src='../dist/v1.8.1/cedarmaps.js'></script>
+    <script src='../access-token.js'></script>
+    <link href='../dist/v1.8.1/cedarmaps.css' rel='stylesheet' />
+    <link href='./css/custom-searchbox.css' rel='stylesheet' />
+    <!-- Third party libraries used solely for this demo -->
+    <!-- JS -->
+    <script src='./js/auto-complete.js'></script>
+    <script src='./js/L.Control.Locate.min.js'></script>
+    <script src='./js/nanoajax.min.js'></script>
+    <!-- CSS -->
+    <link href='./css/auto-complete.css' rel='stylesheet' />
+    <link href='./css/L.Control.Locate.min.css' rel='stylesheet' />
+    <link href='./css/custom-bootstrap.css' rel='stylesheet' />
+    <link href='./css/fonts.css' rel='stylesheet' />
+    <link href='./css/icons.css' rel='stylesheet' />
+    <link href='./css/styles.css' rel='stylesheet' />
 </head>
 
 <body>
-	<nav class="navbar navbar-expand-lg fixed-top" color-on-scroll="20">
-		<div class="container rtl">
-			<div class="navbar-brand">
-				<a href="https://www.cedarmaps.com" rel="tooltip" title="نقشه‌ای حرفه‌ای برای سرویس‌های مکان محور پارسی"><img src="img/logo.svg" height="25" alt="">
-				</a>
-			</div>
-			<div class="collapse navbar-collapse justify-content-end">
-				<a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/custom-searchbox.html" target="_blank" rel="tooltip" title="نمونه کدهای ما را در Github ببینید"><i class="icon-github icon-24"></i> مشاهده Source Code این مثال در Github &gt; </a>
-			</div>
-		</div>
-	</nav>
+    <nav class="navbar navbar-expand-lg fixed-top" color-on-scroll="20">
+        <div class="container rtl">
+            <div class="navbar-brand">
+                <a href="https://www.cedarmaps.com" rel="tooltip" title="نقشه‌ای حرفه‌ای برای سرویس‌های مکان محور پارسی"><img src="img/logo.svg" height="25" alt="">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse justify-content-end">
+                <a href="https://github.com/cedarstudios/cedarmaps-web-sdk-raster/blob/master/demos/custom-searchbox.html" target="_blank" rel="tooltip" title="نمونه کدهای ما را در Github ببینید"><i class="icon-github icon-24"></i> مشاهده Source Code این مثال در Github &gt; </a>
+            </div>
+        </div>
+    </nav>
+    <!-- This is the only HTML tag needed for map intialization -->
+    <div id='map' class='map'> </div>
+    <div id="search">
+        <div class="form-row align-items-center">
+            <div class="form-group col-md-4">
+                <select id="search-index" class="form-control">
+                    <option selected value="cedarmaps.streets">فقط معابر</option>
+                    <option value="cedarmaps.places">فقط مکان‌ها</option>
+                    <option value="cedarmaps.mix">مکان‌ها و معابر</option>
+                </select>
+            </div>
+            <div class="form-group col-md-8">
+                <input type="text" id="searchbox" placeholder="شروع به تایپ کنید...">
+            </div>
+        </div>
+        <input type="checkbox" id="proximity"> <small>در نظر گرفتن موقعیت فعلی شما در نتایج جستجو (Search with proximity)</small>
+        <div id="location">موقعیت فعلی شما: <span id="current-location" class="badge badge-success"></span></div>
+    </div>
+    <script>
+    try {
+        // Check out line 9 where we have imported a file which has an `accessToken` variable available on it as has
+        // been assigned our personal access token.
+        // Sample: var accessToken = '<your access token>';
+        // Get one from https://www.cedarmaps.com
+        L.cedarmaps.accessToken = accessToken;
+    } catch (err) {
+        throw new Error('You need to get an access token to be able to use cedarmaps SDK. ' +
+            'Send us an email to <support@cedarmaps.com>');
+    }
 
-	<!-- This is the only HTML tag needed for map intialization -->
-	<div id='map' class='map'> </div>
-	<div id="search">
-		<input type="text" id="searchbox" placeholder="شروع به تایپ کنید...">
-		<input type="checkbox" id="proximity"> <small>در نظر گرفتن موقعیت فعلی شما در نتایج جستجو (Proximity)</small>
-		<div id="location">موقعیت فعلی شما: <span id="current-location" class="badge badge-success"></span></div>
-	</div>
-	<script>
-		try {
-			// Check out line 9 where we have imported a file which has an `accessToken` variable available on it as has
-			// been assigned our personal access token.
-			// Sample: var accessToken = '<your access token>';
-			// Get one from https://www.cedarmaps.com
-			L.cedarmaps.accessToken = accessToken;
-		} catch (err) {
-			throw new Error('You need to get an access token to be able to use cedarmaps SDK. ' +
-				'Send us an email to <support@cedarmaps.com>');
-		}
+    var proximityCheckbox = document.getElementById('proximity'),
+    	searchIndexDropdown = document.getElementById('search-index'),
+        currentLocationContainer = document.getElementById('current-location'),
+        locationContainer = document.getElementById('location'),
+        tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token=' + L.cedarmaps.accessToken,
+        marker,
+        proximity;
 
-		var proximityCheckbox = document.getElementById('proximity'),
-			currentLocationContainer = document.getElementById('current-location'),
-			locationContainer = document.getElementById('location'),
-			tileJSONUrl = 'https://api.cedarmaps.com/v1/tiles/cedarmaps.streets.json?access_token=' + L.cedarmaps.accessToken,
-			marker,
-			proximity;
+    // Defining what to do after finding user's location
+    function onLocationFound(location) {
+        if (marker) map.removeLayer(marker);
+        proximityCheckbox.checked = true;
+        proximity = location.latlng;
+        marker = new L.marker(proximity).addTo(map);
+        map.flyTo(proximity, 16);
 
-		// Defining what to do after finding user's location
-		function onLocationFound(location) {
-			if (marker) map.removeLayer(marker);
-			proximity = location.latlng;
-			marker = new L.marker(proximity).addTo(map);
-			map.flyTo(proximity, 16);
+        streetsGeocoder.reverseQuery(proximity, function callback(err, res) {
+            locationContainer.style.display = 'block';
+            var addressParts = [res.result.city, res.result.locality, res.result.address]
+            currentLocationContainer.innerHTML = addressParts.join('، ');
+        });
 
-			geocoder.reverseQuery(proximity, function callback(err, res){
-				locationContainer.style.display = 'block';
-				var addressParts = [res.result.city, res.result.locality, res.result.address]
-				currentLocationContainer.innerHTML = addressParts.join('، ');
-			});
+    };
 
-		};
+    function locationerror() {
+        window.alert('You either blocked browser from accessing your location OR there\'s something really wrong!');
+        locationContainer.style.display = 'block';
+        currentLocationContainer.innerHTML = "مشخص نیست یا دسترسی داده نشده است";
+    };
 
-		function locationerror() {
-			window.alert('You either blocked browser from accessing your location OR there\'s something really wrong!');
-			locationContainer.style.display = 'block';
-			currentLocationContainer.innerHTML = "مشخص نیست یا دسترسی داده نشده است";
-		};
+    // Initializing our map
+    var map = L.cedarmaps.map('map', tileJSONUrl, {
+        scrollWheelZoom: true,
+        maxZoom: 17
+    }).setView([35.757552763570196, 51.41000747680664], 15);
 
-		// Initializing our map
-		var map = L.cedarmaps.map('map', tileJSONUrl, {
-				scrollWheelZoom: true,
-				maxZoom: 17
-			}).setView([35.757552763570196, 51.41000747680664], 15);
+    // Adding locate control to map. For more options see: https://github.com/domoritz/leaflet-locatecontrol
+    L.control.locate({ flyTo: true, icon: 'icon-locate' }).addTo(map);
+    var streetsGeocoder = L.cedarmaps.geocoder('cedarmaps.streets');
+    var placesGeocoder = L.cedarmaps.geocoder('cedarmaps.places');
+    var mixedGeocoder = L.cedarmaps.geocoder('cedarmaps.mix');
 
-		// Adding locate control to map. For more options see: https://github.com/domoritz/leaflet-locatecontrol
-		L.control.locate({flyTo: true, icon: 'icon-locate'}).addTo(map);
-		var geocoder = L.cedarmaps.geocoder('cedarmaps.streets');
+    // Just a random third party autocomplete module. Nothing special about this. You can have your own autocomplete module
+    // https://goodies.pixabay.com/javascript/auto-complete/demo.html
+    var xhr;
+    var autoCompelete = new autoComplete({
+        selector: '#searchbox',
+        minChars: 2,
+        cache: false,
+        source: function(term, response) {
+        	var queryURL;
+            try { xhr.abort(); } catch (e) {}
+            // Since we wont have full control over ajax responses and caching problems may occure if we directly
+            // use geocoder.query, we build the request URL instead and then we use it our custom auto complete module.
+            // It's a workaround for not getting cached results in our list.
 
-		// Just a random third party autocomplete module. Nothing special about this. You can have your own autocomplete module
-		// https://goodies.pixabay.com/javascript/auto-complete/demo.html
-		var xhr;
-		var autoCompelete = new autoComplete({
-			selector: '#searchbox',
-			minChars: 2,
-			cache: false,
-			source: function(term, response){
-				try { xhr.abort(); } catch(e) {}
-				// Since we wont have full control over ajax responses and caching problems may occure if we directly
-				// use geocoder.query, we build the request URL instead and then we use it our custom auto complete module.
-				// It's a workaround for not getting cached results in our list.
-				var queryURL = geocoder.queryURL({query: term});
-				var proximityQuery = (proximityCheckbox.checked && proximity) ? ('&proximity=' + proximity.lat + ',' + proximity.lng) : '';
+            switch (searchIndexDropdown.value) {
+            	case 'cedarmaps.streets':
+            		queryURL = streetsGeocoder.queryURL({ query: term });
+            	break;
+            	case 'cedarmaps.places':
+            		queryURL = placesGeocoder.queryURL({ query: term });
+            	break;
+            	case 'cedarmaps.mix':
+            		queryURL = mixedGeocoder.queryURL({ query: term });
+            	break;
+            }
+            var proximityQuery = (proximityCheckbox.checked && proximity) ? ('&proximity=' + proximity.lat + ',' + proximity.lng) : '';
 
-				// In this demo we use a tiny 3rd party library for AJAX requests as we don't use jQuery or other bulky libraries.
-				// So feel free to replace it with your preferred one. jQuery syntax for example would be like: $.ajax()
-				// Our library: https://github.com/yanatan16/nanoajax
-				xhr = nanoajax.ajax({
-						url: queryURL + proximityQuery
-					},
-					function (code, res) {
-						try {
-							var json = JSON.parse(res);
-							//if (window.console) console.log(json);
-							if (typeof json != 'undefined') {
-								if (json.results) response(json.results);
-								else response(['NO_RESULTS'])
-							} 
-						} catch (e) {}
-					}
-				);
-			},
-			renderItem: function (item, search){
-				var img, label, addressParts = [];
-				if (item === 'NO_RESULTS') {
-					return '<div class="autocomplete-suggestion">\
+            // In this demo we use a tiny 3rd party library for AJAX requests as we don't use jQuery or other bulky libraries.
+            // So feel free to replace it with your preferred one. jQuery syntax for example would be like: $.ajax()
+            // Our library: https://github.com/yanatan16/nanoajax
+            xhr = nanoajax.ajax({
+                    url: queryURL + proximityQuery
+                },
+                function(code, res) {
+                    try {
+                        var json = JSON.parse(res);
+                        //if (window.console) console.log(json);
+                        if (typeof json != 'undefined') {
+                            if (json.results) response(json.results);
+                            else response(['NO_RESULTS'])
+                        }
+                    } catch (e) {}
+                }
+            );
+        },
+        renderItem: function(item, search) {
+            var img, label, addressParts = [];
+            if (item === 'NO_RESULTS') {
+                return '<div class="autocomplete-suggestion">\
 							<div>موردی یافت نشد.</div>\
 						</div>';
-				}
-				
-				switch (item.type) {
-					case 'street':
-						img = 'icon_street@2x.png'
-						label = 'خیابان'
-						break;
-					case 'boulevard':
-						img = 'icon_boulevard@2x.png'
-						label = 'بلوار'
-						break;
-					case 'roundabout':
-						img = 'icon_roundabout@2x.png'
-						label = 'میدان'
-						break;
-					case 'locality':
-						img = 'icon_locality@2x.png'
-						label = 'محله'
-						break;
-					case 'freeway':
-						img = 'icon_freeway@2x.png'
-						label = 'آزادراه'
-						break;
-					case 'expressway':
-						img = 'icon_freeway@2x.png'
-						label = 'اتوبان'
-						break;
-					case 'motorway':
-						label = 'اتوبان'
-						img = 'icon_motorway@2x.png'
-						break;
-					case 'place':
-					case 'poi':
-						label = 'مکان'
-						img = 'icon_place@2x.png'
-						break;
-					case 'city':
-						label = 'شهر'
-						img = 'icon_place@2x.png'
-						break;
-				}
+            }
 
-				if(!item.address || item.address == '') {
-					if (item.components.province) addressParts.push(item.components.province);
-					if (item.components.city) addressParts.push(item.components.city);
+            switch (item.type) {
+                case 'street':
+                    img = 'icon_street@2x.png'
+                    label = 'خیابان'
+                    break;
+                case 'boulevard':
+                    img = 'icon_boulevard@2x.png'
+                    label = 'بلوار'
+                    break;
+                case 'roundabout':
+                    img = 'icon_roundabout@2x.png'
+                    label = 'میدان'
+                    break;
+                case 'locality':
+                    img = 'icon_locality@2x.png'
+                    label = 'محله'
+                    break;
+                case 'region':
+                    img = 'icon_locality@2x.png'
+                    label = 'منطقه'
+                    break;
+                case 'freeway':
+                    img = 'icon_freeway@2x.png'
+                    label = 'آزادراه'
+                    break;
+                case 'expressway':
+                    img = 'icon_freeway@2x.png'
+                    label = 'اتوبان'
+                    break;
+                case 'motorway':
+                    label = 'اتوبان'
+                    img = 'icon_motorway@2x.png'
+                    break;
+                case 'place':
+                case 'poi':
+                    label = 'مکان'
+                    img = 'icon_place@2x.png'
+                    break;
+                case 'city':
+                case 'town':
+                    label = 'شهر'
+                    img = 'icon_place@2x.png'
+                    break;
+                case 'village':
+                    label = 'روستا'
+                    img = 'icon_place@2x.png'
+                    break;
+                case 'state':
+                    label = 'استان'
+                    img = 'icon_place@2x.png'
+                    break;
+                case 'junction':
+                    label = 'تقاطع'
+                    img = 'icon_place@2x.png'
+                    break;
+            }
 
-					item.address = addressParts.join('، ');
-				} else {
-					if (item.components.province) addressParts.push(item.components.province);
-					if (item.address) addressParts.push(item.address);
-					
-					item.address = addressParts.join('، ');
-				}
+            if (!item.address || item.address == '') {
+                if (item.components.province) addressParts.push(item.components.province);
+                if (item.components.city) addressParts.push(item.components.city);
 
-				var altName = item.alt_name ? ' ('+item.alt_name+')': '';
+                item.address = addressParts.join('، ');
+            }
 
-				return '<div class="autocomplete-suggestion" data-name="'+item.name+'" data-center="'+item.location.center+'">\
-							<div class="address">'+item.name+altName+'<span>'+item.address+'</span></div>\
+            var altName = item.alt_name ? ' (' + item.alt_name + ')' : '';
+
+            return '<div class="autocomplete-suggestion" data-name="' + item.name + '" data-center="' + item.location.center + '">\
+							<div class="address">' + item.name + altName + '<span>' + item.address + '</span></div>\
 							<div class="street-type">\
-								<img src="img/'+img+'" alt="" width="20" height="20">\
-								<span>'+label+'</span>\
+								<img src="img/' + img + '" alt="" width="20" height="20">\
+								<span>' + label + '</span>\
 							</div>\
 						</div>';
-			},
-			onSelect: function(e, term, item){
-				if (marker) map.removeLayer(marker);
-				var latLng = item.getAttribute('data-center').split(',')
-				document.getElementById('searchbox').value = item.getAttribute('data-name');
-				// Cedarmaps SDK is based on Leaflet.js. A leaflet marker is initialized like this.
-				// Learn more: https://leafletjs.com/reference-1.5.0.html#marker
-				marker = new L.marker(latLng).addTo(map);
-				map.flyTo(latLng, 16);
-			}
-		});
+        },
+        onSelect: function(e, term, item) {
+            if (marker) map.removeLayer(marker);
+            var latLng = item.getAttribute('data-center').split(',')
+            document.getElementById('searchbox').value = item.getAttribute('data-name');
+            // Cedarmaps SDK is based on Leaflet.js. A leaflet marker is initialized like this.
+            // Learn more: https://leafletjs.com/reference-1.5.0.html#marker
+            marker = new L.marker(latLng).addTo(map);
+            map.flyTo(latLng, 16);
+        }
+    });
 
-		// Defining callbacks for handling map locate
-		map.on('locationfound', onLocationFound);
-		map.on('locationerror ', locationerror);
+    // Defining callbacks for handling map locate
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror ', locationerror);
 
-		// On page load we try to get user's location. 
-		map.locate({setView: true, maxZoom: 16});
-	</script>
+    // On page load we try to get user's location. 
+    map.locate({ setView: true, maxZoom: 16 });
+    </script>
 </body>
 
 </html>

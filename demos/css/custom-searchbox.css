@@ -8,7 +8,7 @@
 	position: absolute;
 	top: 80px;
 	right: 60px;
-	width: 400px;
+	width: 550px;
 	padding: 10px;
 	border-radius: 10px;
 	border: 1px solid #ccc;
@@ -21,9 +21,8 @@
 }
 #searchbox {
 	width: 100%;
-	padding: 10px;
-	margin-bottom: 10px;
-	border-radius: 10px;
+	padding: 7px;
+	border-radius: 4px;
 	border: 1px solid #ccc;
 }
 #searchbox:focus {
