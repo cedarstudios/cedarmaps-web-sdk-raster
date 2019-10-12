@@ -107,7 +107,7 @@ Before using forward/reverse Geocoder object, you must initialize it using the d
 
 | Options | Value | Description |
 | ---- | ---- | ---- |
-| id (_required_) | String | Currently only `cedarmaps.streets` |
+| id (_required_) | String | Available profiles: <ul><li> `cedarmaps.streets` Only searches through map features - 1 API Call</li><li> `cedarmaps.places` Only searches through places (Source: [kikojas.com](https://www.kikojas.com)) - 2 API Calls</li><li> `cedarmaps.mix` Searches through both profiles above - 3 API Calls</li></ul>|
 | options (_optional_) | Object | If provided, it may include: <ul><li>`accessToken`: CedarMaps API access token. Overrides `L.cedarmaps.accessToken` for this geocoder.</li></ul> |
 
 _Returns_ a `L.cedarmaps.geocoder` object.
