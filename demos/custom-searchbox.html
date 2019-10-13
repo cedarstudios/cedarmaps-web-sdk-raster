@@ -85,10 +85,9 @@
         marker = new L.marker(proximity).addTo(map);
         map.flyTo(proximity, 16);
 
-        streetsGeocoder.reverseQuery(proximity, function callback(err, res) {
+        streetsGeocoder.reverseQuery({query: proximity, prefix: 'short'}, function callback(err, res) {
             locationContainer.style.display = 'block';
-            var addressParts = [res.result.city, res.result.locality, res.result.address]
-            currentLocationContainer.innerHTML = addressParts.join('، ');
+            currentLocationContainer.innerHTML = res.result.formatted_address;
         });
 
     };
