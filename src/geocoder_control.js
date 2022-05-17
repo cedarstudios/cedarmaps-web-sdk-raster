@@ -228,7 +228,7 @@ var GeocoderControl = L.Control.extend({
       );
     } else if (result.location.center) {
       this._map.setView(
-        [result.location.center[1], result.location.center[0]],
+        [result.location.center[0], result.location.center[1]],
         this._map.getZoom() === undefined
           ? this.options.pointZoom
           : Math.max(this._map.getZoom(), this.options.pointZoom)
