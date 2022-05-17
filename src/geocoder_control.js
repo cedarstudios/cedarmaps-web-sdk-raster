@@ -172,9 +172,9 @@ var GeocoderControl = L.Control.extend({
       //if (feature.components.country) addressComponents.push(feature.components.country);
       if (feature.components.city)
         addressComponents.push(feature.components.city);
-      if (feature.components.districts[0])
+      if (feature.components.districts && feature.components.districts[0])
         addressComponents.push(feature.components.districts[0]);
-      if (feature.components.localities[0])
+      if (feature.components.localities && feature.components.localities[0])
         addressComponents.push(feature.components.localities[0]);
 
       var address = addressComponents.join("، ");
